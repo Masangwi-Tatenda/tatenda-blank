@@ -1,16 +1,34 @@
 
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react';
+import Hero from '@/components/home/Hero';
+import QuickLinks from '@/components/home/QuickLinks';
+import Welcome from '@/components/home/Welcome';
+import FeaturedEvents from '@/components/home/FeaturedEvents';
+import PhotoGallery from '@/components/home/PhotoGallery';
+import WeeklyScripture from '@/components/home/WeeklyScripture';
+import ChurchStats from '@/components/home/ChurchStats';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 const Index = () => {
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600 mb-6">Start building your amazing project here!</p>
-        <Link to="/blank" className="text-blue-500 hover:text-blue-700 underline">
-          Go to Blank Page
-        </Link>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow page-transition">
+        <Hero />
+        <QuickLinks />
+        <Welcome />
+        <FeaturedEvents />
+        <PhotoGallery />
+        <WeeklyScripture />
+        <ChurchStats />
+      </main>
+      <Footer />
     </div>
   );
 };

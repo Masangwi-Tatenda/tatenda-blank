@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
 
-## Project info
+# Musha WeBetania Parish Website
 
-**URL**: https://lovable.dev/projects/86ab0a21-fb6b-4a03-81db-41c3a5c1ac60
+This is the official website for Musha WeBetania Roman Catholic Parish.
 
-## How can I edit this code?
+## Editing in VS Code
 
-There are several ways of editing your application.
+This project is built with React, TypeScript, and Tailwind CSS. To edit it in VS Code:
 
-**Use Lovable**
+1. Clone the repository to your local machine
+2. Install the dependencies with `npm install` or `yarn install`
+3. Run the development server with `npm run dev` or `yarn dev`
+4. Open the project in VS Code to edit the files
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/86ab0a21-fb6b-4a03-81db-41c3a5c1ac60) and start prompting.
+### Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+- `src/` - Contains all the source code
+  - `components/` - Reusable UI components
+    - `common/` - General-purpose components
+    - `home/` - Components specific to the homepage
+    - `layout/` - Layout components (Navbar, Footer)
+    - `ui/` - Basic UI components from shadcn/ui
+  - `pages/` - Page components for each route
+  - `hooks/` - Custom React hooks
+  - `lib/` - Utility functions and libraries
 
-**Use your preferred IDE**
+### Customizing the Hero Section
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The hero section uses a carousel of background images defined in `src/components/home/Hero.tsx`. To change the images:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Open `src/components/home/Hero.tsx`
+2. Update the `heroImages` array with new image URLs, titles, and subtitles
+3. Make sure to use high-quality images that work well with the overlay
 
-Follow these steps:
+### Google Maps Integration
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+The Google Maps component requires an API key. To set it up:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. Create a `.env` file in the root directory
+2. Add your Google Maps API key: `GOOGLE_MAPS_API_KEY=your_api_key_here`
+3. Restart the development server
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Building for Production
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+To create a production build:
+
+```bash
+npm run build
+# or
+yarn build
 ```
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/86ab0a21-fb6b-4a03-81db-41c3a5c1ac60) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The build will be created in the `dist/` directory, which can be deployed to any static hosting service.
