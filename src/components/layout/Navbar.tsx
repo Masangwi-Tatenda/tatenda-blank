@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Church, Menu, X } from "lucide-react";
 import Button from "../common/Button";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface NavLinkProps {
   to?: string;
@@ -99,9 +101,81 @@ const DropdownItem: React.FC<DropdownItemProps> = ({ to, label, external = false
   );
 };
 
+// Mobile NavLink component
+const MobileNavLink: React.FC<NavLinkProps> = ({
+  to = "#",
+  label,
+  children,
+  isDropdown = false,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isActive = to && location.pathname === to;
+
+  return isDropdown ? (
+    <div className="border-b border-white/10">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "flex items-center justify-between w-full px-4 py-3 text-white hover:text-church-gold transition-all duration-300",
+          isOpen && "text-church-gold"
+        )}
+      >
+        <span>{label}</span>
+        <ChevronDown
+          size={16}
+          className={cn("transition-transform duration-300", isOpen && "rotate-180")}
+        />
+      </button>
+
+      {/* Mobile dropdown content */}
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300 bg-church-burgundy/50",
+          isOpen ? "max-h-96" : "max-h-0"
+        )}
+      >
+        <div className="py-1">
+          {children}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <Link
+      to={to}
+      className={cn(
+        "block px-4 py-3 text-white hover:text-church-gold transition-all duration-300 border-b border-white/10",
+        isActive && "text-church-gold font-medium"
+      )}
+    >
+      {label}
+    </Link>
+  );
+};
+
+// Mobile dropdown item component 
+const MobileDropdownItem: React.FC<DropdownItemProps> = ({ to, label, external = false }) => {
+  return external ? (
+    <a
+      href={to}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block px-6 py-2 text-sm text-white/80 hover:text-church-gold transition-all duration-200"
+    >
+      {label}
+    </a>
+  ) : (
+    <Link
+      to={to}
+      className="block px-6 py-2 text-sm text-white/80 hover:text-church-gold transition-all duration-200"
+    >
+      {label}
+    </Link>
+  );
+};
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -170,13 +244,72 @@ const Navbar = () => {
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden p-2 text-white rounded-full hover:bg-white/10 transition-colors duration-300"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Sheet */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <button
+                className="lg:hidden p-2 text-white rounded-full hover:bg-white/10 transition-colors duration-300"
+              >
+                <Menu size={24} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-80 bg-church-burgundy border-church-burgundy p-0">
+              <div className="flex flex-col h-full">
+                {/* Mobile menu header */}
+                <div className="p-4 border-b border-white/10">
+                  <Link to="/" className="flex items-center gap-2 group">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                      <Church size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-white">Musha WeBetania</h2>
+                      <p className="text-xs text-white/80">Roman Catholic Parish</p>
+                    </div>
+                  </Link>
+                </div>
+                
+                {/* Mobile menu content */}
+                <div className="flex-1 overflow-y-auto py-2">
+                  <nav className="flex flex-col">
+                    <MobileNavLink to="/" label="Home" />
+                    <MobileNavLink to="/about" label="About" />
+                    <MobileNavLink to="/mass-times" label="Mass Times" />
+                    <MobileNavLink to="/events" label="Events" />
+                    <MobileNavLink to="/blog" label="Blog" />
+                    
+                    <MobileNavLink isDropdown={true} label="Community">
+                      <MobileDropdownItem to="/community/guilds" label="Catholic Guilds" />
+                      <MobileDropdownItem to="/community/sections" label="Parish Sections" />
+                      <MobileDropdownItem to="/community/youth" label="Catholic Youth Ministry" />
+                      <MobileDropdownItem to="/community/gallery" label="Photo Gallery" />
+                    </MobileNavLink>
+                    
+                    <MobileNavLink isDropdown={true} label="Sacraments">
+                      <MobileDropdownItem to="/sacraments/baptism" label="Baptism" />
+                      <MobileDropdownItem to="/sacraments/communion" label="First Communion" />
+                      <MobileDropdownItem to="/sacraments/confirmation" label="Confirmation" />
+                      <MobileDropdownItem to="/sacraments/marriage" label="Marriage" />
+                      <MobileDropdownItem to="/sacraments/reconciliation" label="Reconciliation" />
+                      <MobileDropdownItem to="/sacraments/anointing" label="Anointing of the Sick" />
+                    </MobileNavLink>
+                    
+                    <MobileNavLink to="/contact" label="Contact" />
+                  </nav>
+                </div>
+                
+                {/* Mobile menu footer */}
+                <div className="p-4 border-t border-white/10">
+                  <Button
+                    variant="glass"
+                    href="/donate"
+                    className="w-full bg-white/10 text-white border-white/20 hover:bg-white/20"
+                  >
+                    Donate
+                  </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
