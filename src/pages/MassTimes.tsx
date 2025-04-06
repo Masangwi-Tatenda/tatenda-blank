@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import SectionTitle from '@/components/common/SectionTitle';
 import { cn } from '@/lib/utils';
-import { Clock, Calendar, MapPin, AlertTriangle, ArrowRight, PlaySquare, FileText, Download } from 'lucide-react';
+import { Clock, Calendar, MapPin, AlertTriangle, ArrowRight, PlaySquare, FileText, Download, Heart } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 

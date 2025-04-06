@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -7,6 +6,7 @@ import { Church, HeartHandshake, Users, Phone, FileText, Mail, Calendar, BookOpe
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Button from '@/components/common/Button';
+import { Heart } from 'lucide-react';
 
 const Vocations = () => {
   // Scroll to top on page load

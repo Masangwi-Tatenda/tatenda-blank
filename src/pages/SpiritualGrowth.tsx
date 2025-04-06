@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import SectionTitle from '@/components/common/SectionTitle';
-import { Heart, BookOpen, Calendar, Download, ArrowRight, FileText, Moon, Sun, Clock, Users, Tools } from 'lucide-react';
+import { Heart, BookOpen, Calendar, Download, ArrowRight, FileText, Moon, Sun, Clock, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
