@@ -42,58 +42,62 @@ import PhotoGallery from "./pages/community/PhotoGallery";
 // Parish leadership
 import ParishExecutive from "./pages/ParishExecutive";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <SanityProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <OpenExternalLinks />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            
-            {/* Faith Formation Routes */}
-            <Route path="/core-faith" element={<CoreFaith />} />
-            <Route path="/education-formation" element={<EducationFormation />} />
-            <Route path="/spiritual-growth" element={<SpiritualGrowth />} />
-            <Route path="/vocations" element={<Vocations />} />
-            <Route path="/apologetics" element={<Apologetics />} />
-            <Route path="/church-documents" element={<ChurchDocuments />} />
-            
-            <Route path="/mass-times" element={<MassTimes />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/events/:id" element={<EventDetail />} />
-            <Route path="/donate" element={<Donate />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<BlogDetail />} />
-            <Route path="/parish-executive" element={<ParishExecutive />} />
-            
-            {/* Sacrament Routes */}
-            <Route path="/sacraments/baptism" element={<Baptism />} />
-            <Route path="/sacraments/communion" element={<Communion />} />
-            <Route path="/sacraments/confirmation" element={<Confirmation />} />
-            <Route path="/sacraments/marriage" element={<Marriage />} />
-            <Route path="/sacraments/reconciliation" element={<Reconciliation />} />
-            <Route path="/sacraments/anointing" element={<Anointing />} />
-            
-            {/* Community Routes */}
-            <Route path="/community/guilds" element={<CatholicGuilds />} />
-            <Route path="/community/sections" element={<ParishSections />} />
-            <Route path="/community/youth" element={<YouthMinistry />} />
-            <Route path="/community/gallery" element={<PhotoGallery />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </SanityProvider>
-  </QueryClientProvider>
-);
+// Create a new QueryClient instance inside the component to ensure proper React context
+const App = () => {
+  // Create a new QueryClient inside the component
+  const queryClient = new QueryClient();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SanityProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <OpenExternalLinks />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              
+              {/* Faith Formation Routes */}
+              <Route path="/core-faith" element={<CoreFaith />} />
+              <Route path="/education-formation" element={<EducationFormation />} />
+              <Route path="/spiritual-growth" element={<SpiritualGrowth />} />
+              <Route path="/vocations" element={<Vocations />} />
+              <Route path="/apologetics" element={<Apologetics />} />
+              <Route path="/church-documents" element={<ChurchDocuments />} />
+              
+              <Route path="/mass-times" element={<MassTimes />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/events/:id" element={<EventDetail />} />
+              <Route path="/donate" element={<Donate />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogDetail />} />
+              <Route path="/parish-executive" element={<ParishExecutive />} />
+              
+              {/* Sacrament Routes */}
+              <Route path="/sacraments/baptism" element={<Baptism />} />
+              <Route path="/sacraments/communion" element={<Communion />} />
+              <Route path="/sacraments/confirmation" element={<Confirmation />} />
+              <Route path="/sacraments/marriage" element={<Marriage />} />
+              <Route path="/sacraments/reconciliation" element={<Reconciliation />} />
+              <Route path="/sacraments/anointing" element={<Anointing />} />
+              
+              {/* Community Routes */}
+              <Route path="/community/guilds" element={<CatholicGuilds />} />
+              <Route path="/community/sections" element={<ParishSections />} />
+              <Route path="/community/youth" element={<YouthMinistry />} />
+              <Route path="/community/gallery" element={<PhotoGallery />} />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </SanityProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
