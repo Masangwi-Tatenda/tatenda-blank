@@ -31,7 +31,7 @@ const SpiritualGrowth = () => {
       {
         title: "First Reading",
         reference: "Genesis 2:18-24",
-        text: "The LORD God said: "It is not good for the man to be alone. I will make a suitable partner for him." So the LORD God formed out of the ground various wild animals and various birds of the air, and he brought them to the man to see what he would call them; whatever the man called each of them would be its name..."
+        text: "The LORD God said: \"It is not good for the man to be alone. I will make a suitable partner for him.\" So the LORD God formed out of the ground various wild animals and various birds of the air, and he brought them to the man to see what he would call them; whatever the man called each of them would be its name..."
       },
       {
         title: "Responsorial Psalm",
@@ -41,12 +41,12 @@ const SpiritualGrowth = () => {
       {
         title: "Second Reading",
         reference: "Hebrews 2:9-11",
-        text: "Brothers and sisters: He "for a little while" was made "lower than the angels, " that by the grace of God he might taste death for everyone. For it was fitting that he, for whom and through whom all things exist, in bringing many children to glory, should make the leader to their salvation perfect through suffering..."
+        text: "Brothers and sisters: He \"for a little while\" was made \"lower than the angels,\" that by the grace of God he might taste death for everyone. For it was fitting that he, for whom and through whom all things exist, in bringing many children to glory, should make the leader to their salvation perfect through suffering..."
       },
       {
         title: "Gospel",
         reference: "Mark 10:2-16",
-        text: "The Pharisees approached Jesus and asked, "Is it lawful for a husband to divorce his wife?" They were testing him. He said to them in reply, "What did Moses command you?" They replied, "Moses permitted a husband to write a bill of divorce and dismiss her." But Jesus told them, "Because of the hardness of your hearts he wrote you this commandment..."
+        text: "The Pharisees approached Jesus and asked, \"Is it lawful for a husband to divorce his wife?\" They were testing him. He said to them in reply, \"What did Moses command you?\" They replied, \"Moses permitted a husband to write a bill of divorce and dismiss her.\" But Jesus told them, \"Because of the hardness of your hearts he wrote you this commandment...\""
       }
     ]
   });
