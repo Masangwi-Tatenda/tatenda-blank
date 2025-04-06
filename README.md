@@ -20,25 +20,47 @@ This project is built with React, TypeScript, and Tailwind CSS. To edit it in VS
     - `home/` - Components specific to the homepage
     - `layout/` - Layout components (Navbar, Footer)
     - `ui/` - Basic UI components from shadcn/ui
+  - `contexts/` - React contexts for state management
+  - `lib/` - Utility functions and libraries
   - `pages/` - Page components for each route
   - `hooks/` - Custom React hooks
-  - `lib/` - Utility functions and libraries
 
-### Customizing the Hero Section
+## Sanity CMS Integration
 
-The hero section uses a carousel of background images defined in `src/components/home/Hero.tsx`. To change the images:
+This project is integrated with Sanity.io for content management. To set up the Sanity connection:
 
-1. Open `src/components/home/Hero.tsx`
-2. Update the `heroImages` array with new image URLs, titles, and subtitles
-3. Make sure to use high-quality images that work well with the overlay
+1. Create a Sanity project at [sanity.io](https://www.sanity.io/)
+2. Create a `.env` file in the root directory with the following variables:
+   ```
+   VITE_SANITY_PROJECT_ID=your_project_id
+   VITE_SANITY_DATASET=production
+   VITE_SANITY_TOKEN=your_token_if_needed_for_write_access
+   ```
+3. The Sanity schema should match the type definitions in `src/lib/sanity.ts`
 
-### Google Maps Integration
+### Content Types
 
-The Google Maps component requires an API key. To set it up:
+The website is set up to handle the following content types from Sanity:
 
-1. Create a `.env` file in the root directory
-2. Add your Google Maps API key: `GOOGLE_MAPS_API_KEY=your_api_key_here`
-3. Restart the development server
+- **Hero Slides**: Homepage carousel slides
+- **Events**: Church events and gatherings
+- **Blog Posts**: News and articles
+- **Church Documents**: Downloadable PDFs and documents
+
+### Adding Content from Sanity
+
+1. Go to your Sanity Studio (typically at `https://your-project-name.sanity.studio`)
+2. Create content using the defined schemas
+3. The website will automatically fetch and display the content
+
+## Responsive Design
+
+The website is fully responsive and optimized for all device sizes:
+
+- Mobile-first approach with progressive enhancement
+- Responsive utility classes in the CSS
+- Adaptive components that adjust to screen size
+- Media query breakpoints for different device sizes
 
 ## Building for Production
 
@@ -51,3 +73,10 @@ yarn build
 ```
 
 The build will be created in the `dist/` directory, which can be deployed to any static hosting service.
+
+## Google Maps Integration
+
+The Google Maps component requires an API key. To set it up:
+
+1. Add your Google Maps API key to the `.env` file: `GOOGLE_MAPS_API_KEY=your_api_key_here`
+2. Restart the development server
