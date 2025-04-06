@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -19,7 +18,6 @@ import { Label } from "@/components/ui/label";
 import { useSanity } from '@/contexts/SanityContext';
 import { toast } from "@/components/ui/use-toast";
 
-// Enhanced events data
 const eventsData = [
   {
     id: 1,
@@ -274,12 +272,10 @@ const getCategoryColor = (category) => {
   return categoryColors[category] || 'bg-church-gold hover:bg-church-gold/90';
 };
 
-// Helper functions
 const getDateObject = (dateStr) => {
   return new Date(dateStr);
 };
 
-// Function to format date
 const formatDate = (dateStr) => {
   const date = getDateObject(dateStr);
   return date.toLocaleDateString('en-US', { 
@@ -290,7 +286,6 @@ const formatDate = (dateStr) => {
   });
 };
 
-// Function to check if event is upcoming
 const isUpcoming = (dateStr) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -298,7 +293,6 @@ const isUpcoming = (dateStr) => {
   return eventDate >= today;
 };
 
-// Function to check if event is today
 const isToday = (dateStr) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -307,7 +301,6 @@ const isToday = (dateStr) => {
   return eventDate.getTime() === today.getTime();
 };
 
-// Event Card Component with Enhanced Features
 const EventCard = ({ event }) => {
   return (
     <div className="group bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl animate-fade-in relative">
@@ -481,7 +474,6 @@ const EventCard = ({ event }) => {
   );
 };
 
-// Event Detail Component
 const EventDetails = ({ event, onClose }) => {
   if (!event) return null;
   
@@ -548,7 +540,6 @@ const EventDetails = ({ event, onClose }) => {
                   size="sm" 
                   className="border-church-burgundy text-church-burgundy hover:bg-church-burgundy/10"
                   onClick={() => {
-                    // Add to calendar functionality
                     toast({
                       title: "Added to Calendar",
                       description: "This event has been added to your calendar",
@@ -661,12 +652,10 @@ const EventDetails = ({ event, onClose }) => {
 };
 
 const Events = () => {
-  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // State for filtering and searching
   const [events, setEvents] = useState(eventsData);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -675,18 +664,14 @@ const Events = () => {
   const [showCalendarView, setShowCalendarView] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // Get unique categories
   const categories = ['All', ...Array.from(new Set(eventsData.map(event => event.category)))];
   
-  // Get unique tags
   const allTags = eventsData.flatMap(event => event.tags || []);
   const uniqueTags = ['All', ...Array.from(new Set(allTags))];
 
-  // Filter events based on search, category, and timeframe
   useEffect(() => {
     let filtered = eventsData;
     
-    // Filter by timeframe
     if (selectedTimeframe === 'upcoming') {
       filtered = filtered.filter(event => isUpcoming(event.date));
     } else if (selectedTimeframe === 'today') {
@@ -695,17 +680,14 @@ const Events = () => {
       filtered = filtered.filter(event => event.featured);
     }
     
-    // Filter by category
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(event => event.category === selectedCategory);
     }
     
-    // Filter by tag
     if (selectedTag !== 'All') {
       filtered = filtered.filter(event => event.tags && event.tags.includes(selectedTag));
     }
     
-    // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(event => 
@@ -716,7 +698,6 @@ const Events = () => {
       );
     }
     
-    // Sort events by date (earliest first)
     filtered.sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
@@ -731,7 +712,6 @@ const Events = () => {
       <Navbar />
       
       <main className="flex-grow page-transition">
-        {/* Hero Section */}
         <section className="relative">
           <div 
             className="h-64 md:h-80 lg:h-96 bg-cover bg-center relative"
@@ -749,7 +729,6 @@ const Events = () => {
           </div>
         </section>
         
-        {/* View Toggle */}
         <section className="py-8 bg-gray-50">
           <div className="container-custom">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -796,7 +775,6 @@ const Events = () => {
           </div>
         </section>
         
-        {/* Events Section */}
         {showCalendarView ? (
           <section className="py-16">
             <div className="container-custom">
@@ -811,7 +789,6 @@ const Events = () => {
                 </CardContent>
               </Card>
               
-              {/* Upcoming Events - Mini List */}
               <div className="mt-16">
                 <h3 className="text-2xl font-bold text-church-burgundy mb-4">Highlighted Events</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -849,7 +826,6 @@ const Events = () => {
                 </div>
               </div>
               
-              {/* Event subscription */}
               <div className="mt-16 bg-church-light-gold rounded-lg p-6 md:p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                   <div>
@@ -911,7 +887,6 @@ const Events = () => {
                 subtitle="Join us for these special gatherings and activities in our parish community."
               />
               
-              {/* Search and Filter */}
               <div className="bg-white p-6 rounded-lg shadow-md mt-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="md:col-span-2 relative">
@@ -995,7 +970,6 @@ const Events = () => {
                 )}
               </div>
               
-              {/* Events Listing */}
               {events.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
                   {events.map((event) => (
@@ -1022,7 +996,6 @@ const Events = () => {
                 </div>
               )}
               
-              {/* Event Organizer Information */}
               <div className="mt-16 bg-white rounded-lg shadow-md p-6 md:p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
@@ -1061,7 +1034,6 @@ const Events = () => {
           </section>
         )}
         
-        {/* Show detailed event modal if an event is selected */}
         {selectedEvent && (
           <EventDetails event={selectedEvent} onClose={() => setSelectedEvent(null)} />
         )}
