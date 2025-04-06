@@ -85,6 +85,12 @@ export default {
 				'inter': ['Inter', 'sans-serif'],
 				'manrope': ['Manrope', 'sans-serif'],
 			},
+			aspectRatio: {
+				'1': '1',
+				'16/9': '16 / 9',
+				'4/3': '4 / 3',
+				'21/9': '21 / 9',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
@@ -149,5 +155,8 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		require('@tailwindcss/aspect-ratio'),
+	],
 } satisfies Config;
