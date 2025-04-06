@@ -210,7 +210,17 @@ const Navbar = () => {
           <nav className="hidden lg:flex items-center space-x-1">
             <NavLink to="/" label="Home" />
             <NavLink to="/about" label="About" />
-            <NavLink to="/mass-times" label="Mass Times" />
+            <NavLink to="/core-faith" label="Core Faith & Doctrine" />
+            
+            <NavLink isDropdown={true} label="Faith Formation">
+              <DropdownItem to="/education-formation" label="Education & Formation" />
+              <DropdownItem to="/spiritual-growth" label="Spiritual Growth" />
+              <DropdownItem to="/vocations" label="Vocations" />
+              <DropdownItem to="/apologetics" label="Apologetics" />
+              <DropdownItem to="/church-documents" label="Church Documents" />
+            </NavLink>
+            
+            <NavLink to="/mass-times" label="Mass & Worship" />
             <NavLink to="/events" label="Events" />
             <NavLink to="/blog" label="Blog" />
 
@@ -273,7 +283,17 @@ const Navbar = () => {
                   <nav className="flex flex-col">
                     <MobileNavLink to="/" label="Home" />
                     <MobileNavLink to="/about" label="About" />
-                    <MobileNavLink to="/mass-times" label="Mass Times" />
+                    <MobileNavLink to="/core-faith" label="Core Faith & Doctrine" />
+                    
+                    <MobileNavLink isDropdown={true} label="Faith Formation">
+                      <MobileDropdownItem to="/education-formation" label="Education & Formation" />
+                      <MobileDropdownItem to="/spiritual-growth" label="Spiritual Growth" />
+                      <MobileDropdownItem to="/vocations" label="Vocations" />
+                      <MobileDropdownItem to="/apologetics" label="Apologetics" />
+                      <MobileDropdownItem to="/church-documents" label="Church Documents" />
+                    </MobileNavLink>
+                    
+                    <MobileNavLink to="/mass-times" label="Mass & Worship" />
                     <MobileNavLink to="/events" label="Events" />
                     <MobileNavLink to="/blog" label="Blog" />
                     

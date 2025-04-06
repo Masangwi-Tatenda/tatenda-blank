@@ -16,6 +16,14 @@ import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 import OpenExternalLinks from "./components/layout/OpenExternalLinks";
 
+// New Faith Formation Pages
+import CoreFaith from "./pages/CoreFaith";
+import EducationFormation from "./pages/EducationFormation";
+import SpiritualGrowth from "./pages/SpiritualGrowth";
+import Vocations from "./pages/Vocations";
+import Apologetics from "./pages/Apologetics";
+import ChurchDocuments from "./pages/ChurchDocuments";
+
 // Sacrament pages
 import Baptism from "./pages/sacraments/Baptism";
 import Communion from "./pages/sacraments/Communion";
@@ -45,6 +53,15 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
+          
+          {/* Faith Formation Routes */}
+          <Route path="/core-faith" element={<CoreFaith />} />
+          <Route path="/education-formation" element={<EducationFormation />} />
+          <Route path="/spiritual-growth" element={<SpiritualGrowth />} />
+          <Route path="/vocations" element={<Vocations />} />
+          <Route path="/apologetics" element={<Apologetics />} />
+          <Route path="/church-documents" element={<ChurchDocuments />} />
+          
           <Route path="/mass-times" element={<MassTimes />} />
           <Route path="/events" element={<Events />} />
           <Route path="/events/:id" element={<EventDetail />} />

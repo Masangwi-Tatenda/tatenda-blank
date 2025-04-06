@@ -9,6 +9,7 @@ import WeeklyScripture from '@/components/home/WeeklyScripture';
 import ChurchStats from '@/components/home/ChurchStats';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import CoreFaithSection from '@/components/home/CoreFaithSection';
 
 const Index = () => {
   // Scroll to top on page load
@@ -23,6 +24,7 @@ const Index = () => {
         <Hero />
         <QuickLinks />
         <Welcome />
+        <CoreFaithSection />
         <FeaturedEvents />
         <PhotoGallery />
         <WeeklyScripture />

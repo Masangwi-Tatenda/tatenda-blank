@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Button from '../common/Button';
 import { cn } from '@/lib/utils';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, BookOpen, Heart, Users, Church } from 'lucide-react';
 
 // Updated hero images with high-quality Catholic church images
 const heroImages = [
@@ -13,13 +13,13 @@ const heroImages = [
   },
   {
     url: 'assets/jacob-bentzinger-79il9S3c8Q0-unsplash.jpg',
-    title: 'Join Us in Prayer',
-    subtitle: 'Experience the beauty of Catholic liturgy and tradition',
+    title: 'Grow in Faith Together',
+    subtitle: 'Join us in prayer, worship, and spiritual formation',
   },
   {
     url: 'assets/james-coleman-QHRZv6PIW4s-unsplash.jpg',
-    title: 'A Vibrant Faith Community',
-    subtitle: 'Growing together in Christ\'s love and service',
+    title: 'Discover Catholic Teaching',
+    subtitle: 'Explore the richness of Catholic doctrine and tradition',
   },
 ];
 
@@ -30,6 +30,7 @@ const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const hubRef = useRef<HTMLDivElement>(null);
   
   // Handle slide transitions
   useEffect(() => {
@@ -47,7 +48,7 @@ const Hero = () => {
   
   // Animate content when slide changes
   useEffect(() => {
-    if (titleRef.current && subtitleRef.current && buttonsRef.current) {
+    if (titleRef.current && subtitleRef.current && buttonsRef.current && hubRef.current) {
       // Reset animations
       titleRef.current.style.opacity = '0';
       titleRef.current.style.transform = 'translateY(20px)';
@@ -55,6 +56,7 @@ const Hero = () => {
       subtitleRef.current.style.transform = 'translateY(20px)';
       buttonsRef.current.style.opacity = '0';
       buttonsRef.current.style.transform = 'translateY(20px)';
+      hubRef.current.style.opacity = '0';
       
       // Apply animations with delays
       setTimeout(() => {
@@ -77,6 +79,12 @@ const Hero = () => {
           buttonsRef.current.style.transform = 'translateY(0)';
         }
       }, 700);
+      
+      setTimeout(() => {
+        if (hubRef.current) {
+          hubRef.current.style.opacity = '1';
+        }
+      }, 900);
     }
   }, [currentSlide]);
 
@@ -130,18 +138,58 @@ const Hero = () => {
               className="font-medium backdrop-blur-md bg-white/40 border border-white/50 text-white hover:bg-white/50"
               icon={<Calendar className="w-5 h-5" />}
             >
-              View Mass Schedule
+              Mass & Worship
             </Button>
             <Button 
-              href="/about" 
+              href="/core-faith" 
               variant="outline" 
               size="lg"
               animated
               className="border-2 border-white text-white hover:bg-white/30 font-medium"
-              icon={<ArrowRight className="w-5 h-5" />}
+              icon={<BookOpen className="w-5 h-5" />}
             >
-              Explore Our Community
+              Core Faith & Doctrine
             </Button>
+          </div>
+          
+          {/* Faith Hub Navigation */}
+          <div 
+            ref={hubRef}
+            className="mt-16 opacity-0 transition-opacity duration-1000"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+              <a 
+                href="/spiritual-growth" 
+                className="flex flex-col items-center gap-2 p-4 rounded-lg backdrop-blur-sm bg-white/10 transition-all duration-300 hover:bg-white/20 group"
+              >
+                <Heart className="w-8 h-8 text-church-gold group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-medium text-sm text-center">Spiritual Growth</span>
+              </a>
+              
+              <a 
+                href="/education-formation" 
+                className="flex flex-col items-center gap-2 p-4 rounded-lg backdrop-blur-sm bg-white/10 transition-all duration-300 hover:bg-white/20 group"
+              >
+                <BookOpen className="w-8 h-8 text-church-gold group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-medium text-sm text-center">Education & Formation</span>
+              </a>
+              
+              <a 
+                href="/community/youth" 
+                className="flex flex-col items-center gap-2 p-4 rounded-lg backdrop-blur-sm bg-white/10 transition-all duration-300 hover:bg-white/20 group"
+              >
+                <Users className="w-8 h-8 text-church-gold group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-medium text-sm text-center">Community Groups</span>
+              </a>
+              
+              <a 
+                href="/vocations" 
+                className="flex flex-col items-center gap-2 p-4 rounded-lg backdrop-blur-sm bg-white/10 transition-all duration-300 hover:bg-white/20 group"
+              >
+                <Church className="w-8 h-8 text-church-gold group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-medium text-sm text-center">Vocations</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
