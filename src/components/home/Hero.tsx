@@ -158,7 +158,7 @@ const Hero = () => {
             <Button 
               href="/mass-times" 
               variant="glass" 
-              size={isMobile ? "default" : "lg"} 
+              size={isMobile ? "md" : "lg"} 
               animated 
               className="font-medium backdrop-blur-md bg-white/40 border border-white/50 text-white hover:bg-white/50"
               icon={<Calendar className="w-4 h-4 sm:w-5 sm:h-5" />}
@@ -168,7 +168,7 @@ const Hero = () => {
             <Button 
               href="/core-faith" 
               variant="outline" 
-              size={isMobile ? "default" : "lg"}
+              size={isMobile ? "md" : "lg"}
               animated
               className="border-2 border-white text-white hover:bg-white/30 font-medium"
               icon={<BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />}
