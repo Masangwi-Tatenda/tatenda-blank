@@ -11,11 +11,8 @@ const HolyOrders = () => {
   return (
     <SacramentLayout 
       title="Holy Orders"
-      description="Holy Orders is the sacrament through which the mission entrusted by Christ to his apostles continues to be exercised in the Church until the end of time."
-      imageSrc="https://images.unsplash.com/photo-1569240651738-3d9a7c3986d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-      imageAlt="Catholic priest during ordination ceremony"
-      scriptureVerse="Jesus said to them again, 'Peace be with you. As the Father has sent me, even so I send you.' And when he had said this, he breathed on them, and said to them, 'Receive the Holy Spirit. If you forgive the sins of any, they are forgiven; if you retain the sins of any, they are retained.'"
-      scriptureReference="John 20:21-23"
+      subtitle="The sacrament through which the mission entrusted by Christ to his apostles continues to be exercised in the Church"
+      heroImage="https://images.unsplash.com/photo-1569240651738-3d9a7c3986d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
     >
       <section className="space-y-8">
         <div>

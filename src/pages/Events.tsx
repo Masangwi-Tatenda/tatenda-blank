@@ -717,7 +717,11 @@ const Events = () => {
     }
     
     // Sort events by date (earliest first)
-    filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+    filtered.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateA - dateB;
+    });
     
     setEvents(filtered);
   }, [searchTerm, selectedCategory, selectedTag, selectedTimeframe]);

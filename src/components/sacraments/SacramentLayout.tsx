@@ -44,6 +44,11 @@ const sacraments = [
     name: 'Anointing of the Sick', 
     path: '/sacraments/anointing',
     description: 'Spiritual healing for the ill or elderly.' 
+  },
+  { 
+    name: 'Holy Orders', 
+    path: '/sacraments/holy-orders',
+    description: 'Ordination to the priesthood and diaconate.' 
   }
 ];
 
