@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -717,3 +718,64 @@ const ChurchDocuments = () => {
                   <li>Read slowly and prayerfully</li>
                   <li>Look up unfamiliar terms</li>
                   <li>Consider historical context</li>
+                </ul>
+                <a 
+                  href="/church-documents/reading-tips"
+                  className="text-church-burgundy hover:text-church-gold font-medium inline-flex items-center"
+                >
+                  View Reading Tips <ArrowRight className="ml-1 w-4 h-4" />
+                </a>
+              </div>
+              
+              {/* Study Groups */}
+              <div className="bg-church-cream rounded-lg p-6">
+                <Users className="w-8 h-8 text-church-burgundy mb-4" />
+                <h3 className="text-xl font-bold text-church-burgundy mb-2">Study Groups</h3>
+                <p className="text-gray-700 mb-4">
+                  Join or start a parish study group focused on Church documents. Studying in community enhances understanding through shared insights and discussion.
+                </p>
+                <ul className="list-disc list-inside text-gray-700 mb-4 space-y-1">
+                  <li>Current document study groups</li>
+                  <li>How to join a group</li>
+                  <li>Starting your own group</li>
+                  <li>Suggested formats and resources</li>
+                </ul>
+                <a 
+                  href="/church-documents/study-groups"
+                  className="text-church-burgundy hover:text-church-gold font-medium inline-flex items-center"
+                >
+                  Learn More <ArrowRight className="ml-1 w-4 h-4" />
+                </a>
+              </div>
+              
+              {/* Reading Tools */}
+              <div className="bg-church-cream rounded-lg p-6">
+                <Tools className="w-8 h-8 text-church-burgundy mb-4" />
+                <h3 className="text-xl font-bold text-church-burgundy mb-2">Reading Tools</h3>
+                <p className="text-gray-700 mb-4">
+                  Resources to enhance your study of Church documents, including reference materials, study guides, and digital tools.
+                </p>
+                <ul className="list-disc list-inside text-gray-700 mb-4 space-y-1">
+                  <li>Recommended commentaries</li>
+                  <li>Note-taking templates</li>
+                  <li>Digital study resources</li>
+                  <li>Church document glossaries</li>
+                </ul>
+                <a 
+                  href="/church-documents/reading-tools"
+                  className="text-church-burgundy hover:text-church-gold font-medium inline-flex items-center"
+                >
+                  Explore Tools <ArrowRight className="ml-1 w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default ChurchDocuments;
