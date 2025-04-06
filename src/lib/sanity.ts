@@ -42,8 +42,22 @@ export interface EventItem {
   title: string;
   description: string;
   date: string;
+  time: string;
   location: string;
+  category: string;
+  recurring?: string;
+  organizer?: string;
+  contactEmail?: string;
+  attendees?: number;
+  featured?: boolean;
+  registrationRequired?: boolean;
   image: SanityImage;
+  tags?: string[];
+  attachments?: {
+    _key: string;
+    name: string;
+    url: string;
+  }[];
   slug: {
     current: string;
   };
@@ -56,6 +70,7 @@ export interface BlogPost {
   publishedAt: string;
   excerpt: string;
   mainImage: SanityImage;
+  categories?: string[];
   slug: {
     current: string;
   };
@@ -72,6 +87,39 @@ export interface DocumentItem {
   downloadUrl: string;
 }
 
+export interface LiturgicalSeason {
+  _id: string;
+  name: string;
+  start: string;
+  end: string;
+  color: string;
+  description: string;
+  significance: string;
+  readings: string;
+  traditions: string;
+}
+
+export interface FeastDay {
+  _id: string;
+  name: string;
+  date: string;
+  type: string;
+  color: string;
+  description: string;
+}
+
+export interface CatholicSchool {
+  _id: string;
+  name: string;
+  location: string;
+  level: string;
+  website?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  description: string;
+  image?: SanityImage;
+}
+
 // Sample queries to use with the Sanity client
 export const queries = {
   heroSlides: `*[_type == "heroSlide"] | order(order asc) {
@@ -81,13 +129,23 @@ export const queries = {
     "image": image
   }`,
   
-  featuredEvents: `*[_type == "event" && featured == true] | order(date asc) [0...3] {
+  featuredEvents: `*[_type == "event" && featured == true] | order(date asc) [0...4] {
     _id,
     title,
     description,
     date,
+    time,
     location,
+    category,
+    recurring,
+    organizer,
+    contactEmail,
+    attendees,
+    featured,
+    registrationRequired,
     "image": mainImage,
+    tags,
+    attachments,
     "slug": slug
   }`,
   
@@ -96,18 +154,48 @@ export const queries = {
     title,
     description,
     date,
+    time,
     location,
+    category,
+    recurring,
+    organizer,
+    contactEmail,
+    attendees,
+    featured,
+    registrationRequired,
     "image": mainImage,
+    tags,
+    attachments,
     "slug": slug
   }`,
   
-  recentBlogPosts: `*[_type == "post"] | order(publishedAt desc) [0...3] {
+  singleEvent: (slug: string) => `*[_type == "event" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    description,
+    date,
+    time,
+    location,
+    category,
+    recurring,
+    organizer,
+    contactEmail,
+    attendees,
+    featured,
+    registrationRequired,
+    "image": mainImage,
+    tags,
+    attachments
+  }`,
+  
+  recentBlogPosts: `*[_type == "post"] | order(publishedAt desc) [0...6] {
     _id,
     title,
     author,
     publishedAt,
     excerpt,
     "mainImage": mainImage,
+    categories,
     "slug": slug
   }`,
   
@@ -118,6 +206,7 @@ export const queries = {
     publishedAt,
     excerpt,
     "mainImage": mainImage,
+    categories,
     "slug": slug
   }`,
   
@@ -127,6 +216,7 @@ export const queries = {
     author,
     publishedAt,
     body,
+    categories,
     "mainImage": mainImage
   }`,
   
@@ -139,4 +229,39 @@ export const queries = {
     description,
     downloadUrl
   }`,
+  
+  liturgicalSeasons: `*[_type == "liturgicalSeason"] | order(start asc) {
+    _id,
+    name,
+    start,
+    end,
+    color,
+    description,
+    significance,
+    readings,
+    traditions
+  }`,
+  
+  feastDays: `*[_type == "feastDay"] | order(date asc) {
+    _id,
+    name,
+    date,
+    type,
+    color,
+    description
+  }`,
+  
+  catholicSchools: `*[_type == "catholicSchool"] | order(name asc) {
+    _id,
+    name,
+    location,
+    level,
+    website,
+    contactEmail,
+    contactPhone,
+    description,
+    image
+  }`,
 };
+
+export default client;

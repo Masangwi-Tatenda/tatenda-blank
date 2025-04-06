@@ -16,8 +16,9 @@ import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 import OpenExternalLinks from "./components/layout/OpenExternalLinks";
+import LiturgicalCalendar from "./pages/LiturgicalCalendar";
 
-// New Faith Formation Pages
+// Faith Formation Pages
 import CoreFaith from "./pages/CoreFaith";
 import EducationFormation from "./pages/EducationFormation";
 import SpiritualGrowth from "./pages/SpiritualGrowth";
@@ -32,12 +33,14 @@ import Confirmation from "./pages/sacraments/Confirmation";
 import Marriage from "./pages/sacraments/Marriage";
 import Reconciliation from "./pages/sacraments/Reconciliation";
 import Anointing from "./pages/sacraments/Anointing";
+import HolyOrders from "./pages/sacraments/HolyOrders";
 
 // Community pages
 import CatholicGuilds from "./pages/community/CatholicGuilds";
 import ParishSections from "./pages/community/ParishSections";
 import YouthMinistry from "./pages/community/YouthMinistry";
 import PhotoGallery from "./pages/community/PhotoGallery";
+import CatholicSchools from "./pages/community/CatholicSchools";
 
 // Parish leadership
 import ParishExecutive from "./pages/ParishExecutive";
@@ -68,6 +71,7 @@ const App = () => {
               <Route path="/church-documents" element={<ChurchDocuments />} />
               
               <Route path="/mass-times" element={<MassTimes />} />
+              <Route path="/liturgical-calendar" element={<LiturgicalCalendar />} />
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/donate" element={<Donate />} />
@@ -83,12 +87,14 @@ const App = () => {
               <Route path="/sacraments/marriage" element={<Marriage />} />
               <Route path="/sacraments/reconciliation" element={<Reconciliation />} />
               <Route path="/sacraments/anointing" element={<Anointing />} />
+              <Route path="/sacraments/holy-orders" element={<HolyOrders />} />
               
               {/* Community Routes */}
               <Route path="/community/guilds" element={<CatholicGuilds />} />
               <Route path="/community/sections" element={<ParishSections />} />
               <Route path="/community/youth" element={<YouthMinistry />} />
               <Route path="/community/gallery" element={<PhotoGallery />} />
+              <Route path="/community/schools" element={<CatholicSchools />} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
