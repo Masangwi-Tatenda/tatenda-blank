@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Church, Menu } from "lucide-react";
@@ -192,8 +193,10 @@ const Navbar = () => {
       { to: "/spiritual-growth", label: "Spiritual Growth" },
       { to: "/church-documents", label: "Church Documents" },
     ]},
-    { to: "/mass-times", label: "Mass Times" },
-    { to: "/liturgical-calendar", label: "Liturgical Calendar" },
+    { isDropdown: true, label: "Worship", children: [
+      { to: "/mass-times", label: "Mass Times" },
+      { to: "/liturgical-calendar", label: "Liturgical Calendar" },
+    ]},
     { to: "/events", label: "Events" },
     { isDropdown: true, label: "Community", children: [
       { to: "/community/guilds", label: "Catholic Guilds" },

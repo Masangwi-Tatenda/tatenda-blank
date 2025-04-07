@@ -15,11 +15,12 @@ const socialLinks = [
 const quickLinks = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-  { label: 'Mass Times', href: '/mass-times' },
+  { label: 'Worship', href: '/mass-times' },
   { label: 'Events', href: '/events' },
   { label: 'Blog', href: '/blog' },
   { label: 'Parish Executive', href: '/parish-executive' },
   { label: 'Donate', href: '/donate' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
 const contactDetails = [
@@ -30,9 +31,17 @@ const contactDetails = [
   { icon: Clock, text: "Office Hours: Mon-Fri, 9am-4pm" },
 ];
 
+const worshipLinks = [
+  { label: 'Mass Times', href: '/mass-times' },
+  { label: 'Liturgical Calendar', href: '/liturgical-calendar' },
+  { label: 'Livestream Mass', href: '/mass-times?tab=livestream' },
+  { label: 'Homily Archive', href: '/mass-times?tab=homilies' },
+  { label: 'Worship Guides', href: '/mass-times?tab=worship-guides' },
+];
+
 const sacramentLinks = [
   { label: 'Baptism', href: '/sacraments/baptism' },
-  { label: 'Eucharist', href: '/sacraments/eucharist' },
+  { label: 'First Communion', href: '/sacraments/communion' },
   { label: 'Confirmation', href: '/sacraments/confirmation' },
   { label: 'Reconciliation', href: '/sacraments/reconciliation' },
   { label: 'Marriage', href: '/sacraments/marriage' },
@@ -45,7 +54,14 @@ const communityLinks = [
   { label: 'Parish Sections', href: '/community/sections' },
   { label: 'Youth Ministry', href: '/community/youth' },
   { label: 'Photo Gallery', href: '/community/gallery' },
-  { label: 'Parish Executive', href: '/parish-executive' },
+  { label: 'Catholic Schools', href: '/community/schools' },
+];
+
+const faithLinks = [
+  { label: 'Core Faith & Doctrine', href: '/core-faith' },
+  { label: 'Education & Formation', href: '/education-formation' },
+  { label: 'Spiritual Growth', href: '/spiritual-growth' },
+  { label: 'Church Documents', href: '/church-documents' },
 ];
 
 interface FooterLinkProps {
@@ -89,41 +105,40 @@ const Footer = () => {
   
   return (
     <footer className="bg-church-navy text-white pt-16 animate-fade-in">
-      <div className="container-custom ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+      <div className="container-custom">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
           {/* Church Info */}
           <div className="col-span-1 lg:col-span-2">
             
             {/* Contact Us Section */}
-          <div>
-            <h3 className="text-lg font-bold mb-6 text-church-gold">Contact Us</h3>
-            <ul className="space-y-4">
-              {contactDetails.map((item, index) => (
-                <li key={index} className="flex items-center gap-3">
-                  <item.icon className="shrink-0 text-church-gold" size={18} />
-                  {item.link ? (
-                    <a href={item.link} className="text-gray-300 hover:text-white transition-colors">
-                      {item.text}
-                    </a>
-                  ) : (
-                    <span className="text-gray-300">{item.text}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            {/* Social Media Links */}
-            <div className="mt-6">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Follow Us</h4>
-              <div className="flex space-x-3">
-                {socialLinks.map((social, index) => (
-                  <SocialIcon key={index} {...social} />
+            <div>
+              <h3 className="text-lg font-bold mb-6 text-church-gold">Contact Us</h3>
+              <ul className="space-y-4">
+                {contactDetails.map((item, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <item.icon className="shrink-0 text-church-gold" size={18} />
+                    {item.link ? (
+                      <a href={item.link} className="text-gray-300 hover:text-white transition-colors">
+                        {item.text}
+                      </a>
+                    ) : (
+                      <span className="text-gray-300">{item.text}</span>
+                    )}
+                  </li>
                 ))}
+              </ul>
+
+              {/* Social Media Links */}
+              <div className="mt-6">
+                <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Follow Us</h4>
+                <div className="flex space-x-3">
+                  {socialLinks.map((social, index) => (
+                    <SocialIcon key={index} {...social} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          
-        </div>
           
           {/* Quick Links */}
           <div>
@@ -137,15 +152,38 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Sacraments */}
+          {/* Worship */}
           <div>
-            <h3 className="text-lg font-bold mb-6 text-church-gold">Sacraments</h3>
+            <h3 className="text-lg font-bold mb-6 text-church-gold">Worship</h3>
             <ul className="space-y-3">
-              {sacramentLinks.map((link, index) => (
+              {worshipLinks.map((link, index) => (
                 <li key={index}>
                   <FooterLink href={link.href}>{link.label}</FooterLink>
                 </li>
               ))}
+            </ul>
+          </div>
+          
+          {/* Faith & Sacraments */}
+          <div>
+            <h3 className="text-lg font-bold mb-6 text-church-gold">Faith & Sacraments</h3>
+            <ul className="space-y-3">
+              {faithLinks.slice(0, 2).map((link, index) => (
+                <li key={index}>
+                  <FooterLink href={link.href}>{link.label}</FooterLink>
+                </li>
+              ))}
+              <li>
+                <FooterLink href="/sacraments/baptism">Sacraments</FooterLink>
+              </li>
+              {sacramentLinks.slice(0, 3).map((link, index) => (
+                <li key={`sacrament-${index}`} className="ml-4">
+                  <FooterLink href={link.href}>{link.label}</FooterLink>
+                </li>
+              ))}
+              <li>
+                <FooterLink href="/sacraments">View All Sacraments →</FooterLink>
+              </li>
             </ul>
           </div>
           

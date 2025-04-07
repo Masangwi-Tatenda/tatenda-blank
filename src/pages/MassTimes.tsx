@@ -7,7 +7,6 @@ import { Clock, Calendar, MapPin, AlertTriangle, ArrowRight, PlaySquare, FileTex
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Define homily type
 interface Homily {
   id: string;
   title: string;
@@ -19,7 +18,6 @@ interface Homily {
 }
 
 const MassTimes = () => {
-  // Homilies data (in a real app, this would come from an API)
   const [homilies] = useState<Homily[]>([
     {
       id: "1",
@@ -50,7 +48,6 @@ const MassTimes = () => {
     },
   ]);
 
-  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -60,7 +57,6 @@ const MassTimes = () => {
       <Navbar />
       
       <main className="flex-grow page-transition">
-        {/* Hero Section */}
         <section className="relative">
           <div 
             className="h-64 md:h-80 lg:h-96 bg-cover bg-center relative"
@@ -76,7 +72,6 @@ const MassTimes = () => {
           </div>
         </section>
         
-        {/* Tabs Navigation */}
         <section className="py-16">
           <div className="container-custom">
             <Tabs defaultValue="schedule" className="w-full">
@@ -87,7 +82,6 @@ const MassTimes = () => {
                 <TabsTrigger value="worship-guides">Worship Guides</TabsTrigger>
               </TabsList>
               
-              {/* Mass Schedule Tab */}
               <TabsContent value="schedule">
                 <SectionTitle 
                   title="Mass Schedule" 
@@ -95,7 +89,6 @@ const MassTimes = () => {
                 />
                 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Weekday Masses */}
                   <ScheduleCard 
                     title="Weekday Masses"
                     times={[
@@ -108,7 +101,6 @@ const MassTimes = () => {
                     color="bg-church-navy"
                   />
                   
-                  {/* Sunday Masses */}
                   <ScheduleCard 
                     title="Weekend Masses"
                     times={[
@@ -119,7 +111,6 @@ const MassTimes = () => {
                     color="bg-church-burgundy"
                   />
                   
-                  {/* Confession & Adoration */}
                   <ScheduleCard 
                     title="Confession & Adoration"
                     times={[
@@ -131,6 +122,90 @@ const MassTimes = () => {
                     color="bg-church-gold"
                     textColor="text-church-navy"
                   />
+                </div>
+                
+                <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <Card className="shadow-md">
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold text-church-burgundy mb-4">Holy Day Masses</h3>
+                      <p className="text-gray-700 mb-4">
+                        Holy Days of Obligation are special feast days when Catholics are obligated to attend Mass.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex justify-between pb-2 border-b border-gray-200">
+                          <span>Holy Day Vigil</span>
+                          <span className="font-medium">7:00 PM</span>
+                        </li>
+                        <li className="flex justify-between pb-2 border-b border-gray-200">
+                          <span>Holy Day</span>
+                          <span className="font-medium">9:00 AM & 6:30 PM</span>
+                        </li>
+                      </ul>
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <h4 className="font-semibold text-church-burgundy mb-2">Holy Days of Obligation include:</h4>
+                        <ul className="list-disc pl-5 text-gray-700">
+                          <li>Solemnity of Mary, Mother of God (January 1)</li>
+                          <li>The Ascension of the Lord (40 days after Easter)</li>
+                          <li>The Assumption of the Blessed Virgin Mary (August 15)</li>
+                          <li>All Saints Day (November 1)</li>
+                          <li>The Immaculate Conception (December 8)</li>
+                          <li>Christmas (December 25)</li>
+                        </ul>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="shadow-md">
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold text-church-burgundy mb-4">Parish Devotions</h3>
+                      <p className="text-gray-700 mb-4">
+                        In addition to Mass, our parish offers various devotions to help enrich your spiritual life.
+                      </p>
+                      <ul className="space-y-3">
+                        <li className="pb-3 border-b border-gray-200">
+                          <span className="font-semibold text-church-burgundy block">Divine Mercy Chaplet</span>
+                          <span className="text-gray-700">Fridays, 3:00 PM</span>
+                        </li>
+                        <li className="pb-3 border-b border-gray-200">
+                          <span className="font-semibold text-church-burgundy block">Rosary</span>
+                          <span className="text-gray-700">Daily, 6:00 AM before daily Mass</span>
+                          <span className="text-gray-700 block">Sundays, 6:30 AM before 7:00 AM Mass</span>
+                        </li>
+                        <li className="pb-3 border-b border-gray-200">
+                          <span className="font-semibold text-church-burgundy block">Stations of the Cross</span>
+                          <span className="text-gray-700">Fridays during Lent, 6:00 PM</span>
+                        </li>
+                        <li>
+                          <span className="font-semibold text-church-burgundy block">First Friday Devotion</span>
+                          <span className="text-gray-700">First Friday of each month, Adoration all day</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <div className="mt-8 bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-bold text-church-burgundy mb-4">Mass Etiquette & Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-semibold text-church-burgundy mb-2">For Visitors & New Parishioners</h4>
+                      <ul className="space-y-2 text-gray-700">
+                        <li>We welcome visitors! Please feel free to attend any Mass.</li>
+                        <li>Communion is offered to all Catholics who have made their First Communion and are in a state of grace.</li>
+                        <li>Non-Catholics are welcome to come forward for a blessing during Communion (cross arms over chest).</li>
+                        <li>New parishioners are encouraged to register with the parish office after Mass.</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-church-burgundy mb-2">Mass Guidelines</h4>
+                      <ul className="space-y-2 text-gray-700">
+                        <li>Please arrive at least 5-10 minutes before Mass begins.</li>
+                        <li>Appropriate attire is respectful and modest.</li>
+                        <li>Silence cell phones before entering the church.</li>
+                        <li>Parents with young children: quiet toys and books are welcome; a cry room is available if needed.</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="mt-12 bg-gray-100 p-8 rounded-lg">
@@ -146,7 +221,6 @@ const MassTimes = () => {
                 </div>
               </TabsContent>
               
-              {/* Livestream Tab */}
               <TabsContent value="livestream">
                 <SectionTitle 
                   title="Livestream Masses" 
@@ -154,10 +228,8 @@ const MassTimes = () => {
                 />
                 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                  {/* Main Livestream */}
                   <div className="lg:col-span-3 bg-gray-100 rounded-lg overflow-hidden">
                     <div className="aspect-video bg-black flex items-center justify-center">
-                      {/* This would be a YouTube embed in a real implementation */}
                       <div className="text-center p-8">
                         <PlaySquare className="w-16 h-16 text-white/50 mx-auto mb-4" />
                         <p className="text-white/70">YouTube Livestream Embed</p>
@@ -180,7 +252,6 @@ const MassTimes = () => {
                     </div>
                   </div>
                   
-                  {/* Livestream Schedule & Archive */}
                   <div className="lg:col-span-2">
                     <Card className="mb-6">
                       <CardContent className="p-6">
@@ -222,7 +293,6 @@ const MassTimes = () => {
                 </div>
               </TabsContent>
               
-              {/* Homilies Tab */}
               <TabsContent value="homilies">
                 <SectionTitle 
                   title="Homily Archive" 
@@ -280,7 +350,6 @@ const MassTimes = () => {
                 </div>
               </TabsContent>
               
-              {/* Worship Guides Tab */}
               <TabsContent value="worship-guides">
                 <SectionTitle 
                   title="Worship Guides & Resources" 
@@ -288,7 +357,6 @@ const MassTimes = () => {
                 />
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {/* Mass Guide */}
                   <Card className="overflow-hidden">
                     <div className="aspect-video bg-gradient-to-r from-church-burgundy to-church-navy flex items-center justify-center">
                       <FileText className="w-12 h-12 text-white" />
@@ -305,7 +373,6 @@ const MassTimes = () => {
                     </CardContent>
                   </Card>
                   
-                  {/* Seasonal Worship Aids */}
                   <Card className="overflow-hidden">
                     <div className="aspect-video bg-gradient-to-r from-church-gold to-yellow-500 flex items-center justify-center">
                       <Calendar className="w-12 h-12 text-white" />
@@ -322,7 +389,6 @@ const MassTimes = () => {
                     </CardContent>
                   </Card>
                   
-                  {/* Prayer Resources */}
                   <Card className="overflow-hidden">
                     <div className="aspect-video bg-gradient-to-r from-sky-500 to-blue-700 flex items-center justify-center">
                       <Heart className="w-12 h-12 text-white" />
@@ -344,7 +410,6 @@ const MassTimes = () => {
           </div>
         </section>
         
-        {/* Location Section */}
         <section className="py-16 bg-gray-50">
           <div className="container-custom">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -384,7 +449,6 @@ const MassTimes = () => {
   );
 };
 
-// Schedule Card Component
 const ScheduleCard = ({ title, times, color, textColor = "text-white" }) => {
   return (
     <div className={cn("rounded-lg overflow-hidden shadow-lg animate-fade-in", color)}>

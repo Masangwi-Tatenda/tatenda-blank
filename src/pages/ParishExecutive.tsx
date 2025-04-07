@@ -111,43 +111,102 @@ const ParishExecutive = () => {
             />
             
             <div className="mt-12">
-              {/* Clergy Section */}
-              <div className="mb-16">
-                <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Clergy</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-                  {clergy.map((member, index) => (
-                    <ExecutiveCard key={index} member={member} />
-                  ))}
+              {/* Hierarchical Organogram */}
+              <div className="relative">
+                {/* Clergy Section - Top Level */}
+                <div className="relative mb-20">
+                  <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Clergy</h2>
+                  
+                  {/* Center line from Parish Priest to subordinates */}
+                  <div className="absolute left-1/2 top-[calc(100%+1.5rem)] h-10 w-0.5 bg-church-burgundy -translate-x-1/2 z-10"></div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center relative">
+                    {clergy.map((member, index) => (
+                      <div key={index} className={`${index === 0 ? 'md:col-span-2 max-w-xs mx-auto' : ''}`}>
+                        <ExecutiveCard member={member} highlighted={index === 0} />
+                        
+                        {/* Vertical connector from Parish Priest */}
+                        {index === 0 && <div className="absolute left-1/2 bottom-0 h-6 w-0.5 bg-church-burgundy -translate-x-1/2"></div>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Line connecting to the second level */}
+                <div className="absolute top-[calc(16rem+3.5rem)] left-1/2 w-[80%] h-0.5 bg-church-burgundy -translate-x-1/2"></div>
+                
+                {/* Parish Leadership - Second Level */}
+                <div className="mb-20 relative">
+                  <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Parish Leadership</h2>
+                  
+                  {/* Vertical connector to next level */}
+                  <div className="absolute left-1/2 top-[calc(100%+1.5rem)] h-10 w-0.5 bg-church-burgundy -translate-x-1/2 z-10"></div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center relative">
+                    {leadership.map((member, index) => (
+                      <div key={index} className="relative">
+                        <ExecutiveCard member={member} />
+                        
+                        {/* Vertical lines connecting each leadership position to the horizontal line above */}
+                        <div className="absolute top-[-3rem] left-1/2 h-3rem w-0.5 bg-church-burgundy -translate-x-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Line connecting to the third level */}
+                <div className="absolute top-[calc(32rem+5rem)] left-1/2 w-[80%] h-0.5 bg-church-burgundy -translate-x-1/2"></div>
+                
+                {/* Ministry Coordinators - Third Level */}
+                <div className="mb-20 relative">
+                  <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Ministry Coordinators</h2>
+                  
+                  {/* Vertical connector to next level */}
+                  <div className="absolute left-1/2 top-[calc(100%+1.5rem)] h-10 w-0.5 bg-church-burgundy -translate-x-1/2 z-10"></div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center relative">
+                    {ministryCoordinators.map((member, index) => (
+                      <div key={index} className="relative">
+                        <ExecutiveCard member={member} />
+                        
+                        {/* Vertical lines connecting each coordinator to the horizontal line above */}
+                        <div className="absolute top-[-3rem] left-1/2 h-3rem w-0.5 bg-church-burgundy -translate-x-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Line connecting to the fourth level */}
+                <div className="absolute top-[calc(48rem+6.5rem)] left-1/2 w-[50%] h-0.5 bg-church-burgundy -translate-x-1/2"></div>
+                
+                {/* Administrative Staff - Fourth Level */}
+                <div className="relative">
+                  <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Administrative Staff</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+                    {staff.map((member, index) => (
+                      <div key={index} className="relative md:col-start-2">
+                        <ExecutiveCard member={member} />
+                        
+                        {/* Vertical line connecting to horizontal line above */}
+                        <div className="absolute top-[-3rem] left-1/2 h-3rem w-0.5 bg-church-burgundy -translate-x-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               
-              {/* Parish Leadership */}
-              <div className="mb-16">
-                <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Parish Leadership</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-                  {leadership.map((member, index) => (
-                    <ExecutiveCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-              
-              {/* Ministry Coordinators */}
-              <div className="mb-16">
-                <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Ministry Coordinators</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-                  {ministryCoordinators.map((member, index) => (
-                    <ExecutiveCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-              
-              {/* Administrative Staff */}
-              <div>
-                <h2 className="text-2xl font-bold text-church-burgundy mb-6 text-center">Administrative Staff</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-                  {staff.map((member, index) => (
-                    <ExecutiveCard key={index} member={member} />
-                  ))}
+              {/* Legend for organogram */}
+              <div className="mt-16 bg-white p-4 rounded-lg shadow-sm max-w-md mx-auto">
+                <h3 className="text-lg font-bold text-church-burgundy mb-3">Organogram Legend</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 bg-church-burgundy rounded-full"></div>
+                    <span className="text-sm text-gray-700">Direct reporting relationship</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-0.5 bg-church-burgundy"></div>
+                    <span className="text-sm text-gray-700">Hierarchical relationship</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -183,12 +242,12 @@ const ParishExecutive = () => {
 };
 
 // Executive Member Card Component
-const ExecutiveCard = ({ member }) => {
+const ExecutiveCard = ({ member, highlighted = false }) => {
   return (
-    <Card className="w-full max-w-xs hover:shadow-lg transition-shadow duration-300">
+    <Card className={`w-full max-w-xs hover:shadow-lg transition-shadow duration-300 ${highlighted ? 'ring-2 ring-church-gold' : ''}`}>
       <CardContent className="p-6 text-center">
         <div className="mb-4 flex justify-center">
-          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-church-gold/20">
+          <div className={`w-24 h-24 rounded-full overflow-hidden ${highlighted ? 'border-4 border-church-gold' : 'border-4 border-church-gold/20'}`}>
             <img 
               src={member.image} 
               alt={member.name} 
