@@ -48,7 +48,7 @@ const SaintsCalendar = () => {
         name: 'St. Francis of Assisi',
         lifeYears: '1181-1226',
         region: 'Europe',
-        description: 'Founder of the Franciscan Order, known for his love of nature and animals. His devotion to God was expressed through his love for all of God's creation.',
+        description: "Founder of the Franciscan Order, known for his love of nature and animals. His devotion to God was expressed through his love for all of God's creation.",
         imageUrl: 'https://source.unsplash.com/photo-1582562124811-c09040d0a901' // Placeholder image
       },
       {
