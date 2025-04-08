@@ -12,8 +12,8 @@ interface GoogleMapProps {
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
   address = "Tangwena Road, opposite Jongwe Tarven, Chikonohono",
-  latitude = -17.369838, // Default latitude for the church location
-  longitude = 30.193918, // Default longitude for the church location
+  latitude = -17.384749145105975,
+  longitude = 30.188090713966485,
   zoom = 15,
   height = "400px",
   className = "",

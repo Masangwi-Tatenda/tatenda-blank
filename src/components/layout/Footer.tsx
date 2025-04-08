@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube, Globe, Clock } from 'lucide-react';
@@ -34,19 +33,20 @@ const contactDetails = [
 const worshipLinks = [
   { label: 'Mass Times', href: '/mass-times' },
   { label: 'Liturgical Calendar', href: '/liturgical-calendar' },
-  { label: 'Livestream Mass', href: '/mass-times?tab=livestream' },
-  { label: 'Homily Archive', href: '/mass-times?tab=homilies' },
+  { label: 'Mass Recordings', href: '/mass-recordings' },
+  { label: 'Homilies', href: '/homilies' },
   { label: 'Worship Guides', href: '/mass-times?tab=worship-guides' },
 ];
 
-const sacramentLinks = [
-  { label: 'Baptism', href: '/sacraments/baptism' },
-  { label: 'First Communion', href: '/sacraments/communion' },
-  { label: 'Confirmation', href: '/sacraments/confirmation' },
-  { label: 'Reconciliation', href: '/sacraments/reconciliation' },
-  { label: 'Marriage', href: '/sacraments/marriage' },
-  { label: 'Holy Orders', href: '/sacraments/holy-orders' },
-  { label: 'Anointing of the Sick', href: '/sacraments/anointing' },
+const faithLinks = [
+  { label: 'Core Faith & Doctrine', href: '/core-faith' },
+  { label: 'Education & Formation', href: '/education-formation' },
+  { label: 'Spiritual Growth', href: '/spiritual-growth' },
+  { label: 'Church Documents', href: '/church-documents' },
+  { label: 'Prayers & Novenas', href: '/prayers-novenas' },
+  { label: 'Bible Study', href: '/bible-study' },
+  { label: 'Daily Readings', href: '/daily-readings' },
+  { label: 'Saints Calendar', href: '/saints-calendar' },
 ];
 
 const communityLinks = [
@@ -55,13 +55,6 @@ const communityLinks = [
   { label: 'Youth Ministry', href: '/community/youth' },
   { label: 'Photo Gallery', href: '/community/gallery' },
   { label: 'Catholic Schools', href: '/community/schools' },
-];
-
-const faithLinks = [
-  { label: 'Core Faith & Doctrine', href: '/core-faith' },
-  { label: 'Education & Formation', href: '/education-formation' },
-  { label: 'Spiritual Growth', href: '/spiritual-growth' },
-  { label: 'Church Documents', href: '/church-documents' },
 ];
 
 interface FooterLinkProps {
@@ -166,23 +159,15 @@ const Footer = () => {
           
           {/* Faith & Sacraments */}
           <div>
-            <h3 className="text-lg font-bold mb-6 text-church-gold">Faith & Sacraments</h3>
+            <h3 className="text-lg font-bold mb-6 text-church-gold">Faith & Formation</h3>
             <ul className="space-y-3">
-              {faithLinks.slice(0, 2).map((link, index) => (
+              {faithLinks.slice(0, 4).map((link, index) => (
                 <li key={index}>
                   <FooterLink href={link.href}>{link.label}</FooterLink>
                 </li>
               ))}
               <li>
-                <FooterLink href="/sacraments/baptism">Sacraments</FooterLink>
-              </li>
-              {sacramentLinks.slice(0, 3).map((link, index) => (
-                <li key={`sacrament-${index}`} className="ml-4">
-                  <FooterLink href={link.href}>{link.label}</FooterLink>
-                </li>
-              ))}
-              <li>
-                <FooterLink href="/sacraments">View All Sacraments →</FooterLink>
+                <FooterLink href="/sacraments/baptism">Sacraments →</FooterLink>
               </li>
             </ul>
           </div>

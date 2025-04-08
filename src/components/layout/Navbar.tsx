@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Church, Menu } from "lucide-react";
@@ -189,12 +190,18 @@ const Navbar = () => {
     { isDropdown: true, label: "Worship", children: [
       { to: "/mass-times", label: "Mass Times" },
       { to: "/liturgical-calendar", label: "Liturgical Calendar" },
+      { to: "/mass-recordings", label: "Mass Recordings" },
+      { to: "/homilies", label: "Homilies" },
     ]},
     { isDropdown: true, label: "Faith", children: [
       { to: "/core-faith", label: "Core Faith & Doctrine" },
       { to: "/education-formation", label: "Education & Formation" },
       { to: "/spiritual-growth", label: "Spiritual Growth" },
       { to: "/church-documents", label: "Church Documents" },
+      { to: "/prayers-novenas", label: "Prayers & Novenas" },
+      { to: "/bible-study", label: "Bible Study" },
+      { to: "/daily-readings", label: "Daily Readings" },
+      { to: "/saints-calendar", label: "Saints Calendar" },
     ]},
     { isDropdown: true, label: "Sacraments", children: [
       { to: "/sacraments/baptism", label: "Baptism" },
@@ -204,6 +211,13 @@ const Navbar = () => {
       { to: "/sacraments/reconciliation", label: "Reconciliation" },
       { to: "/sacraments/anointing", label: "Anointing of the Sick" },
       { to: "/sacraments/holy-orders", label: "Holy Orders" },
+    ]},
+    { isDropdown: true, label: "Community", children: [
+      { to: "/community/guilds", label: "Catholic Guilds" },
+      { to: "/community/sections", label: "Parish Sections" },
+      { to: "/community/youth", label: "Youth Ministry" },
+      { to: "/community/gallery", label: "Photo Gallery" },
+      { to: "/community/schools", label: "Catholic Schools" },
     ]},
     { to: "/contact", label: "Contact" },
   ];
