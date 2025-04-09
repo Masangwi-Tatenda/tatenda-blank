@@ -45,7 +45,6 @@ import CatholicGuilds from "./pages/community/CatholicGuilds";
 import ParishSections from "./pages/community/ParishSections";
 import YouthMinistry from "./pages/community/YouthMinistry";
 import PhotoGallery from "./pages/community/PhotoGallery";
-import CatholicSchools from "./pages/community/CatholicSchools";
 
 // Parish leadership
 import ParishExecutive from "./pages/ParishExecutive";
@@ -103,9 +102,9 @@ const App = () => {
               <Route path="/saints-calendar" element={<SaintsCalendar />} />
               <Route path="/rcia" element={<RCIA />} />
               
-              {/* Worship Routes */}
-              <Route path="/mass-times" element={<MassTimes />} />
+              {/* Liturgical Calendar Routes */}
               <Route path="/liturgical-calendar" element={<LiturgicalCalendar />} />
+              <Route path="/mass-times" element={<MassTimes />} />
               <Route path="/mass-recordings" element={<MassRecordings />} />
               <Route path="/homilies" element={<Homilies />} />
               
@@ -137,7 +136,6 @@ const App = () => {
               <Route path="/community/sections" element={<ParishSections />} />
               <Route path="/community/youth" element={<YouthMinistry />} />
               <Route path="/community/gallery" element={<PhotoGallery />} />
-              <Route path="/community/schools" element={<CatholicSchools />} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

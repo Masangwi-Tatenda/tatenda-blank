@@ -54,8 +54,8 @@ const NavLink: React.FC<NavLinkProps> = ({
 
       <div
         className={cn(
-          "absolute left-0 mt-2 w-48 rounded-lg shadow-lg py-1 bg-white z-50 transition-all duration-300 overflow-hidden",
-          isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+          "absolute left-0 mt-2 w-56 rounded-lg shadow-xl py-2 bg-white z-50 transition-all duration-300 overflow-hidden backdrop-blur-sm bg-white/95 border border-gray-100",
+          isOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-2 invisible scale-95"
         )}
       >
         {children}
@@ -174,6 +174,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,19 +185,39 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Updated navigation items based on the new structure
+  // Add loading state change on navigation
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
+  // Updated navigation items with shorter names and reorganized structure
   const mainNavItems = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
-    { isDropdown: true, label: "Events & Calendar", children: [
+    { isDropdown: true, label: "Parish Life", children: [
       { to: "/parish-calendar", label: "Parish Calendar" },
-      { to: "/community/youth", label: "Youth & Young Adult Programs" },
       { to: "/events", label: "Upcoming Events" },
       { to: "/bulletins", label: "Bulletins & Newsletters" },
-    ]},
-    { isDropdown: true, label: "Worship", children: [
-      { to: "/mass-times", label: "Mass Times" },
       { to: "/liturgical-calendar", label: "Liturgical Calendar" },
+      { to: "/saints-calendar", label: "Saints Calendar" },
+    ]},
+    { isDropdown: true, label: "Faith", children: [
+      { to: "/core-faith", label: "Core Faith & Doctrine" },
+      { to: "/education-formation", label: "Catechesis" },
+      { to: "/rcia", label: "RCIA" },
+      { to: "/bible-study", label: "Bible Studies" },
+      { to: "/spiritual-growth", label: "Spiritual Growth" },
+      { to: "/prayers-novenas", label: "Prayers & Novenas" },
+    ]},
+    { isDropdown: true, label: "Resources", children: [
+      { to: "/church-documents", label: "Church Documents" },
+      { to: "/apologetics", label: "Apologetics" },
+      { to: "/daily-readings", label: "Daily Readings" },
+      { to: "/previous-readings", label: "Reading Archives" },
       { to: "/sacraments/baptism", label: "Baptism" },
       { to: "/sacraments/communion", label: "First Communion" },
       { to: "/sacraments/confirmation", label: "Confirmation" },
@@ -205,22 +226,8 @@ const Navbar = () => {
       { to: "/sacraments/anointing", label: "Anointing of the Sick" },
       { to: "/sacraments/holy-orders", label: "Holy Orders" },
     ]},
-    { isDropdown: true, label: "Faith & Formation", children: [
-      { to: "/core-faith", label: "Core Faith & Doctrine" },
-      { to: "/education-formation", label: "Catechesis" },
-      { to: "/rcia", label: "RCIA" },
-      { to: "/bible-study", label: "Bible Studies" },
-      { to: "/spiritual-growth", label: "Spiritual Growth" },
-      { to: "/prayers-novenas", label: "Prayers & Novenas" },
-    ]},
-    { isDropdown: true, label: "Teachings & Resources", children: [
-      { to: "/church-documents", label: "Church Documents" },
-      { to: "/apologetics", label: "Apologetics" },
-      { to: "/daily-readings", label: "Daily Readings" },
-      { to: "/previous-readings", label: "Reading Archives" },
-      { to: "/saints-calendar", label: "Saints Calendar" },
-    ]},
-    { isDropdown: true, label: "Media Hub", children: [
+    { isDropdown: true, label: "Media", children: [
+      { to: "/mass-times", label: "Mass Times" },
       { to: "/mass-recordings", label: "Mass Recordings" },
       { to: "/homilies", label: "Homilies" },
       { to: "/community/gallery", label: "Photo Gallery" },
@@ -230,111 +237,125 @@ const Navbar = () => {
       { to: "/community/guilds", label: "Catholic Guilds" },
       { to: "/community/sections", label: "Parish Sections" },
       { to: "/parish-executive", label: "Parish Leadership" },
-      { to: "/community/schools", label: "Catholic Schools" },
-      { to: "/ministries", label: "Ministries Overview" },
-      { to: "/volunteer", label: "Volunteer Opportunities" },
-      { to: "/new-parishioner", label: "New Parishioner Info" },
+      { to: "/ministries", label: "Ministries" },
+      { to: "/volunteer", label: "Volunteer" },
+      { to: "/community/youth", label: "Youth & Young Adults" },
+      { to: "/new-parishioner", label: "New Parishioner" },
     ]},
     { to: "/contact", label: "Contact" },
   ];
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled ? "py-2 bg-church-burgundy/90 backdrop-blur-lg shadow-md" : 
-          isHomePage ? "py-4 bg-transparent" : "py-3 bg-church-burgundy/90"
-      )}
-    >
-      <div className="container-custom mx-auto">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-white/20">
-              <Church size={24} className="text-white group-hover:text-church-gold transition-colors duration-300" />
+    <>
+      {/* Loading animation overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-church-burgundy/90 z-[100] flex items-center justify-center pointer-events-none">
+          <div className="w-16 h-16 relative">
+            <div className="w-16 h-16 rounded-full border-4 border-church-gold/30 border-t-church-gold animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Church size={24} className="text-church-gold animate-pulse" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">Musha WeBetania</h1>
-              <p className="text-xs font-medium text-white/80">Roman Catholic Parish</p>
-            </div>
-          </Link>
-
-          <nav className="hidden lg:flex items-center space-x-1">
-            {mainNavItems.map((item, index) => 
-              item.isDropdown ? (
-                <NavLink key={item.label} isDropdown={true} label={item.label}>
-                  {item.children.map(child => (
-                    <DropdownItem key={child.to} to={child.to} label={child.label} />
-                  ))}
-                </NavLink>
-              ) : (
-                <NavLink key={item.label} to={item.to} label={item.label} />
-              )
-            )}
-          </nav>
-
-          <div className="hidden lg:block">
-            <Button
-              variant="glass"
-              href="/donate"
-              className="bg-white/10 text-white border-white/20 hover:bg-white/20"
-            >
-              Donate
-            </Button>
           </div>
-
-          <Sheet>
-            <SheetTrigger asChild>
-              <button
-                className="lg:hidden p-2 text-white rounded-full hover:bg-white/10 transition-colors duration-300"
-              >
-                <Menu size={24} />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-80 bg-church-burgundy border-church-burgundy p-0">
-              <div className="flex flex-col h-full">
-                <div className="p-4 border-b border-white/10">
-                  <Link to="/" className="flex items-center gap-2 group">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                      <Church size={20} className="text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-white">Musha WeBetania</h2>
-                      <p className="text-xs text-white/80">Roman Catholic Parish</p>
-                    </div>
-                  </Link>
-                </div>
-                
-                <div className="flex-1 overflow-y-auto py-2">
-                  <nav className="flex flex-col">
-                    {mainNavItems.map((item, index) => 
-                      item.isDropdown ? (
-                        <MobileNavLink key={item.label} isDropdown={true} label={item.label}>
-                          {item.children.map(child => (
-                            <MobileDropdownItem key={child.to} to={child.to} label={child.label} />
-                          ))}
-                        </MobileNavLink>
-                      ) : (
-                        <MobileNavLink key={item.label} to={item.to} label={item.label} />
-                      )
-                    )}
-                  </nav>
-                </div>
-                
-                <div className="p-4 border-t border-white/10">
-                  <Button
-                    variant="glass"
-                    href="/donate"
-                    className="w-full bg-white/10 text-white border-white/20 hover:bg-white/20"
-                  >
-                    Donate
-                  </Button>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
         </div>
-      </div>
-    </header>
+      )}
+      
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          isScrolled ? "py-2 bg-church-burgundy/90 backdrop-blur-lg shadow-md" : 
+            isHomePage ? "py-4 bg-transparent" : "py-3 bg-church-burgundy/90"
+        )}
+      >
+        <div className="container-custom mx-auto">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-white/20">
+                <Church size={24} className="text-white group-hover:text-church-gold transition-colors duration-300" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Musha WeBetania</h1>
+                <p className="text-xs font-medium text-white/80">Roman Catholic Parish</p>
+              </div>
+            </Link>
+
+            <nav className="hidden lg:flex items-center space-x-1">
+              {mainNavItems.map((item, index) => 
+                item.isDropdown ? (
+                  <NavLink key={item.label} isDropdown={true} label={item.label}>
+                    {item.children.map(child => (
+                      <DropdownItem key={child.to} to={child.to} label={child.label} />
+                    ))}
+                  </NavLink>
+                ) : (
+                  <NavLink key={item.label} to={item.to} label={item.label} />
+                )
+              )}
+            </nav>
+
+            <div className="hidden lg:block">
+              <Button
+                variant="glass"
+                href="/donate"
+                className="bg-white/10 text-white border-white/20 hover:bg-white/20"
+              >
+                Donate
+              </Button>
+            </div>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <button
+                  className="lg:hidden p-2 text-white rounded-full hover:bg-white/10 transition-colors duration-300"
+                >
+                  <Menu size={24} />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 bg-church-burgundy border-church-burgundy p-0">
+                <div className="flex flex-col h-full">
+                  <div className="p-4 border-b border-white/10">
+                    <Link to="/" className="flex items-center gap-2 group">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                        <Church size={20} className="text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-bold text-white">Musha WeBetania</h2>
+                        <p className="text-xs text-white/80">Roman Catholic Parish</p>
+                      </div>
+                    </Link>
+                  </div>
+                  
+                  <div className="flex-1 overflow-y-auto py-2">
+                    <nav className="flex flex-col">
+                      {mainNavItems.map((item, index) => 
+                        item.isDropdown ? (
+                          <MobileNavLink key={item.label} isDropdown={true} label={item.label}>
+                            {item.children.map(child => (
+                              <MobileDropdownItem key={child.to} to={child.to} label={child.label} />
+                            ))}
+                          </MobileNavLink>
+                        ) : (
+                          <MobileNavLink key={item.label} to={item.to} label={item.label} />
+                        )
+                      )}
+                    </nav>
+                  </div>
+                  
+                  <div className="p-4 border-t border-white/10">
+                    <Button
+                      variant="glass"
+                      href="/donate"
+                      className="w-full bg-white/10 text-white border-white/20 hover:bg-white/20"
+                    >
+                      Donate
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+    </>
   );
 };
 
