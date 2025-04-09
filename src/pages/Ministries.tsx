@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -8,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { UserCircle2, Heart, Users, Book, Music, HandHeart, Star, PrayingHands, Search, Info, ChevronRight } from 'lucide-react';
+import { UserCircle2, Heart, Users, Book, Music, HandHeart, Star, Bookmark, Search, Info, ChevronRight } from 'lucide-react';
 
 // Sample ministry data
 const ministries = [
@@ -129,7 +128,7 @@ const Ministries = () => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Worship':
-        return <PrayingHands className="h-5 w-5" />;
+        return <Bookmark className="h-5 w-5" />;
       case 'Education':
         return <Book className="h-5 w-5" />;
       case 'Outreach':
