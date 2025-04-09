@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube, Globe, Clock } from 'lucide-react';
+import { Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube, Globe, Clock, Church, Heart, Calendar, Book, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import GoogleMap from '@/components/common/GoogleMap';
 
@@ -14,10 +15,10 @@ const socialLinks = [
 const quickLinks = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-  { label: 'Worship', href: '/mass-times' },
+  { label: 'Parish Calendar', href: '/parish-calendar' },
   { label: 'Events', href: '/events' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Parish Executive', href: '/parish-executive' },
+  { label: 'Parish Leadership', href: '/parish-executive' },
   { label: 'Donate', href: '/donate' },
   { label: 'Contact Us', href: '/contact' },
 ];
@@ -35,26 +36,27 @@ const worshipLinks = [
   { label: 'Liturgical Calendar', href: '/liturgical-calendar' },
   { label: 'Mass Recordings', href: '/mass-recordings' },
   { label: 'Homilies', href: '/homilies' },
-  { label: 'Worship Guides', href: '/mass-times?tab=worship-guides' },
+  { label: 'Daily Readings', href: '/daily-readings' },
 ];
 
 const faithLinks = [
   { label: 'Core Faith & Doctrine', href: '/core-faith' },
-  { label: 'Education & Formation', href: '/education-formation' },
+  { label: 'Catechesis', href: '/education-formation' },
+  { label: 'RCIA', href: '/rcia' },
   { label: 'Spiritual Growth', href: '/spiritual-growth' },
-  { label: 'Church Documents', href: '/church-documents' },
   { label: 'Prayers & Novenas', href: '/prayers-novenas' },
   { label: 'Bible Study', href: '/bible-study' },
-  { label: 'Daily Readings', href: '/daily-readings' },
+  { label: 'Apologetics', href: '/apologetics' },
   { label: 'Saints Calendar', href: '/saints-calendar' },
 ];
 
 const communityLinks = [
   { label: 'Catholic Guilds', href: '/community/guilds' },
   { label: 'Parish Sections', href: '/community/sections' },
-  { label: 'Youth Ministry', href: '/community/youth' },
+  { label: 'Youth & Young Adults', href: '/community/youth' },
   { label: 'Photo Gallery', href: '/community/gallery' },
-  { label: 'Catholic Schools', href: '/community/schools' },
+  { label: 'Ministries', href: '/ministries' },
+  { label: 'Volunteer', href: '/volunteer' },
 ];
 
 interface FooterLinkProps {
@@ -97,11 +99,21 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-church-navy text-white pt-16 animate-fade-in">
+    <footer className="bg-church-navy text-white pt-16">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
           {/* Church Info */}
           <div className="col-span-1 lg:col-span-2">
+            {/* Parish Logo */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-full bg-church-burgundy/20 flex items-center justify-center">
+                <Church size={24} className="text-church-gold" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white">Musha WeBetania</h3>
+                <p className="text-xs text-white/70">Roman Catholic Parish</p>
+              </div>
+            </div>
             
             {/* Contact Us Section */}
             <div>
@@ -147,7 +159,7 @@ const Footer = () => {
           
           {/* Worship */}
           <div>
-            <h3 className="text-lg font-bold mb-6 text-church-gold">Worship</h3>
+            <h3 className="text-lg font-bold mb-6 text-church-gold">Worship & Prayer</h3>
             <ul className="space-y-3">
               {worshipLinks.map((link, index) => (
                 <li key={index}>
@@ -161,7 +173,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-6 text-church-gold">Faith & Formation</h3>
             <ul className="space-y-3">
-              {faithLinks.slice(0, 4).map((link, index) => (
+              {faithLinks.slice(0, 5).map((link, index) => (
                 <li key={index}>
                   <FooterLink href={link.href}>{link.label}</FooterLink>
                 </li>

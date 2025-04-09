@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Church, Menu } from "lucide-react";
@@ -184,7 +183,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Updated navigation items with shorter names and reorganized structure
   const mainNavItems = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
@@ -210,7 +208,6 @@ const Navbar = () => {
       { to: "/previous-readings", label: "Reading Archives" },
     ]},
     { isDropdown: true, label: "Media", children: [
-      { to: "/mass-times", label: "Mass Times" },
       { to: "/mass-recordings", label: "Mass Recordings" },
       { to: "/homilies", label: "Homilies" },
       { to: "/community/gallery", label: "Photo Gallery" },
