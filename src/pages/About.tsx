@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 import SectionTitle from '@/components/common/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Church, Phone, Mail, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const AboutPage = () => {
@@ -164,14 +164,115 @@ const AboutPage = () => {
               />
             </div>
             
-            {/* Parish Executive Link - New Addition */}
-            <div className="mt-12 text-center">
-              <p className="text-gray-700 mb-6">
-                Want to learn more about our parish leadership structure and organization?
-              </p>
+            {/* Parish Organogram - New Addition */}
+            <div className="mt-16">
+              <h3 className="text-2xl font-bold text-church-burgundy text-center mb-8">Parish Leadership Structure</h3>
+              
+              <div className="max-w-5xl mx-auto">
+                {/* Parish Priest Level */}
+                <div className="flex justify-center mb-10">
+                  <div className="relative">
+                    <div className="w-36 bg-church-burgundy text-white p-4 rounded-lg shadow-lg text-center flex flex-col items-center z-10 transform transition-transform hover:scale-105">
+                      <div className="w-20 h-20 rounded-full bg-white/10 border-2 border-white flex items-center justify-center mb-2">
+                        <Church className="text-white h-10 w-10" />
+                      </div>
+                      <div className="text-sm font-semibold">Parish Priest</div>
+                      <div className="text-xs mt-1">Fr. John Doe</div>
+                    </div>
+                    <div className="absolute left-1/2 bottom-0 w-0.5 h-8 bg-church-burgundy/60 transform translate-y-full -translate-x-1/2"></div>
+                  </div>
+                </div>
+                
+                {/* Assistant Priest & Deacon Level */}
+                <div className="flex justify-center gap-16 mb-10 relative">
+                  <div className="absolute left-1/4 right-1/4 top-0 h-0.5 bg-church-burgundy/60"></div>
+                  
+                  <div className="relative">
+                    <div className="w-32 bg-church-gold/90 text-church-burgundy p-3 rounded-lg shadow-lg text-center flex flex-col items-center transform transition-transform hover:scale-105">
+                      <div className="text-sm font-semibold">Assistant Priest</div>
+                      <div className="text-xs mt-1">Fr. Michael Smith</div>
+                    </div>
+                    <div className="absolute left-1/2 bottom-0 w-0.5 h-8 bg-church-burgundy/60 transform translate-y-full -translate-x-1/2"></div>
+                  </div>
+                  
+                  <div className="relative">
+                    <div className="w-32 bg-church-gold/90 text-church-burgundy p-3 rounded-lg shadow-lg text-center flex flex-col items-center transform transition-transform hover:scale-105">
+                      <div className="text-sm font-semibold">Deacon</div>
+                      <div className="text-xs mt-1">Dcn. Peter Moyo</div>
+                    </div>
+                    <div className="absolute left-1/2 bottom-0 w-0.5 h-8 bg-church-burgundy/60 transform translate-y-full -translate-x-1/2"></div>
+                  </div>
+                </div>
+                
+                {/* Parish Council Leadership Level */}
+                <div className="flex justify-center gap-8 mb-10 relative">
+                  <div className="absolute left-[15%] right-[15%] top-0 h-0.5 bg-church-burgundy/60"></div>
+                  
+                  <div className="relative">
+                    <div className="w-28 bg-white border border-church-burgundy p-2 rounded-lg shadow-md text-center flex flex-col items-center transform transition-transform hover:scale-105">
+                      <div className="text-xs font-semibold text-church-burgundy">Council Chair</div>
+                      <div className="text-xs mt-1 text-gray-700">J. Takawira</div>
+                    </div>
+                    <div className="absolute left-1/2 bottom-0 w-0.5 h-6 bg-church-burgundy/40 transform translate-y-full -translate-x-1/2"></div>
+                  </div>
+                  
+                  <div className="relative">
+                    <div className="w-28 bg-white border border-church-burgundy p-2 rounded-lg shadow-md text-center flex flex-col items-center transform transition-transform hover:scale-105">
+                      <div className="text-xs font-semibold text-church-burgundy">Vice Chair</div>
+                      <div className="text-xs mt-1 text-gray-700">G. Mutema</div>
+                    </div>
+                    <div className="absolute left-1/2 bottom-0 w-0.5 h-6 bg-church-burgundy/40 transform translate-y-full -translate-x-1/2"></div>
+                  </div>
+                  
+                  <div className="relative">
+                    <div className="w-28 bg-white border border-church-burgundy p-2 rounded-lg shadow-md text-center flex flex-col items-center transform transition-transform hover:scale-105">
+                      <div className="text-xs font-semibold text-church-burgundy">Secretary</div>
+                      <div className="text-xs mt-1 text-gray-700">F. Chideme</div>
+                    </div>
+                    <div className="absolute left-1/2 bottom-0 w-0.5 h-6 bg-church-burgundy/40 transform translate-y-full -translate-x-1/2"></div>
+                  </div>
+                </div>
+                
+                {/* Committee Heads Level */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto relative">
+                  <div className="absolute left-[10%] right-[10%] top-0 h-0.5 bg-church-burgundy/40"></div>
+                  
+                  <div className="w-full bg-white border border-church-burgundy/30 p-2 rounded-lg shadow-sm text-center transform transition-transform hover:scale-105">
+                    <div className="text-xs font-semibold text-church-burgundy">Finance Committee</div>
+                    <div className="text-xs mt-1 text-gray-700">F. Mukonoweshuro</div>
+                  </div>
+                  
+                  <div className="w-full bg-white border border-church-burgundy/30 p-2 rounded-lg shadow-sm text-center transform transition-transform hover:scale-105">
+                    <div className="text-xs font-semibold text-church-burgundy">Liturgy Committee</div>
+                    <div className="text-xs mt-1 text-gray-700">P. Zambezi</div>
+                  </div>
+                  
+                  <div className="w-full bg-white border border-church-burgundy/30 p-2 rounded-lg shadow-sm text-center transform transition-transform hover:scale-105">
+                    <div className="text-xs font-semibold text-church-burgundy">Formation</div>
+                    <div className="text-xs mt-1 text-gray-700">R. Madzima</div>
+                  </div>
+                  
+                  <div className="w-full bg-white border border-church-burgundy/30 p-2 rounded-lg shadow-sm text-center transform transition-transform hover:scale-105">
+                    <div className="text-xs font-semibold text-church-burgundy">Outreach</div>
+                    <div className="text-xs mt-1 text-gray-700">C. Gono</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-12 max-w-2xl mx-auto">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    Our parish is led by the Parish Priest, assisted by the Assistant Priest and Deacon. The Parish Council, comprised of elected lay representatives, works closely with the clergy to oversee parish life and activities. Various committees focus on specific aspects of parish life including finances, liturgy, faith formation, and community outreach.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Link to Parish Executive page for more detailed information */}
+            <div className="mt-8 text-center">
               <Button asChild>
                 <Link to="/parish-executive" className="inline-flex items-center">
-                  View Parish Executive Organogram
+                  View Detailed Parish Leadership Structure
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

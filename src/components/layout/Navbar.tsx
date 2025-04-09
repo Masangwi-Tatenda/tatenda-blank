@@ -174,7 +174,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,15 +183,6 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Add loading state change on navigation
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
 
   // Updated navigation items with shorter names and reorganized structure
   const mainNavItems = [
@@ -218,13 +208,6 @@ const Navbar = () => {
       { to: "/apologetics", label: "Apologetics" },
       { to: "/daily-readings", label: "Daily Readings" },
       { to: "/previous-readings", label: "Reading Archives" },
-      { to: "/sacraments/baptism", label: "Baptism" },
-      { to: "/sacraments/communion", label: "First Communion" },
-      { to: "/sacraments/confirmation", label: "Confirmation" },
-      { to: "/sacraments/marriage", label: "Marriage" },
-      { to: "/sacraments/reconciliation", label: "Reconciliation" },
-      { to: "/sacraments/anointing", label: "Anointing of the Sick" },
-      { to: "/sacraments/holy-orders", label: "Holy Orders" },
     ]},
     { isDropdown: true, label: "Media", children: [
       { to: "/mass-times", label: "Mass Times" },
@@ -247,18 +230,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Loading animation overlay */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-church-burgundy/90 z-[100] flex items-center justify-center pointer-events-none">
-          <div className="w-16 h-16 relative">
-            <div className="w-16 h-16 rounded-full border-4 border-church-gold/30 border-t-church-gold animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Church size={24} className="text-church-gold animate-pulse" />
-            </div>
-          </div>
-        </div>
-      )}
-      
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
