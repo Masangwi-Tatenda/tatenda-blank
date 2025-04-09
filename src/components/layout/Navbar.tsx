@@ -184,26 +184,19 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Updated navigation items based on the new structure
   const mainNavItems = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
+    { isDropdown: true, label: "Events & Calendar", children: [
+      { to: "/parish-calendar", label: "Parish Calendar" },
+      { to: "/community/youth", label: "Youth & Young Adult Programs" },
+      { to: "/events", label: "Upcoming Events" },
+      { to: "/bulletins", label: "Bulletins & Newsletters" },
+    ]},
     { isDropdown: true, label: "Worship", children: [
       { to: "/mass-times", label: "Mass Times" },
       { to: "/liturgical-calendar", label: "Liturgical Calendar" },
-      { to: "/mass-recordings", label: "Mass Recordings" },
-      { to: "/homilies", label: "Homilies" },
-    ]},
-    { isDropdown: true, label: "Faith", children: [
-      { to: "/core-faith", label: "Core Faith & Doctrine" },
-      { to: "/education-formation", label: "Education & Formation" },
-      { to: "/spiritual-growth", label: "Spiritual Growth" },
-      { to: "/church-documents", label: "Church Documents" },
-      { to: "/prayers-novenas", label: "Prayers & Novenas" },
-      { to: "/bible-study", label: "Bible Study" },
-      { to: "/daily-readings", label: "Daily Readings" },
-      { to: "/saints-calendar", label: "Saints Calendar" },
-    ]},
-    { isDropdown: true, label: "Sacraments", children: [
       { to: "/sacraments/baptism", label: "Baptism" },
       { to: "/sacraments/communion", label: "First Communion" },
       { to: "/sacraments/confirmation", label: "Confirmation" },
@@ -212,12 +205,35 @@ const Navbar = () => {
       { to: "/sacraments/anointing", label: "Anointing of the Sick" },
       { to: "/sacraments/holy-orders", label: "Holy Orders" },
     ]},
+    { isDropdown: true, label: "Faith & Formation", children: [
+      { to: "/core-faith", label: "Core Faith & Doctrine" },
+      { to: "/education-formation", label: "Catechesis" },
+      { to: "/rcia", label: "RCIA" },
+      { to: "/bible-study", label: "Bible Studies" },
+      { to: "/spiritual-growth", label: "Spiritual Growth" },
+      { to: "/prayers-novenas", label: "Prayers & Novenas" },
+    ]},
+    { isDropdown: true, label: "Teachings & Resources", children: [
+      { to: "/church-documents", label: "Church Documents" },
+      { to: "/apologetics", label: "Apologetics" },
+      { to: "/daily-readings", label: "Daily Readings" },
+      { to: "/previous-readings", label: "Reading Archives" },
+      { to: "/saints-calendar", label: "Saints Calendar" },
+    ]},
+    { isDropdown: true, label: "Media Hub", children: [
+      { to: "/mass-recordings", label: "Mass Recordings" },
+      { to: "/homilies", label: "Homilies" },
+      { to: "/community/gallery", label: "Photo Gallery" },
+      { to: "/blog", label: "Parish Blog" },
+    ]},
     { isDropdown: true, label: "Community", children: [
       { to: "/community/guilds", label: "Catholic Guilds" },
       { to: "/community/sections", label: "Parish Sections" },
-      { to: "/community/youth", label: "Youth Ministry" },
-      { to: "/community/gallery", label: "Photo Gallery" },
+      { to: "/parish-executive", label: "Parish Leadership" },
       { to: "/community/schools", label: "Catholic Schools" },
+      { to: "/ministries", label: "Ministries Overview" },
+      { to: "/volunteer", label: "Volunteer Opportunities" },
+      { to: "/new-parishioner", label: "New Parishioner Info" },
     ]},
     { to: "/contact", label: "Contact" },
   ];

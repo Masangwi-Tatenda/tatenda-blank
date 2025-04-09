@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -57,6 +58,14 @@ import Homilies from "./pages/Homilies";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 
+// New reorganized pages
+import RCIA from "./pages/RCIA";
+import ParishCalendar from "./pages/ParishCalendar";
+import Bulletins from "./pages/Bulletins";
+import Ministries from "./pages/Ministries";
+import Volunteer from "./pages/Volunteer";
+import NewParishioner from "./pages/NewParishioner";
+
 // Create a new QueryClient instance inside the component to ensure proper React context
 const App = () => {
   // Create a new QueryClient inside the component
@@ -74,6 +83,12 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               
+              {/* Events & Calendar Routes */}
+              <Route path="/events" element={<Events />} />
+              <Route path="/events/:id" element={<EventDetail />} />
+              <Route path="/parish-calendar" element={<ParishCalendar />} />
+              <Route path="/bulletins" element={<Bulletins />} />
+              
               {/* Faith Formation Routes */}
               <Route path="/core-faith" element={<CoreFaith />} />
               <Route path="/education-formation" element={<EducationFormation />} />
@@ -86,6 +101,7 @@ const App = () => {
               <Route path="/daily-readings" element={<DailyReadings />} />
               <Route path="/previous-readings" element={<PreviousReadings />} />
               <Route path="/saints-calendar" element={<SaintsCalendar />} />
+              <Route path="/rcia" element={<RCIA />} />
               
               {/* Worship Routes */}
               <Route path="/mass-times" element={<MassTimes />} />
@@ -93,14 +109,15 @@ const App = () => {
               <Route path="/mass-recordings" element={<MassRecordings />} />
               <Route path="/homilies" element={<Homilies />} />
               
-              {/* Other Routes */}
-              <Route path="/events" element={<Events />} />
-              <Route path="/events/:id" element={<EventDetail />} />
+              {/* Administration & Community Routes */}
               <Route path="/donate" element={<Donate />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<BlogDetail />} />
               <Route path="/parish-executive" element={<ParishExecutive />} />
+              <Route path="/ministries" element={<Ministries />} />
+              <Route path="/volunteer" element={<Volunteer />} />
+              <Route path="/new-parishioner" element={<NewParishioner />} />
               
               {/* Legal Routes */}
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
