@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { CalendarPlus, UserPlus, Users, CalendarClock, Map, Mail, Phone, Heart, Calendar, BookOpen, Clock, MapPin, ChevronRight, Leaf, Sparkles, Award, Megaphone, Briefcase } from 'lucide-react';
+import { CalendarPlus, UserPlus, Users, CalendarClock, Map, Mail, Phone, Heart, Calendar, BookOpen, Clock, MapPin, ChevronRight, Leaf, Sparkles, Award, Megaphone, Briefcase, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
