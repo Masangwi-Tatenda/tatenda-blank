@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "esModuleInterop": true, // Added for compatibility
+    "typeRoots": ["./node_modules/@types"] // Optional
+  },
+  "include": ["**/*.ts", "**/*.tsx"], // Adjusted paths
+  "exclude": ["node_modules"]
+}
