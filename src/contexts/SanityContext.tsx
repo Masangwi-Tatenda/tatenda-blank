@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat } from '@/lib/sanity';
+import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource } from '@/lib/sanity';
 
 interface SanityContextType {
   // Common data
@@ -33,6 +33,13 @@ interface SanityContextType {
   // Parish organization
   parishTeam: ParishTeamMember[];
   ministries: Ministry[];
+
+  // New content types
+  welcomeSection: WelcomeSection | null;
+  coreFaithItems: CoreFaithItem[];
+  quickLinks: QuickLink[];
+  weeklyScripture: WeeklyScripture | null;
+  bibleStudyResources: BibleStudyResource[];
 
   // Fetch functions
   fetchSingleEvent: (slug: string) => Promise<EventItem | null>;
@@ -98,6 +105,12 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
   const [parishTeam, setParishTeam] = useState<ParishTeamMember[]>([]);
   const [ministries, setMinistries] = useState<Ministry[]>([]);
 
+  const [welcomeSection, setWelcomeSection] = useState<WelcomeSection | null>(null);
+  const [coreFaithItems, setCoreFaithItems] = useState<CoreFaithItem[]>([]);
+  const [quickLinks, setQuickLinks] = useState<QuickLink[]>([]);
+  const [weeklyScripture, setWeeklyScripture] = useState<WeeklyScripture | null>(null);
+  const [bibleStudyResources, setBibleStudyResources] = useState<BibleStudyResource[]>([]);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -124,6 +137,11 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           saintItems,
           team,
           ministryItems,
+          welcome,
+          faithItems,
+          links,
+          scripture,
+          studyResources,
         ] = await Promise.all([
           client.fetch(queries.heroSlides),
           client.fetch(queries.churchStats),
@@ -143,6 +161,11 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           client.fetch(queries.featuredSaints),
           client.fetch(queries.parishTeam),
           client.fetch(queries.ministries),
+          client.fetch(queries.welcomeSection),
+          client.fetch(queries.coreFaithItems),
+          client.fetch(queries.quickLinks),
+          client.fetch(queries.currentWeeklyScripture),
+          client.fetch(queries.featuredBibleStudyResources),
         ]);
 
         setHeroSlides(slides || []);
@@ -163,6 +186,12 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         setSaints(saintItems || []);
         setParishTeam(team || []);
         setMinistries(ministryItems || []);
+        
+        setWelcomeSection(welcome || null);
+        setCoreFaithItems(faithItems || []);
+        setQuickLinks(links || []);
+        setWeeklyScripture(scripture || null);
+        setBibleStudyResources(studyResources || []);
       } catch (err) {
         console.error('Error fetching Sanity data:', err);
         setError('Failed to load content. Please try again later.');
@@ -197,6 +226,11 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         saints,
         parishTeam,
         ministries,
+        welcomeSection,
+        coreFaithItems,
+        quickLinks,
+        weeklyScripture,
+        bibleStudyResources,
         fetchSingleEvent: async (slug: string) => client.fetch(queries.singleEvent(slug)),
         fetchSinglePost: async (slug: string) => client.fetch(queries.singleBlogPost(slug)),
         fetchSingleYouthEvent: async (slug: string) => client.fetch(queries.singleYouthEvent(slug)),

@@ -1,3 +1,4 @@
+
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
 import {visionTool} from '@sanity/vision'
@@ -25,6 +26,9 @@ export default defineConfig({
                   .items([
                     S.listItem().title('Hero Slides').child(S.documentTypeList('heroSlide')),
                     S.listItem().title('Church Statistics').child(S.documentTypeList('churchStat')),
+                    S.listItem().title('Welcome Section').child(S.documentTypeList('welcomeSection')),
+                    S.listItem().title('Quick Links').child(S.documentTypeList('quickLink')),
+                    S.listItem().title('Core Faith Items').child(S.documentTypeList('coreFaith')),
                   ])
               ),
 
@@ -63,6 +67,8 @@ export default defineConfig({
                 S.list()
                   .title('Faith Resources')
                   .items([
+                    S.listItem().title('Weekly Scripture').child(S.documentTypeList('weeklyScripture')),
+                    S.listItem().title('Bible Study Resources').child(S.documentTypeList('bibleStudyResource')),
                     S.listItem().title('Prayers & Novenas').child(S.documentTypeList('prayer')),
                     S.listItem().title('Daily Readings').child(S.documentTypeList('dailyReading')),
                     S.listItem().title('Church Documents').child(S.documentTypeList('document')),
@@ -116,6 +122,11 @@ export default defineConfig({
                   'saint',
                   'parishTeam', 
                   'ministry',
+                  'welcomeSection',
+                  'coreFaith',
+                  'quickLink',
+                  'weeklyScripture',
+                  'bibleStudyResource',
                 ].includes(listItem.getId() || '')
             ),
           ])

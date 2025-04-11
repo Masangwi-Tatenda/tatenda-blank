@@ -4,31 +4,33 @@ import { Link } from 'react-router-dom';
 import { Calendar, Church, Heart, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { useSanity } from '@/contexts/SanityContext';
+import { dynamicIcon } from '@/lib/dynamicIcon';
 
-const links = [
+const fallbackLinks = [
   {
-    icon: Church,
+    icon: "Church",
     title: 'Mass Times',
     description: 'Join us for daily and Sunday Masses',
     href: '/mass-times',
     color: 'from-church-burgundy/90 to-church-burgundy/70',
   },
   {
-    icon: Calendar,
+    icon: "Calendar",
     title: 'Events',
     description: 'Stay updated with parish activities',
     href: '/events',
     color: 'from-church-navy/90 to-church-navy/70',
   },
   {
-    icon: Heart,
+    icon: "Heart",
     title: 'Donate',
     description: 'Support our parish and ministries',
     href: '/donate',
     color: 'from-church-gold/90 to-church-gold/70',
   },
   {
-    icon: BookOpen,
+    icon: "BookOpen",
     title: 'Sacraments',
     description: 'Learn about our sacramental life',
     href: '/sacraments',
@@ -36,7 +38,9 @@ const links = [
   },
 ];
 
-const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => {
+const QuickLinkCard = ({ icon, title, description, href, color }) => {
+  const IconComponent = dynamicIcon(icon);
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,7 +62,7 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => {
         
         <div className="relative p-8 text-white h-full flex flex-col items-center text-center">
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/30">
-            <Icon className="w-8 h-8 transition-transform duration-500 group-hover:rotate-12" />
+            {IconComponent && <IconComponent className="w-8 h-8 transition-transform duration-500 group-hover:rotate-12" />}
           </div>
           <h3 className="text-xl font-bold mb-2">{title}</h3>
           <p className="text-sm opacity-90">{description}</p>
@@ -82,12 +86,36 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => {
 };
 
 const QuickLinks = () => {
+  const { quickLinks, isLoading } = useSanity();
+  
+  // Use sanity data or fallback if not available
+  const links = quickLinks?.length > 0 ? quickLinks : fallbackLinks;
+
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container-custom">
+          <div className="flex justify-center">
+            <div className="w-12 h-12 border-4 border-church-burgundy border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {links.map((link, index) => (
-            <QuickLinkCard key={index} {...link} />
+            <QuickLinkCard 
+              key={link._id || index} 
+              icon={link.icon} 
+              title={link.title} 
+              description={link.description} 
+              href={link.href} 
+              color={link.color} 
+            />
           ))}
         </div>
       </div>

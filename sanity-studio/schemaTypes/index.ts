@@ -1,3 +1,4 @@
+
 import heroSlide from './heroSlide'
 import event from './event'
 import post from './post'
@@ -20,6 +21,11 @@ import categoryReference from './objects/categoryReference'
 import attachment from './objects/attachment'
 import contactInfo from './objects/contactInfo'
 import socialMedia from './objects/socialMedia'
+import welcomeSection from './welcomeSection'
+import coreFaith from './coreFaith'
+import quickLink from './quickLink'
+import weeklyScripture from './weeklyScripture'
+import bibleStudyResource from './bibleStudyResource'
 
 export const schemaTypes = [
   // Document types
@@ -41,6 +47,11 @@ export const schemaTypes = [
   youthEvent,
   dailyReading,
   churchStat,
+  welcomeSection,
+  coreFaith,
+  quickLink,
+  weeklyScripture,
+  bibleStudyResource,
   
   // Object types
   categoryReference,

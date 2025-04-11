@@ -5,14 +5,32 @@ import { Card, CardContent } from '@/components/ui/card';
 import SectionTitle from '../common/SectionTitle';
 import { cn } from '@/lib/utils';
 import Button from '../common/Button';
+import { useSanity } from '@/contexts/SanityContext';
 
 const WeeklyScripture = () => {
-  // For a real site, this could be fetched from an API
-  const scripture = {
+  const { weeklyScripture, bibleStudyResources, isLoading } = useSanity();
+  
+  // Fallback data if Sanity data is not available
+  const fallbackScripture = {
     verse: "Matthew 5:14-16",
     text: "You are the light of the world. A city built on a hill cannot be hidden. Neither do people light a lamp and put it under a bowl. Instead they put it on its stand, and it gives light to everyone in the house. In the same way, let your light shine before others, that they may see your good deeds and glorify your Father in heaven.",
     reflection: "Christ calls us to be visible witnesses of His love in the world. How are we letting our light shine in our community this week? Through our actions and words, we can bring the light of Christ to those around us, especially to those who live in darkness and despair."
   };
+
+  // Use Sanity data if available, otherwise use fallback
+  const scripture = weeklyScripture || fallbackScripture;
+
+  if (isLoading) {
+    return (
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <div className="flex justify-center">
+            <div className="w-12 h-12 border-4 border-church-burgundy border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="section-padding bg-white">

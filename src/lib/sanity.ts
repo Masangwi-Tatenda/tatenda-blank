@@ -326,9 +326,64 @@ export interface ChurchStat {
   order: number;
 }
 
+// New interfaces for our added schemas
+export interface WelcomeSection {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  description: any[];
+  mission?: string;
+  vision?: string;
+  quote?: string;
+  quoteAuthor?: string;
+  quoteAuthorTitle?: string;
+  image?: SanityImage;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+export interface CoreFaithItem {
+  _id: string;
+  title: string;
+  description: string;
+  icon?: string;
+  link?: string;
+  order?: number;
+  content?: any[];
+}
+
+export interface QuickLink {
+  _id: string;
+  title: string;
+  description?: string;
+  href: string;
+  icon: string;
+  color: string;
+  order?: number;
+}
+
+export interface WeeklyScripture {
+  _id: string;
+  verse: string;
+  text: string;
+  reflection?: string;
+  week: string;
+  active: boolean;
+}
+
+export interface BibleStudyResource {
+  _id: string;
+  title: string;
+  description?: string;
+  link?: string;
+  resourceType?: string;
+  featured: boolean;
+  content?: any[];
+  thumbnail?: SanityImage;
+}
+
 // Sample queries to use with the Sanity client
 export const queries = {
-
   churchDocuments: `*[_type == "churchDocument"]`,
   // Hero and Site Content
   heroSlides: `*[_type == "heroSlide"] | order(order asc) {
@@ -906,6 +961,85 @@ export const queries = {
     howtojoin,
     content,
     slug
+  }`,
+  
+  // Welcome Section
+  welcomeSection: `*[_type == "welcomeSection"][0] {
+    _id,
+    title,
+    subtitle,
+    description,
+    mission,
+    vision,
+    quote,
+    quoteAuthor,
+    quoteAuthorTitle,
+    image,
+    ctaText,
+    ctaLink
+  }`,
+
+  // Core Faith Items
+  coreFaithItems: `*[_type == "coreFaith"] | order(order asc) {
+    _id,
+    title,
+    description,
+    icon,
+    link,
+    order,
+    content
+  }`,
+
+  // Quick Links
+  quickLinks: `*[_type == "quickLink"] | order(order asc) {
+    _id,
+    title,
+    description,
+    href,
+    icon,
+    color,
+    order
+  }`,
+
+  // Weekly Scripture
+  currentWeeklyScripture: `*[_type == "weeklyScripture" && active == true][0] {
+    _id,
+    verse,
+    text,
+    reflection,
+    week
+  }`,
+
+  // Bible Study Resources
+  featuredBibleStudyResources: `*[_type == "bibleStudyResource" && featured == true] | order(_createdAt desc) [0...3] {
+    _id,
+    title,
+    description,
+    link,
+    resourceType,
+    featured,
+    thumbnail
+  }`,
+  
+  allBibleStudyResources: `*[_type == "bibleStudyResource"] | order(_createdAt desc) {
+    _id,
+    title,
+    description,
+    link,
+    resourceType,
+    featured,
+    thumbnail
+  }`,
+  
+  singleBibleStudyResource: (id: string) => `*[_type == "bibleStudyResource" && _id == "${id}"][0] {
+    _id,
+    title,
+    description,
+    link,
+    resourceType,
+    featured,
+    content,
+    thumbnail
   }`,
 };
 
