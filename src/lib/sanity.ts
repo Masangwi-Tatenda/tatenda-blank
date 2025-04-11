@@ -323,6 +323,7 @@ export interface ChurchStat {
   value: number;
   description?: string;
   icon?: string;
+  color?: string;
   order: number;
 }
 
@@ -401,6 +402,7 @@ export const queries = {
     value,
     description,
     icon,
+    color,
     order
   }`,
   

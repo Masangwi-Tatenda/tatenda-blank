@@ -1,3 +1,4 @@
+
 import type { Rule } from 'sanity'
 
 export default {
@@ -9,15 +10,13 @@ export default {
         name: 'label',
         title: 'Label',
         type: 'string',
-       validation: (Rule: Rule) => Rule.required()
-
+        validation: (Rule: Rule) => Rule.required()
       },
       {
         name: 'value',
         title: 'Value',
         type: 'number',
-       validation: (Rule: Rule) => Rule.required()
-
+        validation: (Rule: Rule) => Rule.required()
       },
       {
         name: 'description',
@@ -29,6 +28,12 @@ export default {
         title: 'Icon',
         type: 'string',
         description: 'Icon name from Lucide icons (e.g., "Users", "Heart", "Calendar")',
+      },
+      {
+        name: 'color',
+        title: 'Icon Color',
+        type: 'string',
+        description: 'CSS color class (e.g., "text-church-burgundy", "text-church-gold")',
       },
       {
         name: 'order',
@@ -52,4 +57,3 @@ export default {
       },
     },
   }
-  
