@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +17,13 @@ import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 import OpenExternalLinks from "./components/layout/OpenExternalLinks";
 import LiturgicalCalendar from "./pages/LiturgicalCalendar";
+import IntegratedCalendar from "./pages/IntegratedCalendar";
+
+// Youth pages
+import YouthOverview from "./pages/community/YouthOverview";
+import MCA from "./pages/community/youth/MCA";
+import CYA from "./pages/community/youth/CYA";
+import YoungAdults from "./pages/community/youth/YoungAdults";
 
 // Faith Formation Pages
 import CoreFaith from "./pages/CoreFaith";
@@ -67,7 +75,14 @@ import NewParishioner from "./pages/NewParishioner";
 // Create a new QueryClient instance inside the component to ensure proper React context
 const App = () => {
   // Create a new QueryClient inside the component
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+      },
+    },
+  });
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -85,7 +100,14 @@ const App = () => {
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/parish-calendar" element={<ParishCalendar />} />
+              <Route path="/calendar" element={<IntegratedCalendar />} />
               <Route path="/bulletins" element={<Bulletins />} />
+              
+              {/* Youth Ministry Pages */}
+              <Route path="/community/youth" element={<YouthOverview />} />
+              <Route path="/community/youth/mca" element={<MCA />} />
+              <Route path="/community/youth/cya" element={<CYA />} />
+              <Route path="/community/youth/young-adults" element={<YoungAdults />} />
               
               {/* Faith Formation Routes */}
               <Route path="/core-faith" element={<CoreFaith />} />
@@ -133,7 +155,7 @@ const App = () => {
               {/* Community Routes */}
               <Route path="/community/guilds" element={<CatholicGuilds />} />
               <Route path="/community/sections" element={<ParishSections />} />
-              <Route path="/community/youth" element={<YouthMinistry />} />
+              <Route path="/community/youth-ministry" element={<YouthMinistry />} />
               <Route path="/community/gallery" element={<PhotoGallery />} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
