@@ -55,7 +55,7 @@ const CoreFaithSection = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {faithItems.map((item) => {
-              const IconComponent = dynamicIcon(item.icon);
+              const iconElement = dynamicIcon(item.icon);
               
               return (
                 <div 
@@ -63,8 +63,10 @@ const CoreFaithSection = () => {
                   className="bg-white/10 backdrop-blur-sm rounded-lg p-6 transform transition-all duration-300 hover:translate-y-[-5px] hover:shadow-lg"
                 >
                   <div className="flex items-center mb-4">
-                    {IconComponent && (
-                      <IconComponent className="text-church-gold w-6 h-6 mr-2" />
+                    {iconElement && (
+                      <div className="text-church-gold w-6 h-6 mr-2">
+                        {iconElement}
+                      </div>
                     )}
                     <h3 className="text-2xl font-bold text-church-gold">{item.title}</h3>
                   </div>

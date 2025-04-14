@@ -39,7 +39,7 @@ const fallbackLinks = [
 ];
 
 const QuickLinkCard = ({ icon, title, description, href, color }) => {
-  const IconComponent = dynamicIcon(icon);
+  const iconElement = dynamicIcon(icon);
   
   return (
     <motion.div
@@ -62,7 +62,11 @@ const QuickLinkCard = ({ icon, title, description, href, color }) => {
         
         <div className="relative p-8 text-white h-full flex flex-col items-center text-center">
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/30">
-            {IconComponent && <IconComponent className="w-8 h-8 transition-transform duration-500 group-hover:rotate-12" />}
+            {iconElement && (
+              <div className="w-8 h-8 transition-transform duration-500 group-hover:rotate-12">
+                {iconElement}
+              </div>
+            )}
           </div>
           <h3 className="text-xl font-bold mb-2">{title}</h3>
           <p className="text-sm opacity-90">{description}</p>

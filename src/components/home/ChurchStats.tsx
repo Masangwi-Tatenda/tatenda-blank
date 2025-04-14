@@ -99,7 +99,8 @@ const ChurchStats = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
           {stats.map((stat, index) => {
-            const StatIcon = dynamicIcon(stat.icon) || Users;
+            // Create the icon element using our fixed dynamicIcon function
+            const iconElement = dynamicIcon(stat.icon);
             
             return (
               <motion.div
@@ -111,7 +112,11 @@ const ChurchStats = () => {
                 className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300 text-center"
               >
                 <div className="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                  <StatIcon className={cn("w-8 h-8", stat.color || "text-church-burgundy")} />
+                  {iconElement && (
+                    <div className={cn("w-8 h-8", stat.color || "text-church-burgundy")}>
+                      {iconElement}
+                    </div>
+                  )}
                 </div>
                 
                 <h3 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">

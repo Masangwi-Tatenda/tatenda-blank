@@ -8,8 +8,8 @@ import { CalendarIcon, ChevronLeft, ChevronRight, Clock, MapPin } from 'lucide-r
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
-// Sample events data
-const churchEvents = [
+// Default sample events data
+const defaultEvents = [
   {
     id: 1,
     title: "Sunday Mass",
@@ -85,8 +85,8 @@ const churchEvents = [
 ];
 
 // Helper function to get events for a specific date
-const getEventsForDate = (date: Date) => {
-  return churchEvents.filter(
+const getEventsForDate = (date: Date, events: any[]) => {
+  return events.filter(
     event => 
       event.date.getDate() === date.getDate() &&
       event.date.getMonth() === date.getMonth() &&
@@ -95,20 +95,29 @@ const getEventsForDate = (date: Date) => {
 };
 
 // Helper function to check if a date has events
-const hasEvents = (date: Date) => {
-  return getEventsForDate(date).length > 0;
+const hasEvents = (date: Date, events: any[]) => {
+  return getEventsForDate(date, events).length > 0;
 };
 
-interface ChurchCalendarProps {
+export interface ChurchCalendarProps {
   className?: string;
+  date?: Date;
+  events?: any[];
 }
 
-const ChurchCalendar: React.FC<ChurchCalendarProps> = ({ className }) => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+const ChurchCalendar: React.FC<ChurchCalendarProps> = ({ 
+  className,
+  date: initialDate,
+  events: customEvents
+}) => {
+  const [date, setDate] = useState<Date>(initialDate || new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
+  
+  // Use provided events or default events
+  const events = customEvents || defaultEvents;
   
   // Get events for the selected date
-  const selectedDateEvents = getEventsForDate(selectedDate);
+  const selectedDateEvents = getEventsForDate(selectedDate, events);
   
   // Format a date to display in the events list
   const formatEventDate = (date: Date) => {
@@ -142,7 +151,7 @@ const ChurchCalendar: React.FC<ChurchCalendarProps> = ({ className }) => {
               DayContent: ({ date }) => (
                 <div className="relative w-full h-full flex items-center justify-center">
                   <div>{date.getDate()}</div>
-                  {hasEvents(date) && (
+                  {hasEvents(date, events) && (
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-church-gold rounded-full" />
                   )}
                 </div>
