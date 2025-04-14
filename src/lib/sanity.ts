@@ -1,14 +1,15 @@
+
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
 // Create a Sanity client
 export const client = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'your-project-id',
+  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'cfnd6oxb',
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
   apiVersion: import.meta.env.VITE_SANITY_API_VERSION || '2025-04-10',
   useCdn: true,
-  token: import.meta.env.VITE_SANITY_TOKEN,
+  // token: import.meta.env.VITE_SANITY_TOKEN, // Only include token if using authenticated requests
 });
 
 // Set up image URL builder
