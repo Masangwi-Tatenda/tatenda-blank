@@ -28,14 +28,14 @@ const AboutPage = () => {
       'Founded in 1965, Musha WeBetania Parish has been serving the spiritual needs of Catholics in our community for over 50 years. What began as a small mission outpost has grown into a vibrant parish community with thousands of faithful members.',
       'Our parish was established by Bishop Joseph Smith with the help of the Franciscan missionaries who came to our area to spread the Gospel. The first church building was a simple structure that could accommodate just 100 worshippers.',
       'As our community grew throughout the 1970s and 1980s, so did our parish. In 1992, we consecrated our current church building, which stands as a testament to the faith and generosity of our parishioners.',
-      'Today, Musha WeBetania Parish continues to be a spiritual home for Catholics of all backgrounds, a place where faith is nurtured, community is built, and God's love is shared.'
+      'Today, Musha WeBetania Parish continues to be a spiritual home for Catholics of all backgrounds, a place where faith is nurtured, community is built, and God\'s love is shared.'
     ],
-    mission: 'To build a community of faith that celebrates God's presence, forms disciples, and serves others in Christ's name.',
+    mission: 'To build a community of faith that celebrates God\'s presence, forms disciples, and serves others in Christ\'s name.',
     missionDescription: 'We strive to be a welcoming parish where all people can encounter Jesus Christ, grow in their relationship with Him, and be formed as disciples to share the Gospel.',
     vision: 'To be a beacon of Catholic faith, known for our welcoming spirit, vibrant worship, and compassionate service.',
     visionDescription: 'We envision a parish where the sacramental life is celebrated with reverence and joy, where faith formation is a lifelong journey, and where service to those in need is a way of life.',
     joinCommunityTitle: 'Join Our Growing Community',
-    joinCommunityText: 'We invite you to become part of our vibrant parish family. Whether through worship, service, or fellowship, there's a place for everyone at Musha WeBetania Parish.',
+    joinCommunityText: 'We invite you to become part of our vibrant parish family. Whether through worship, service, or fellowship, there\'s a place for everyone at Musha WeBetania Parish.',
     joinCommunityButtonText: 'Get Involved Today',
     joinCommunityButtonLink: '/contact'
   };
