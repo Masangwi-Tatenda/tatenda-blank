@@ -5,6 +5,7 @@ import SectionTitle from '../common/SectionTitle';
 import { cn } from '@/lib/utils';
 import { useSanity } from '@/contexts/SanityContext';
 import { dynamicIcon } from '@/lib/dynamicIcon';
+import { Users, Heart, ChurchIcon, Calendar } from 'lucide-react';
 
 // Animated counter component
 const Counter = ({ value, duration = 2 }) => {
@@ -31,7 +32,52 @@ const Counter = ({ value, duration = 2 }) => {
 };
 
 const ChurchStats = () => {
-  const { churchStats, isLoading } = useSanity();
+  const { churchStats, isLoading, error } = useSanity();
+  
+  // Fallback data in case Sanity data is not available
+  const fallbackStats = [
+    {
+      _id: '1',
+      label: 'Parishioners',
+      value: 1200,
+      description: 'Registered members of our parish',
+      icon: 'Users',
+      color: 'text-church-burgundy',
+      order: 1
+    },
+    {
+      _id: '2',
+      label: 'Years of Service',
+      value: 58,
+      description: 'Serving our community since 1965',
+      icon: 'Calendar',
+      color: 'text-church-gold',
+      order: 2
+    },
+    {
+      _id: '3',
+      label: 'Ministries',
+      value: 25,
+      description: 'Active groups serving various needs',
+      icon: 'Heart',
+      color: 'text-church-burgundy',
+      order: 3
+    },
+    {
+      _id: '4',
+      label: 'Weekly Masses',
+      value: 12,
+      description: 'Opportunities for worship each week',
+      icon: 'ChurchIcon',
+      color: 'text-church-gold',
+      order: 4
+    },
+  ];
+
+  // Use Sanity data if available, otherwise use fallback
+  const statsToDisplay = (churchStats && churchStats.length > 0) ? churchStats : fallbackStats;
+  
+  console.log('Church stats component rendering with:', statsToDisplay);
 
   if (isLoading) {
     return (
@@ -54,7 +100,7 @@ const ChurchStats = () => {
         />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
-          {churchStats.map((stat, index) => {
+          {statsToDisplay.map((stat, index) => {
             // Create the icon element using our fixed dynamicIcon function
             const iconElement = dynamicIcon(stat.icon);
             

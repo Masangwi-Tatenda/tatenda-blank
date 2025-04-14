@@ -1,4 +1,3 @@
-
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
@@ -18,6 +17,19 @@ const builder = imageUrlBuilder(client);
 // Helper function to get image URLs from Sanity
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);
+}
+
+// Function to fetch data with error handling
+export async function fetchSanityData(query: string) {
+  try {
+    console.log('Fetching Sanity data with query:', query);
+    const data = await client.fetch(query);
+    console.log('Sanity data fetched successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching data from Sanity:', error);
+    return null;
+  }
 }
 
 // Common Types
@@ -408,7 +420,7 @@ export interface AboutPage {
 export interface ContactPage {
   _id: string;
   title: string;
-  subtitle?: string;
+ subtitle?: string;
   heroImage?: SanityImage;
   contactInfo?: {
     address?: string;

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource, AboutPage, ContactPage, MassSchedule, YouthMinistryPage, CatholicTeachingPage, Sacrament, PageContent } from '@/lib/sanity';
 
@@ -137,9 +136,20 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
     const fetchInitialData = async () => {
       try {
         setIsLoading(true);
+        console.log('Fetching Sanity data, project ID:', import.meta.env.VITE_SANITY_PROJECT_ID);
+        
+        // Fetch church stats separately first to debug
+        try {
+          const stats = await client.fetch(queries.churchStats);
+          console.log('Church stats data:', stats);
+          setChurchStats(stats || []);
+        } catch (statsError) {
+          console.error('Error fetching church stats:', statsError);
+          setChurchStats([]);
+        }
+        
         const [
           slides,
-          stats,
           fEvents,
           uEvents,
           yEvents,
@@ -168,39 +178,37 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           catholicTeaching,
           sacramentsList,
         ] = await Promise.all([
-          client.fetch(queries.heroSlides),
-          client.fetch(queries.churchStats),
-          client.fetch(queries.featuredEvents),
-          client.fetch(queries.upcomingEvents),
-          client.fetch(queries.featuredYouthEvents),
-          client.fetch(queries.recentMasses),
-          client.fetch(queries.recentBlogPosts),
-          client.fetch(queries.recentPhotoGalleries),
-          client.fetch(queries.recentHomilies),
-          client.fetch(queries.recentBulletins),
-          client.fetch(queries.featuredPrayers),
-          client.fetch(queries.recentReadings),
-          client.fetch(queries.churchDocuments),
-          client.fetch(queries.liturgicalSeasons),
-          client.fetch(queries.currentFeastDays),
-          client.fetch(queries.featuredSaints),
-          client.fetch(queries.parishTeam),
-          client.fetch(queries.ministries),
-          client.fetch(queries.welcomeSection),
-          client.fetch(queries.coreFaithItems),
-          client.fetch(queries.quickLinks),
-          client.fetch(queries.currentWeeklyScripture),
-          client.fetch(queries.featuredBibleStudyResources),
-          client.fetch(queries.aboutPage),
-          client.fetch(queries.contactPage),
-          client.fetch(queries.massSchedule),
-          client.fetch(queries.youthMinistryPage),
-          client.fetch(queries.catholicTeachingPage),
-          client.fetch(queries.allSacraments),
+          client.fetch(queries.heroSlides).catch(e => { console.error('Error fetching heroSlides:', e); return []; }),
+          client.fetch(queries.featuredEvents).catch(e => { console.error('Error fetching featuredEvents:', e); return []; }),
+          client.fetch(queries.upcomingEvents).catch(e => { console.error('Error fetching upcomingEvents:', e); return []; }),
+          client.fetch(queries.featuredYouthEvents).catch(e => { console.error('Error fetching featuredYouthEvents:', e); return []; }),
+          client.fetch(queries.recentMasses).catch(e => { console.error('Error fetching recentMasses:', e); return []; }),
+          client.fetch(queries.recentBlogPosts).catch(e => { console.error('Error fetching recentBlogPosts:', e); return []; }),
+          client.fetch(queries.recentPhotoGalleries).catch(e => { console.error('Error fetching recentPhotoGalleries:', e); return []; }),
+          client.fetch(queries.recentHomilies).catch(e => { console.error('Error fetching recentHomilies:', e); return []; }),
+          client.fetch(queries.recentBulletins).catch(e => { console.error('Error fetching recentBulletins:', e); return []; }),
+          client.fetch(queries.featuredPrayers).catch(e => { console.error('Error fetching featuredPrayers:', e); return []; }),
+          client.fetch(queries.recentReadings).catch(e => { console.error('Error fetching recentReadings:', e); return []; }),
+          client.fetch(queries.churchDocuments).catch(e => { console.error('Error fetching churchDocuments:', e); return []; }),
+          client.fetch(queries.liturgicalSeasons).catch(e => { console.error('Error fetching liturgicalSeasons:', e); return []; }),
+          client.fetch(queries.currentFeastDays).catch(e => { console.error('Error fetching currentFeastDays:', e); return []; }),
+          client.fetch(queries.featuredSaints).catch(e => { console.error('Error fetching featuredSaints:', e); return []; }),
+          client.fetch(queries.parishTeam).catch(e => { console.error('Error fetching parishTeam:', e); return []; }),
+          client.fetch(queries.ministries).catch(e => { console.error('Error fetching ministries:', e); return []; }),
+          client.fetch(queries.welcomeSection).catch(e => { console.error('Error fetching welcomeSection:', e); return null; }),
+          client.fetch(queries.coreFaithItems).catch(e => { console.error('Error fetching coreFaithItems:', e); return []; }),
+          client.fetch(queries.quickLinks).catch(e => { console.error('Error fetching quickLinks:', e); return []; }),
+          client.fetch(queries.currentWeeklyScripture).catch(e => { console.error('Error fetching currentWeeklyScripture:', e); return null; }),
+          client.fetch(queries.featuredBibleStudyResources).catch(e => { console.error('Error fetching featuredBibleStudyResources:', e); return []; }),
+          client.fetch(queries.aboutPage).catch(e => { console.error('Error fetching aboutPage:', e); return null; }),
+          client.fetch(queries.contactPage).catch(e => { console.error('Error fetching contactPage:', e); return null; }),
+          client.fetch(queries.massSchedule).catch(e => { console.error('Error fetching massSchedule:', e); return null; }),
+          client.fetch(queries.youthMinistryPage).catch(e => { console.error('Error fetching youthMinistryPage:', e); return null; }),
+          client.fetch(queries.catholicTeachingPage).catch(e => { console.error('Error fetching catholicTeachingPage:', e); return null; }),
+          client.fetch(queries.allSacraments).catch(e => { console.error('Error fetching allSacraments:', e); return []; }),
         ]);
 
         setHeroSlides(slides || []);
-        setChurchStats(stats || []);
         setFeaturedEvents(fEvents || []);
         setUpcomingEvents(uEvents || []);
         setYouthEvents(yEvents || []);
