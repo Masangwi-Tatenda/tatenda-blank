@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource, AboutPage, ContactPage, MassSchedule, YouthMinistryPage, CatholicTeachingPage, Sacrament, PageContent } from '@/lib/sanity';
 
@@ -35,6 +36,13 @@ interface SanityContextType {
   ministries: Ministry[];
 
   // Home page content
+  welcomeSection: WelcomeSection | null;
+  coreFaithItems: CoreFaithItem[];
+  quickLinks: QuickLink[];
+  weeklyScripture: WeeklyScripture | null;
+  bibleStudyResources: BibleStudyResource[];
+  
+  // Page content
   aboutPage: AboutPage | null;
   contactPage: ContactPage | null;
   massSchedule: MassSchedule | null;
