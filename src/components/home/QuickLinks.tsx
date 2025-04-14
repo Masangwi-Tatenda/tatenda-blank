@@ -1,42 +1,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Church, Heart, BookOpen } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { useSanity } from '@/contexts/SanityContext';
 import { dynamicIcon } from '@/lib/dynamicIcon';
-
-const fallbackLinks = [
-  {
-    icon: "Church",
-    title: 'Mass Times',
-    description: 'Join us for daily and Sunday Masses',
-    href: '/mass-times',
-    color: 'from-church-burgundy/90 to-church-burgundy/70',
-  },
-  {
-    icon: "Calendar",
-    title: 'Events',
-    description: 'Stay updated with parish activities',
-    href: '/events',
-    color: 'from-church-navy/90 to-church-navy/70',
-  },
-  {
-    icon: "Heart",
-    title: 'Donate',
-    description: 'Support our parish and ministries',
-    href: '/donate',
-    color: 'from-church-gold/90 to-church-gold/70',
-  },
-  {
-    icon: "BookOpen",
-    title: 'Sacraments',
-    description: 'Learn about our sacramental life',
-    href: '/sacraments',
-    color: 'from-church-rose/90 to-church-rose/70',
-  },
-];
+import { cn } from '@/lib/utils';
 
 const QuickLinkCard = ({ icon, title, description, href, color }) => {
   const iconElement = dynamicIcon(icon);
@@ -91,9 +59,6 @@ const QuickLinkCard = ({ icon, title, description, href, color }) => {
 
 const QuickLinks = () => {
   const { quickLinks, isLoading } = useSanity();
-  
-  // Use sanity data or fallback if not available
-  const links = quickLinks?.length > 0 ? quickLinks : fallbackLinks;
 
   if (isLoading) {
     return (
@@ -111,7 +76,7 @@ const QuickLinks = () => {
     <section className="py-16 bg-gray-50">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {links.map((link, index) => (
+          {quickLinks.map((link, index) => (
             <QuickLinkCard 
               key={link._id || index} 
               icon={link.icon} 

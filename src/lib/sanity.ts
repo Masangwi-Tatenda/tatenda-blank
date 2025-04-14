@@ -383,10 +383,211 @@ export interface BibleStudyResource {
   thumbnail?: SanityImage;
 }
 
+// About Page Schema
+export interface AboutPage {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  heroImage?: SanityImage;
+  historyTitle?: string;
+  historySubtitle?: string;
+  historyContent?: any[];
+  historyImage?: SanityImage;
+  mission?: string;
+  missionDescription?: any[];
+  vision?: string;
+  visionDescription?: any[];
+  joinCommunityTitle?: string;
+  joinCommunityText?: string;
+  joinCommunityButtonText?: string;
+  joinCommunityButtonLink?: string;
+}
+
+// Contact Page Schema
+export interface ContactPage {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  heroImage?: SanityImage;
+  contactInfo?: {
+    address?: string;
+    phone?: string;
+    email?: string;
+    officeHours?: string;
+  };
+  mapLocation?: {
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
+  contactFormTitle?: string;
+  contactFormIntro?: string;
+  submitButtonText?: string;
+}
+
+// Mass Schedule Schema
+export interface MassSchedule {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  heroImage?: SanityImage;
+  introduction?: any[];
+  weekdayMasses?: {
+    day: string;
+    time: string;
+    language?: string;
+    notes?: string;
+  }[];
+  weekendMasses?: {
+    day: string;
+    time: string;
+    language?: string;
+    notes?: string;
+  }[];
+  holyDayMasses?: {
+    title: string;
+    vigil?: string;
+    day?: string;
+    notes?: string;
+  }[];
+  confessionSchedule?: {
+    day: string;
+    time: string;
+    notes?: string;
+  }[];
+  additionalInfo?: any[];
+}
+
+// Youth Ministry Page Schema
+export interface YouthMinistryPage {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  heroImage?: SanityImage;
+  introduction?: any[];
+  bibleVerse?: {
+    text: string;
+    reference: string;
+  };
+  missionStatement?: {
+    title: string;
+    content: any[];
+    image?: SanityImage;
+  };
+  youthGroups?: {
+    id: string;
+    name: string;
+    ageRange: string;
+    description: string;
+    icon: string;
+    color: string;
+    image?: SanityImage;
+    verse?: string;
+    link: string;
+  }[];
+  parentalInvolvement?: {
+    title: string;
+    content: string;
+    roles: {
+      icon: string;
+      title: string;
+      description: string;
+    }[];
+    buttonText: string;
+    buttonLink: string;
+  };
+  contactInformation?: {
+    title: string;
+    content: string;
+    coordinator: string;
+    role: string;
+    email: string;
+    phone: string;
+  };
+}
+
+// Catholic Teaching Page Schema
+export interface CatholicTeachingPage {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  heroImage?: SanityImage;
+  introduction?: any[];
+  teachingCategories?: {
+    id: string;
+    title: string;
+    subtitle?: string;
+    description: string;
+    icon: string;
+    color: string;
+    image?: SanityImage;
+    link: string;
+  }[];
+  featuredTeachings?: {
+    title: string;
+    excerpt: string;
+    image?: SanityImage;
+    link: string;
+  }[];
+  ctaSection?: {
+    title: string;
+    content: string;
+    buttonText: string;
+    buttonLink: string;
+  };
+}
+
+// Sacrament Schema
+export interface Sacrament {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  slug: SanitySlug;
+  heroImage?: SanityImage;
+  content: any[];
+  scriptureQuote?: {
+    text: string;
+    reference: string;
+  };
+  eligibility?: any[];
+  preparation?: any[];
+  contactInformation?: {
+    title: string;
+    contactPerson: string;
+    phone: string;
+    email: string;
+    additionalInfo?: string;
+  };
+  order: number;
+}
+
+// Page Content Schema
+export interface PageContent {
+  _id: string;
+  title: string;
+  slug: SanitySlug;
+  subtitle?: string;
+  heroImage?: SanityImage;
+  content?: any[];
+  sections?: {
+    title: string;
+    subtitle?: string;
+    content: any[];
+    image?: SanityImage;
+    backgroundColor?: string;
+    textColor?: string;
+  }[];
+  seo?: {
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string[];
+  };
+}
+
 // Sample queries to use with the Sanity client
 export const queries = {
   churchDocuments: `*[_type == "churchDocument"]`,
-  // Hero and Site Content
+  
   heroSlides: `*[_type == "heroSlide"] | order(order asc) {
     _key,
     title,
@@ -406,7 +607,6 @@ export const queries = {
     order
   }`,
   
-  // Events and Schedule
   featuredEvents: `*[_type == "event" && featured == true] | order(date asc) [0...4] {
     _id,
     title,
@@ -486,7 +686,7 @@ export const queries = {
     body,
     slug
   }`,
-
+  
   featuredYouthEvents: `*[_type == "youthEvent" && featured == true] | order(date asc) [0...4] {
     _id,
     title,
@@ -594,7 +794,6 @@ export const queries = {
     slug
   }`,
   
-  // Blog and Media
   recentBlogPosts: `*[_type == "post"] | order(publishedAt desc) [0...6] {
     _id,
     title,
@@ -724,7 +923,6 @@ export const queries = {
     thumbnail
   }`,
   
-  // Faith Resources
   featuredPrayers: `*[_type == "prayer"] | order(_createdAt desc) [0...6] {
     _id,
     title,
@@ -817,7 +1015,6 @@ export const queries = {
     slug
   }`,
   
-  // Liturgical Calendar
   liturgicalSeasons: `*[_type == "liturgicalSeason"] | order(start asc) {
     _id,
     name,
@@ -882,7 +1079,6 @@ export const queries = {
     slug
   }`,
   
-  // Parish Organization
   parishTeam: `*[_type == "parishTeam"] | order(orderRank asc) {
     _id,
     name,
@@ -965,7 +1161,6 @@ export const queries = {
     slug
   }`,
   
-  // Welcome Section
   welcomeSection: `*[_type == "welcomeSection"][0] {
     _id,
     title,
@@ -980,8 +1175,7 @@ export const queries = {
     ctaText,
     ctaLink
   }`,
-
-  // Core Faith Items
+  
   coreFaithItems: `*[_type == "coreFaith"] | order(order asc) {
     _id,
     title,
@@ -991,8 +1185,7 @@ export const queries = {
     order,
     content
   }`,
-
-  // Quick Links
+  
   quickLinks: `*[_type == "quickLink"] | order(order asc) {
     _id,
     title,
@@ -1002,8 +1195,7 @@ export const queries = {
     color,
     order
   }`,
-
-  // Weekly Scripture
+  
   currentWeeklyScripture: `*[_type == "weeklyScripture" && active == true][0] {
     _id,
     verse,
@@ -1011,8 +1203,7 @@ export const queries = {
     reflection,
     week
   }`,
-
-  // Bible Study Resources
+  
   featuredBibleStudyResources: `*[_type == "bibleStudyResource" && featured == true] | order(_createdAt desc) [0...3] {
     _id,
     title,
@@ -1042,6 +1233,115 @@ export const queries = {
     featured,
     content,
     thumbnail
+  }`,
+  
+  aboutPage: `*[_type == "aboutPage"][0] {
+    _id,
+    title,
+    subtitle,
+    heroImage,
+    historyTitle,
+    historySubtitle,
+    historyContent,
+    historyImage,
+    mission,
+    missionDescription,
+    vision,
+    visionDescription,
+    joinCommunityTitle,
+    joinCommunityText,
+    joinCommunityButtonText,
+    joinCommunityButtonLink
+  }`,
+  
+  contactPage: `*[_type == "contactPage"][0] {
+    _id,
+    title,
+    subtitle,
+    heroImage,
+    contactInfo,
+    mapLocation,
+    contactFormTitle,
+    contactFormIntro,
+    submitButtonText
+  }`,
+  
+  massSchedule: `*[_type == "massSchedule"][0] {
+    _id,
+    title,
+    subtitle,
+    heroImage,
+    introduction,
+    weekdayMasses,
+    weekendMasses,
+    holyDayMasses,
+    confessionSchedule,
+    additionalInfo
+  }`,
+  
+  youthMinistryPage: `*[_type == "youthMinistryPage"][0] {
+    _id,
+    title,
+    subtitle,
+    heroImage,
+    introduction,
+    bibleVerse,
+    missionStatement,
+    youthGroups,
+    parentalInvolvement,
+    contactInformation
+  }`,
+  
+  catholicTeachingPage: `*[_type == "catholicTeachingPage"][0] {
+    _id,
+    title,
+    subtitle,
+    heroImage,
+    introduction,
+    teachingCategories,
+    featuredTeachings,
+    ctaSection
+  }`,
+  
+  allSacraments: `*[_type == "sacrament"] | order(order asc) {
+    _id,
+    title,
+    subtitle,
+    slug,
+    heroImage,
+    order
+  }`,
+  
+  singleSacrament: (slug: string) => `*[_type == "sacrament" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    subtitle,
+    slug,
+    heroImage,
+    content,
+    scriptureQuote,
+    eligibility,
+    preparation,
+    contactInformation,
+    order
+  }`,
+  
+  pageBySlug: (slug: string) => `*[_type == "pageContent" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    slug,
+    subtitle,
+    heroImage,
+    content,
+    sections,
+    seo
+  }`,
+  
+  allPages: `*[_type == "pageContent"] {
+    _id,
+    title,
+    slug,
+    subtitle
   }`,
 };
 

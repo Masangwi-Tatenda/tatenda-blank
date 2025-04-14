@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource } from '@/lib/sanity';
+import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource, AboutPage, ContactPage, MassSchedule, YouthMinistryPage, CatholicTeachingPage, Sacrament, PageContent } from '@/lib/sanity';
 
 interface SanityContextType {
   // Common data
@@ -34,12 +34,13 @@ interface SanityContextType {
   parishTeam: ParishTeamMember[];
   ministries: Ministry[];
 
-  // New content types
-  welcomeSection: WelcomeSection | null;
-  coreFaithItems: CoreFaithItem[];
-  quickLinks: QuickLink[];
-  weeklyScripture: WeeklyScripture | null;
-  bibleStudyResources: BibleStudyResource[];
+  // Home page content
+  aboutPage: AboutPage | null;
+  contactPage: ContactPage | null;
+  massSchedule: MassSchedule | null;
+  youthMinistryPage: YouthMinistryPage | null;
+  catholicTeachingPage: CatholicTeachingPage | null;
+  sacraments: Sacrament[];
 
   // Fetch functions
   fetchSingleEvent: (slug: string) => Promise<EventItem | null>;
@@ -68,6 +69,10 @@ interface SanityContextType {
   fetchAllMasses: () => Promise<MassRecording[] | null>;
   fetchAllDocuments: () => Promise<DocumentItem[] | null>;
   fetchAllBulletins: () => Promise<BulletinItem[] | null>;
+
+  fetchSacrament: (slug: string) => Promise<Sacrament | null>;
+  fetchAllSacraments: () => Promise<Sacrament[] | null>;
+  fetchPageBySlug: (slug: string) => Promise<PageContent | null>;
 }
 
 const SanityContext = createContext<SanityContextType | undefined>(undefined);
@@ -85,7 +90,6 @@ interface SanityProviderProps {
 }
 
 export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
-  // State for all content types
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
   const [churchStats, setChurchStats] = useState<ChurchStat[]>([]);
   const [featuredEvents, setFeaturedEvents] = useState<EventItem[]>([]);
@@ -110,6 +114,13 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
   const [quickLinks, setQuickLinks] = useState<QuickLink[]>([]);
   const [weeklyScripture, setWeeklyScripture] = useState<WeeklyScripture | null>(null);
   const [bibleStudyResources, setBibleStudyResources] = useState<BibleStudyResource[]>([]);
+
+  const [aboutPage, setAboutPage] = useState<AboutPage | null>(null);
+  const [contactPage, setContactPage] = useState<ContactPage | null>(null);
+  const [massSchedule, setMassSchedule] = useState<MassSchedule | null>(null);
+  const [youthMinistryPage, setYouthMinistryPage] = useState<YouthMinistryPage | null>(null);
+  const [catholicTeachingPage, setCatholicTeachingPage] = useState<CatholicTeachingPage | null>(null);
+  const [sacraments, setSacraments] = useState<Sacrament[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -142,6 +153,12 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           links,
           scripture,
           studyResources,
+          about,
+          contact,
+          massInfo,
+          youthMinistry,
+          catholicTeaching,
+          sacramentsList,
         ] = await Promise.all([
           client.fetch(queries.heroSlides),
           client.fetch(queries.churchStats),
@@ -166,6 +183,12 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           client.fetch(queries.quickLinks),
           client.fetch(queries.currentWeeklyScripture),
           client.fetch(queries.featuredBibleStudyResources),
+          client.fetch(queries.aboutPage),
+          client.fetch(queries.contactPage),
+          client.fetch(queries.massSchedule),
+          client.fetch(queries.youthMinistryPage),
+          client.fetch(queries.catholicTeachingPage),
+          client.fetch(queries.allSacraments),
         ]);
 
         setHeroSlides(slides || []);
@@ -192,6 +215,12 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         setQuickLinks(links || []);
         setWeeklyScripture(scripture || null);
         setBibleStudyResources(studyResources || []);
+        setAboutPage(about || null);
+        setContactPage(contact || null);
+        setMassSchedule(massInfo || null);
+        setYouthMinistryPage(youthMinistry || null);
+        setCatholicTeachingPage(catholicTeaching || null);
+        setSacraments(sacramentsList || []);
       } catch (err) {
         console.error('Error fetching Sanity data:', err);
         setError('Failed to load content. Please try again later.');
@@ -231,6 +260,12 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         quickLinks,
         weeklyScripture,
         bibleStudyResources,
+        aboutPage,
+        contactPage,
+        massSchedule,
+        youthMinistryPage,
+        catholicTeachingPage,
+        sacraments,
         fetchSingleEvent: async (slug: string) => client.fetch(queries.singleEvent(slug)),
         fetchSinglePost: async (slug: string) => client.fetch(queries.singleBlogPost(slug)),
         fetchSingleYouthEvent: async (slug: string) => client.fetch(queries.singleYouthEvent(slug)),
@@ -256,6 +291,9 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         fetchAllMasses: async () => client.fetch(queries.allMasses),
         fetchAllDocuments: async () => client.fetch(queries.allDocuments),
         fetchAllBulletins: async () => client.fetch(queries.allBulletins),
+        fetchSacrament: async (slug: string) => client.fetch(queries.singleSacrament(slug)),
+        fetchAllSacraments: async () => client.fetch(queries.allSacraments),
+        fetchPageBySlug: async (slug: string) => client.fetch(queries.pageBySlug(slug)),
       }}
     >
       {children}

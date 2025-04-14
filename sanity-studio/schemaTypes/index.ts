@@ -26,6 +26,13 @@ import coreFaith from './coreFaith'
 import quickLink from './quickLink'
 import weeklyScripture from './weeklyScripture'
 import bibleStudyResource from './bibleStudyResource'
+import aboutPage from './aboutPage'
+import contactPage from './contactPage'
+import massSchedule from './massSchedule'
+import youthMinistryPage from './youthMinistryPage'
+import catholicTeachingPage from './catholicTeachingPage'
+import sacrament from './sacrament'
+import pageContent from './pageContent'
 
 export const schemaTypes = [
   // Document types
@@ -52,6 +59,13 @@ export const schemaTypes = [
   quickLink,
   weeklyScripture,
   bibleStudyResource,
+  aboutPage,
+  contactPage,
+  massSchedule,
+  youthMinistryPage,
+  catholicTeachingPage,
+  sacrament,
+  pageContent,
   
   // Object types
   categoryReference,
@@ -59,3 +73,4 @@ export const schemaTypes = [
   contactInfo,
   socialMedia,
 ];
+

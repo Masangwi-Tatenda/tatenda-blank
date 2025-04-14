@@ -1,51 +1,10 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Heart, Calendar, BookOpen } from 'lucide-react';
 import SectionTitle from '../common/SectionTitle';
 import { cn } from '@/lib/utils';
 import { useSanity } from '@/contexts/SanityContext';
 import { dynamicIcon } from '@/lib/dynamicIcon';
-
-// Fallback data in case Sanity data is not available
-const fallbackStats = [
-  {
-    _id: "1",
-    icon: "Users",
-    value: 2500,
-    label: 'Parish Members',
-    description: 'Growing community of faith',
-    color: 'text-church-burgundy',
-    order: 1
-  },
-  {
-    _id: "2",
-    icon: "BookOpen",
-    value: 104,
-    label: 'Masses Yearly',
-    description: 'Regular worship services',
-    color: 'text-church-gold',
-    order: 2
-  },
-  {
-    _id: "3",
-    icon: "Heart",
-    value: 35,
-    label: 'Ministry Groups',
-    description: 'Active in our community',
-    color: 'text-church-navy',
-    order: 3
-  },
-  {
-    _id: "4",
-    icon: "Calendar",
-    value: 72,
-    label: 'Annual Events',
-    description: 'Community gatherings',
-    color: 'text-church-rose',
-    order: 4
-  }
-];
 
 // Animated counter component
 const Counter = ({ value, duration = 2 }) => {
@@ -73,9 +32,6 @@ const Counter = ({ value, duration = 2 }) => {
 
 const ChurchStats = () => {
   const { churchStats, isLoading } = useSanity();
-  
-  // Use Sanity data if available, otherwise use fallback data
-  const stats = churchStats?.length > 0 ? churchStats : fallbackStats;
 
   if (isLoading) {
     return (
@@ -98,7 +54,7 @@ const ChurchStats = () => {
         />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
-          {stats.map((stat, index) => {
+          {churchStats.map((stat, index) => {
             // Create the icon element using our fixed dynamicIcon function
             const iconElement = dynamicIcon(stat.icon);
             

@@ -6,36 +6,8 @@ import Button from '../common/Button';
 import { useSanity } from '@/contexts/SanityContext';
 import { dynamicIcon } from '@/lib/dynamicIcon';
 
-// Fallback data to use if Sanity data is not available
-const fallbackItems = [
-  {
-    _id: "1",
-    title: "The Creed",
-    description: "The Apostles' Creed and Nicene Creed summarize the foundational beliefs of the Catholic faith, including our understanding of the Trinity, the Church, and salvation.",
-    icon: "BookOpen",
-    link: "/core-faith#creed"
-  },
-  {
-    _id: "2",
-    title: "The Sacraments",
-    description: "The seven sacraments are efficacious signs of grace instituted by Christ and entrusted to the Church, through which Divine life is bestowed upon us.",
-    icon: "Droplet",
-    link: "/core-faith#sacraments"
-  },
-  {
-    _id: "3",
-    title: "Moral Teaching",
-    description: "Catholic moral teaching guides us in living a life of virtue, dignity, and holiness, informed by Scripture, Tradition, and natural law.",
-    icon: "Heart",
-    link: "/core-faith#moral-teaching"
-  }
-];
-
 const CoreFaithSection = () => {
   const { coreFaithItems, isLoading } = useSanity();
-  
-  // Use Sanity data if available, otherwise use fallback data
-  const faithItems = coreFaithItems?.length > 0 ? coreFaithItems : fallbackItems;
   
   return (
     <section className="section-padding bg-church-navy text-white">
@@ -54,7 +26,7 @@ const CoreFaithSection = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {faithItems.map((item) => {
+            {coreFaithItems.map((item) => {
               const iconElement = dynamicIcon(item.icon);
               
               return (
