@@ -293,6 +293,7 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         youthMinistryPage,
         catholicTeachingPage,
         sacraments,
+        liturgicalCalendar,
         fetchSingleEvent: async (slug: string) => client.fetch(queries.singleEvent(slug)),
         fetchSinglePost: async (slug: string) => client.fetch(queries.singleBlogPost(slug)),
         fetchSingleYouthEvent: async (slug: string) => client.fetch(queries.singleYouthEvent(slug)),
