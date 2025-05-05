@@ -464,8 +464,8 @@ export const queries = {
   // Common pages
   aboutPage: groq`*[_type == "aboutPage"][0]`,
   contactPage: groq`*[_type == "contactPage"][0]`,
-  massSchedule: groq`*[_type == "massSchedule"][0]`,
   catholicTeachingPage: groq`*[_type == "catholicTeachingPage"][0]`,
+  massSchedule: groq`*[_type == "massSchedule"][0]`,
   
   // Sacraments
   allSacraments: groq`*[_type == "sacrament"] | order(order asc)`,
@@ -473,9 +473,6 @@ export const queries = {
   
   // Generic page content
   pageBySlug: (slug) => groq`*[_type == "pageContent" && slug.current == "${slug}"][0]`,
-  
-  // Mass Schedule
-  massSchedule: groq`*[_type == "massSchedule"][0]`,
   
   // Liturgical Calendar
   liturgicalCalendar: groq`*[_type == "liturgicalCalendar"][0]{
