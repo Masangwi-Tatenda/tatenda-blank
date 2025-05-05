@@ -20,8 +20,8 @@ const WeeklyScripture = () => {
   // Use Sanity data if available, otherwise use fallback
   const scripture = weeklyScripture || fallbackScripture;
   
-  // Get the scripture reference from either verse or reference field
-  const scriptureReference = scripture.verse || scripture.reference || "Scripture";
+  // Get the scripture reference from verse field - the fallback doesn't have a reference field
+  const scriptureReference = scripture.verse || "Scripture";
 
   return (
     <section className="section-padding bg-white">
