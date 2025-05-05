@@ -1,7 +1,6 @@
-
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
-import { groq } from '@sanity/client';
+import groq from 'groq';
 
 // Types for Sanity data
 export interface HeroSlide {
@@ -183,9 +182,14 @@ export interface WelcomeSection {
   title: string;
   subtitle?: string;
   description?: any[];
-  mainImage?: any;
-  buttonText?: string;
-  buttonLink?: string;
+  image?: any;
+  mission?: string;
+  vision?: string;
+  quote?: string;
+  quoteAuthor?: string;
+  quoteAuthorTitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
 export interface CoreFaithItem {
@@ -209,11 +213,12 @@ export interface QuickLink {
 
 export interface WeeklyScripture {
   _id: string;
-  title: string;
-  reference: string;
+  title?: string;
+  verse?: string;
+  reference?: string;
   text?: any[];
   reflection?: any[];
-  date: string;
+  date?: string;
 }
 
 export interface BibleStudyResource {
@@ -230,11 +235,19 @@ export interface AboutPage {
   _id: string;
   title: string;
   subtitle?: string;
-  history?: any[];
-  mission?: any[];
-  vision?: any[];
-  mainImage?: any;
-  galleryImages?: any[];
+  heroImage?: any;
+  historyTitle?: string;
+  historySubtitle?: string;
+  historyContent?: any[];
+  historyImage?: any;
+  mission?: string;
+  missionDescription?: any[];
+  vision?: string;
+  visionDescription?: any[];
+  joinCommunityTitle?: string;
+  joinCommunityText?: string;
+  joinCommunityButtonText?: string;
+  joinCommunityButtonLink?: string;
 }
 
 export interface ContactPage {
@@ -262,11 +275,47 @@ export interface YouthMinistryPage {
   _id: string;
   title: string;
   subtitle?: string;
-  overview?: any[];
-  programs?: { title: string; description: string; ageGroup: string; meetingInfo?: string }[];
-  leadersInfo?: any[];
-  mainImage?: any;
-  galleryImages?: any[];
+  heroImage?: any;
+  introduction?: any[];
+  bibleVerse?: {
+    text: string;
+    reference: string;
+  };
+  missionStatement?: {
+    title: string;
+    content: any[];
+    image?: any;
+  };
+  youthGroups?: {
+    id: string;
+    name: string;
+    ageRange: string;
+    description: string;
+    icon: string;
+    color: string;
+    image?: any;
+    verse?: string;
+    link: string;
+  }[];
+  parentalInvolvement?: {
+    title: string;
+    content: string;
+    roles: {
+      icon: string;
+      title: string;
+      description: string;
+    }[];
+    buttonText: string;
+    buttonLink: string;
+  };
+  contactInformation?: {
+    title: string;
+    content: string;
+    coordinator: string;
+    role: string;
+    email: string;
+    phone: string;
+  };
 }
 
 export interface CatholicTeachingPage {

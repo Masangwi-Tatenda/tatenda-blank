@@ -8,7 +8,7 @@ import Button from '../common/Button';
 import { useSanity } from '@/contexts/SanityContext';
 
 const WeeklyScripture = () => {
-  const { weeklyScripture, bibleStudyResources, isLoading } = useSanity();
+  const { weeklyScripture, bibleStudyResources } = useSanity();
   
   // Fallback data if Sanity data is not available
   const fallbackScripture = {
@@ -19,18 +19,9 @@ const WeeklyScripture = () => {
 
   // Use Sanity data if available, otherwise use fallback
   const scripture = weeklyScripture || fallbackScripture;
-
-  if (isLoading) {
-    return (
-      <section className="section-padding bg-white">
-        <div className="container-custom">
-          <div className="flex justify-center">
-            <div className="w-12 h-12 border-4 border-church-burgundy border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  
+  // Get the scripture reference from either verse or reference field
+  const scriptureReference = scripture.verse || scripture.reference || "Scripture";
 
   return (
     <section className="section-padding bg-white">
@@ -54,7 +45,7 @@ const WeeklyScripture = () => {
                   <div className="relative z-10">
                     <BookOpen className="w-10 h-10 mb-4 text-church-gold" />
                     <h3 className="text-xl font-semibold mb-4">Daily Scripture</h3>
-                    <p className="text-2xl font-playfair mb-3">{scripture.verse}</p>
+                    <p className="text-2xl font-playfair mb-3">{scriptureReference}</p>
                     <div className="flex items-start mt-4">
                       <Quote className="w-8 h-8 text-church-gold shrink-0 mt-1 mr-2" />
                       <p className="italic text-white/90">{scripture.text}</p>
