@@ -5,6 +5,7 @@ import Button from '../common/Button';
 import { useSanity } from '@/contexts/SanityContext';
 import SanityImage from '../common/SanityImage';
 import PortableText from '../common/PortableText';
+import { useSanityImage } from '@/hooks/use-sanity-image';
 
 const Welcome = () => {
   const { welcomeSection, isLoading } = useSanity();
@@ -48,6 +49,9 @@ const Welcome = () => {
   // Use data from Sanity or fallback
   const content = welcomeSection || fallbackWelcome;
 
+  // Default image if none provided
+  const fallbackImageUrl = "https://images.unsplash.com/photo-1473177104440-ffee2f376098?auto=format&fit=crop&w=1200&q=80";
+
   if (isLoading) {
     return (
       <section className="section-padding bg-church-cream">
@@ -72,13 +76,13 @@ const Welcome = () => {
                   <SanityImage 
                     image={welcomeSection.image} 
                     alt="Parish Priest" 
-                    className="w-full h-auto object-cover"
+                    className="w-full h-[400px] object-cover"
                   />
                 ) : (
                   <img 
-                    src="assets/bishoop.jpg"
+                    src={fallbackImageUrl}
                     alt="Parish Priest" 
-                    className="w-full h-auto object-cover"
+                    className="w-full h-[400px] object-cover"
                   />
                 )}
               </div>
