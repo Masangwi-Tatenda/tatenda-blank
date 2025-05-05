@@ -1,333 +1,171 @@
+
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import { groq } from '@sanity/client';
 
-// Create a Sanity client
-export const client = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'cfnd6oxb',
-  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
-  apiVersion: import.meta.env.VITE_SANITY_API_VERSION || '2025-04-10',
-  useCdn: true,
-  // token: import.meta.env.VITE_SANITY_TOKEN, // Only include token if using authenticated requests
-});
-
-// Set up image URL builder
-const builder = imageUrlBuilder(client);
-
-// Helper function to get image URLs from Sanity
-export function urlFor(source: SanityImageSource) {
-  return builder.image(source);
-}
-
-// Function to fetch data with error handling
-export async function fetchSanityData(query: string) {
-  try {
-    console.log('Fetching Sanity data with query:', query);
-    const data = await client.fetch(query);
-    console.log('Sanity data fetched successfully:', data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching data from Sanity:', error);
-    return null;
-  }
-}
-
-// Common Types
-export interface SanityImage {
-  _type: 'image';
-  asset: {
-    _ref: string;
-    _type: 'reference';
-  };
-  alt?: string;
-}
-
-export interface SanityFile {
-  _type: 'file';
-  asset: {
-    _ref: string;
-    _type: 'reference';
-  };
-}
-
-export interface SanitySlug {
-  _type: 'slug';
-  current: string;
-}
-
-// Content Types
+// Types for Sanity data
 export interface HeroSlide {
   _key: string;
   title: string;
-  subtitle: string;
-  image: SanityImage;
-  order: number;
-  cta?: {
-    text: string;
-    link: string;
-  };
+  subtitle?: string;
+  image: any;
+  cta?: { text: string; link: string };
 }
 
 export interface EventItem {
   _id: string;
   title: string;
-  description: string;
+  slug: { current: string };
   date: string;
-  startTime: string;
+  startTime?: string;
   endTime?: string;
-  location: string;
-  category: string;
-  recurring?: string;
-  organizer?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  featured?: boolean;
-  registrationRequired?: boolean;
-  registrationLink?: string;
-  mainImage: SanityImage;
-  tags?: string[];
-  attachments?: {
-    _key: string;
-    name: string;
-    file: SanityFile;
-    description?: string;
-  }[];
-  body: any[];
-  slug: SanitySlug;
+  location?: string;
+  description?: string;
+  mainImage?: any;
+  body?: any[];
+}
+
+export interface YouthEvent extends EventItem {
+  ageGroup?: string;
+  registration?: { required: boolean; link?: string };
 }
 
 export interface BlogPost {
   _id: string;
   title: string;
-  author: {
-    _ref: string;
-    name: string;
-    image?: SanityImage;
-  };
+  slug: { current: string };
   publishedAt: string;
-  excerpt: string;
-  mainImage: SanityImage;
-  categories?: string[];
-  slug: SanitySlug;
-  body: any[];
+  author?: { name: string; image?: any };
+  mainImage?: any;
+  excerpt?: string;
+  categories?: { title: string }[];
+  body?: any[];
 }
 
 export interface DocumentItem {
   _id: string;
   title: string;
-  category: string;
-  type: string;
-  year: string;
-  description: string;
-  file?: SanityFile;
-  downloadUrl?: string;
-  summary?: any[];
-  slug: SanitySlug;
+  slug: { current: string };
+  documentType: string;
+  publishedAt: string;
+  description?: string;
+  file?: { asset?: { url?: string } };
 }
 
 export interface LiturgicalSeason {
   _id: string;
-  name: string;
-  start: string;
-  end: string;
+  title: string;
+  slug: { current: string };
+  startDate: string;
+  endDate: string;
   color: string;
-  image?: SanityImage;
-  description: string;
-  significance: string;
-  readings: string;
-  traditions: string;
-  content: any[];
-  slug: SanitySlug;
+  description?: string;
+  mainImage?: any;
+  body?: any[];
 }
 
 export interface FeastDay {
   _id: string;
-  name: string;
+  title: string;
+  slug: { current: string };
   date: string;
-  type: string;
-  color: string;
-  description: string;
-  readings?: {
-    title: string;
-    citation: string;
-    text: string;
-  }[];
-  content: any[];
-  slug: SanitySlug;
+  description?: string;
+  mainImage?: any;
+  body?: any[];
 }
 
 export interface Ministry {
   _id: string;
-  name: string;
-  description: string;
-  category: string;
-  image?: SanityImage;
-  leaders?: {
-    name: string;
-    role: string;
-    email?: string;
-    phone?: string;
-  }[];
+  title: string;
+  slug: { current: string };
+  leader?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  meetingDay?: string;
   meetingTime?: string;
   meetingLocation?: string;
-  requirements?: string;
-  howtojoin?: string;
-  content: any[];
-  slug: SanitySlug;
+  mainImage?: any;
+  description?: string;
+  body?: any[];
 }
 
 export interface ParishTeamMember {
   _id: string;
   name: string;
+  slug: { current: string };
   role: string;
-  category: string;
-  orderRank: number;
-  image?: SanityImage;
-  bio: string;
-  email?: string;
-  phone?: string;
-  officeHours?: string;
-  content?: any[];
-  slug: SanitySlug;
+  image?: any;
+  bio?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  order?: number;
 }
 
 export interface BulletinItem {
   _id: string;
   title: string;
   date: string;
-  file: SanityFile;
-  description?: string;
-  thumbnail?: SanityImage;
+  file?: { asset?: { url?: string } };
 }
 
 export interface HomilyItem {
   _id: string;
   title: string;
-  preacher: {
-    _ref: string;
-    name: string;
-    image?: SanityImage;
-  };
+  slug: { current: string };
   date: string;
-  readings?: {
-    title: string;
-    citation: string;
-  }[];
-  audioFile?: SanityFile;
-  videoUrl?: string;
-  liturgicalSeason?: string;
+  priest?: string;
+  scripture?: string;
+  audioFile?: { asset?: { url?: string } };
   transcript?: any[];
-  slug: SanitySlug;
 }
 
 export interface MassRecording {
   _id: string;
   title: string;
+  slug: { current: string };
   date: string;
-  celebrant?: {
-    _ref: string;
-    name: string;
-  };
   type: string;
-  videoUrl: string;
-  thumbnail?: SanityImage;
+  celebrant?: string;
+  videoUrl?: string;
   description?: string;
-  readings?: {
-    title: string;
-    citation: string;
-  }[];
-  slug: SanitySlug;
 }
 
 export interface Prayer {
   _id: string;
   title: string;
+  slug: { current: string };
   category: string;
-  text: any[];
-  origin?: string;
-  isNovena: boolean;
-  novenaStructure?: {
-    day: number;
-    intention: string;
-    prayers: any[];
-  }[];
-  audioFile?: SanityFile;
-  image?: SanityImage;
-  slug: SanitySlug;
+  text?: any[];
+  source?: string;
 }
 
 export interface Saint {
   _id: string;
   name: string;
+  slug: { current: string };
   feastDay: string;
-  lifeYears?: string;
-  region?: string;
-  patronageOf?: string[];
-  image?: SanityImage;
-  description: string;
-  biography?: any[];
-  quote?: string;
-  slug: SanitySlug;
+  patronOf?: string[];
+  bio?: any[];
+  image?: any;
 }
 
 export interface PhotoGallery {
   _id: string;
   title: string;
-  description?: string;
-  date?: string;
-  coverImage?: SanityImage;
-  category?: string;
-  images: {
-    _key: string;
-    caption?: string;
-    alt?: string;
-    asset: {
-      _ref: string;
-      _type: 'reference';
-    };
-  }[];
-  slug: SanitySlug;
-}
-
-export interface YouthEvent {
-  _id: string;
-  title: string;
-  description: string;
+  slug: { current: string };
   date: string;
-  startTime?: string;
-  endTime?: string;
-  location?: string;
-  ageGroup: string;
-  coordinator?: {
-    _ref: string;
-    name: string;
-  };
-  contactEmail?: string;
-  contactPhone?: string;
-  registrationRequired: boolean;
-  registrationLink?: string;
-  featured: boolean;
-  mainImage?: SanityImage;
-  details?: any[];
-  slug: SanitySlug;
+  description?: string;
+  images?: any[];
 }
 
 export interface DailyReading {
   _id: string;
   date: string;
-  liturgicalSeason?: string;
-  liturgicalColor?: string;
-  readings: {
-    title: string;
-    citation: string;
-    text: string;
-  }[];
+  firstReading?: { reference: string; text: any[] };
+  psalm?: { reference: string; text: any[] };
+  secondReading?: { reference: string; text: any[] };
+  gospel?: { reference: string; text: any[] };
   reflection?: any[];
-  saint?: {
-    name: string;
-    feast: boolean;
-    description?: string;
-  };
 }
 
 export interface ChurchStat {
@@ -337,52 +175,45 @@ export interface ChurchStat {
   description?: string;
   icon?: string;
   color?: string;
-  order: number;
+  order?: number;
 }
 
-// New interfaces for our added schemas
 export interface WelcomeSection {
   _id: string;
   title: string;
   subtitle?: string;
-  description: any[];
-  mission?: string;
-  vision?: string;
-  quote?: string;
-  quoteAuthor?: string;
-  quoteAuthorTitle?: string;
-  image?: SanityImage;
-  ctaText?: string;
-  ctaLink?: string;
+  description?: any[];
+  mainImage?: any;
+  buttonText?: string;
+  buttonLink?: string;
 }
 
 export interface CoreFaithItem {
   _id: string;
   title: string;
-  description: string;
+  description?: string;
   icon?: string;
   link?: string;
   order?: number;
-  content?: any[];
 }
 
 export interface QuickLink {
   _id: string;
   title: string;
   description?: string;
+  icon?: string;
   href: string;
-  icon: string;
-  color: string;
+  color?: string;
   order?: number;
 }
 
 export interface WeeklyScripture {
   _id: string;
-  verse: string;
-  text: string;
-  reflection?: string;
-  week: string;
-  active: boolean;
+  title: string;
+  reference: string;
+  text?: any[];
+  reflection?: any[];
+  date: string;
 }
 
 export interface BibleStudyResource {
@@ -391,971 +222,200 @@ export interface BibleStudyResource {
   description?: string;
   link?: string;
   resourceType?: string;
-  featured: boolean;
-  content?: any[];
-  thumbnail?: SanityImage;
+  category?: string;
+  image?: any;
 }
 
-// About Page Schema
 export interface AboutPage {
   _id: string;
   title: string;
   subtitle?: string;
-  heroImage?: SanityImage;
-  historyTitle?: string;
-  historySubtitle?: string;
-  historyContent?: any[];
-  historyImage?: SanityImage;
-  mission?: string;
-  missionDescription?: any[];
-  vision?: string;
-  visionDescription?: any[];
-  joinCommunityTitle?: string;
-  joinCommunityText?: string;
-  joinCommunityButtonText?: string;
-  joinCommunityButtonLink?: string;
+  history?: any[];
+  mission?: any[];
+  vision?: any[];
+  mainImage?: any;
+  galleryImages?: any[];
 }
 
-// Contact Page Schema
 export interface ContactPage {
   _id: string;
   title: string;
- subtitle?: string;
-  heroImage?: SanityImage;
-  contactInfo?: {
-    address?: string;
-    phone?: string;
-    email?: string;
-    officeHours?: string;
-  };
-  mapLocation?: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
-  contactFormTitle?: string;
-  contactFormIntro?: string;
-  submitButtonText?: string;
+  subtitle?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  officeHours?: string;
+  mapLocation?: { lat: number; lng: number };
+  contactForm?: { enabled: boolean; recipient?: string };
 }
 
-// Mass Schedule Schema
 export interface MassSchedule {
   _id: string;
-  title: string;
-  subtitle?: string;
-  heroImage?: SanityImage;
-  introduction?: any[];
-  weekdayMasses?: {
-    day: string;
-    time: string;
-    language?: string;
-    notes?: string;
-  }[];
-  weekendMasses?: {
-    day: string;
-    time: string;
-    language?: string;
-    notes?: string;
-  }[];
-  holyDayMasses?: {
-    title: string;
-    vigil?: string;
-    day?: string;
-    notes?: string;
-  }[];
-  confessionSchedule?: {
-    day: string;
-    time: string;
-    notes?: string;
-  }[];
-  additionalInfo?: any[];
+  weekdayMasses?: { day: string; time: string; language?: string; location?: string }[];
+  weekendMasses?: { day: string; time: string; language?: string; location?: string }[];
+  holyDays?: { title: string; date: string; time: string }[];
+  confessionTimes?: { day: string; time: string }[];
+  additionalInfo?: string;
 }
 
-// Youth Ministry Page Schema
 export interface YouthMinistryPage {
   _id: string;
   title: string;
   subtitle?: string;
-  heroImage?: SanityImage;
-  introduction?: any[];
-  bibleVerse?: {
-    text: string;
-    reference: string;
-  };
-  missionStatement?: {
-    title: string;
-    content: any[];
-    image?: SanityImage;
-  };
-  youthGroups?: {
-    id: string;
-    name: string;
-    ageRange: string;
-    description: string;
-    icon: string;
-    color: string;
-    image?: SanityImage;
-    verse?: string;
-    link: string;
-  }[];
-  parentalInvolvement?: {
-    title: string;
-    content: string;
-    roles: {
-      icon: string;
-      title: string;
-      description: string;
-    }[];
-    buttonText: string;
-    buttonLink: string;
-  };
-  contactInformation?: {
-    title: string;
-    content: string;
-    coordinator: string;
-    role: string;
-    email: string;
-    phone: string;
-  };
+  overview?: any[];
+  programs?: { title: string; description: string; ageGroup: string; meetingInfo?: string }[];
+  leadersInfo?: any[];
+  mainImage?: any;
+  galleryImages?: any[];
 }
 
-// Catholic Teaching Page Schema
 export interface CatholicTeachingPage {
   _id: string;
   title: string;
   subtitle?: string;
-  heroImage?: SanityImage;
-  introduction?: any[];
-  teachingCategories?: {
-    id: string;
-    title: string;
-    subtitle?: string;
-    description: string;
-    icon: string;
-    color: string;
-    image?: SanityImage;
-    link: string;
-  }[];
-  featuredTeachings?: {
-    title: string;
-    excerpt: string;
-    image?: SanityImage;
-    link: string;
-  }[];
-  ctaSection?: {
-    title: string;
-    content: string;
-    buttonText: string;
-    buttonLink: string;
-  };
+  sections?: { title: string; content: any[] }[];
+  resources?: { title: string; link: string; description?: string }[];
 }
 
-// Sacrament Schema
 export interface Sacrament {
   _id: string;
-  title: string;
-  subtitle?: string;
-  slug: SanitySlug;
-  heroImage?: SanityImage;
-  content: any[];
-  scriptureQuote?: {
-    text: string;
-    reference: string;
-  };
-  eligibility?: any[];
-  preparation?: any[];
-  contactInformation?: {
-    title: string;
-    contactPerson: string;
-    phone: string;
-    email: string;
-    additionalInfo?: string;
-  };
-  order: number;
+  name: string;
+  slug: { current: string };
+  shortDescription?: string;
+  description?: any[];
+  requirements?: any[];
+  preparationProcess?: any[];
+  requestForm?: { enabled: boolean; recipient?: string };
+  FAQs?: { question: string; answer: string }[];
+  image?: any;
 }
 
-// Page Content Schema
 export interface PageContent {
   _id: string;
   title: string;
-  slug: SanitySlug;
+  slug: { current: string };
   subtitle?: string;
-  heroImage?: SanityImage;
-  content?: any[];
-  sections?: {
-    title: string;
-    subtitle?: string;
-    content: any[];
-    image?: SanityImage;
-    backgroundColor?: string;
-    textColor?: string;
-  }[];
+  mainImage?: any;
+  body?: any[];
   seo?: {
-    metaTitle: string;
-    metaDescription: string;
-    keywords: string[];
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
   };
 }
 
-// Sample queries to use with the Sanity client
+// Initialize Sanity client
+export const client = createClient({
+  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'cfnd6oxb',
+  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
+  apiVersion: import.meta.env.VITE_SANITY_API_VERSION || '2025-04-10',
+  useCdn: true,
+});
+
+// For image handling
+const builder = imageUrlBuilder(client);
+export const urlFor = (source) => builder.image(source);
+
+// Queries for fetching data
 export const queries = {
-  churchDocuments: `*[_type == "churchDocument"]`,
+  // Home page content
+  heroSlides: groq`*[_type == "heroSlide"] | order(order asc)`,
+  welcomeSection: groq`*[_type == "welcomeSection"][0]`,
+  churchStats: groq`*[_type == "churchStat"] | order(order asc)`,
+  coreFaithItems: groq`*[_type == "coreFaith"] | order(order asc)`,
+  quickLinks: groq`*[_type == "quickLink"] | order(order asc)`,
+  currentWeeklyScripture: groq`*[_type == "weeklyScripture"] | order(date desc)[0]`,
+  featuredBibleStudyResources: groq`*[_type == "bibleStudyResource"][0...3]`,
   
-  heroSlides: `*[_type == "heroSlide"] | order(order asc) {
-    _key,
-    title,
-    subtitle,
-    image,
-    order,
-    cta
+  // Event queries
+  featuredEvents: groq`*[_type == "event" && defined(date) && dateTime(date) >= dateTime(now())] | order(date asc)[0...3]`,
+  upcomingEvents: groq`*[_type == "event" && defined(date) && dateTime(date) >= dateTime(now())] | order(date asc)[0...10]`,
+  allEvents: groq`*[_type == "event"] | order(date desc)`,
+  singleEvent: (slug) => groq`*[_type == "event" && slug.current == "${slug}"][0]`,
+  
+  // Blog queries
+  recentBlogPosts: groq`*[_type == "post"] | order(publishedAt desc)[0...3]`,
+  allBlogPosts: groq`*[_type == "post"] | order(publishedAt desc)`,
+  singleBlogPost: (slug) => groq`*[_type == "post" && slug.current == "${slug}"][0]{
+    ...,
+    "author": author->{name, image, bio}
   }`,
   
-  churchStats: `*[_type == "churchStat"] | order(order asc) {
-    _id,
-    label,
-    value,
-    description,
-    icon,
-    color,
-    order
-  }`,
+  // Youth ministry
+  featuredYouthEvents: groq`*[_type == "youthEvent" && defined(date) && dateTime(date) >= dateTime(now())] | order(date asc)[0...3]`,
+  allYouthEvents: groq`*[_type == "youthEvent"] | order(date desc)`,
+  singleYouthEvent: (slug) => groq`*[_type == "youthEvent" && slug.current == "${slug}"][0]`,
+  youthMinistryPage: groq`*[_type == "youthMinistryPage"][0]`,
   
-  featuredEvents: `*[_type == "event" && featured == true] | order(date asc) [0...4] {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    category,
-    recurring,
-    organizer,
-    contactEmail,
-    contactPhone,
-    featured,
-    registrationRequired,
-    registrationLink,
-    mainImage,
-    tags,
-    attachments,
-    slug
-  }`,
+  // Parish organization
+  ministries: groq`*[_type == "ministry"] | order(title asc)`,
+  allMinistries: groq`*[_type == "ministry"] | order(title asc)`,
+  singleMinistry: (slug) => groq`*[_type == "ministry" && slug.current == "${slug}"][0]`,
   
-  upcomingEvents: `*[_type == "event" && date >= now()] | order(date asc) [0...10] {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    category,
-    slug,
-    mainImage
-  }`,
+  parishTeam: groq`*[_type == "parishTeam"] | order(order asc)`,
+  allTeamMembers: groq`*[_type == "parishTeam"] | order(order asc)`,
+  singleTeamMember: (slug) => groq`*[_type == "parishTeam" && slug.current == "${slug}"][0]`,
   
-  allEvents: `*[_type == "event"] | order(date desc) {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    category,
-    recurring,
-    organizer,
-    contactEmail,
-    contactPhone,
-    featured,
-    registrationRequired,
-    registrationLink,
-    mainImage,
-    tags,
-    attachments,
-    slug
-  }`,
+  // Media content
+  recentMasses: groq`*[_type == "mass"] | order(date desc)[0...4]`,
+  allMasses: groq`*[_type == "mass"] | order(date desc)`,
+  singleMass: (slug) => groq`*[_type == "mass" && slug.current == "${slug}"][0]`,
   
-  singleEvent: (slug: string) => `*[_type == "event" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    category,
-    recurring,
-    organizer,
-    contactEmail,
-    contactPhone,
-    featured,
-    registrationRequired,
-    registrationLink,
-    mainImage,
-    tags,
-    attachments,
-    body,
-    slug
-  }`,
+  recentPhotoGalleries: groq`*[_type == "photoGallery"] | order(date desc)[0...3]`,
+  allGalleries: groq`*[_type == "photoGallery"] | order(date desc)`,
+  singleGallery: (slug) => groq`*[_type == "photoGallery" && slug.current == "${slug}"][0]`,
   
-  featuredYouthEvents: `*[_type == "youthEvent" && featured == true] | order(date asc) [0...4] {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    ageGroup,
-    coordinator->{name},
-    contactEmail,
-    contactPhone,
-    registrationRequired,
-    registrationLink,
-    featured,
-    mainImage,
-    slug
-  }`,
+  recentHomilies: groq`*[_type == "homily"] | order(date desc)[0...4]`,
+  allHomilies: groq`*[_type == "homily"] | order(date desc)`,
+  singleHomily: (slug) => groq`*[_type == "homily" && slug.current == "${slug}"][0]`,
   
-  allYouthEvents: `*[_type == "youthEvent"] | order(date desc) {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    ageGroup,
-    coordinator->{name},
-    contactEmail,
-    contactPhone,
-    registrationRequired,
-    registrationLink,
-    featured,
-    mainImage,
-    slug
-  }`,
+  recentBulletins: groq`*[_type == "bulletin"] | order(date desc)[0...4]`,
+  allBulletins: groq`*[_type == "bulletin"] | order(date desc)`,
   
-  singleYouthEvent: (slug: string) => `*[_type == "youthEvent" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    description,
-    date,
-    startTime,
-    endTime,
-    location,
-    ageGroup,
-    coordinator->{
-      _id,
-      name,
-      role,
-      image,
-      email,
-      phone
-    },
-    contactEmail,
-    contactPhone,
-    registrationRequired,
-    registrationLink,
-    featured,
-    mainImage,
-    details,
-    slug
-  }`,
+  // Faith resources
+  featuredPrayers: groq`*[_type == "prayer"][0...4]`,
+  allPrayers: groq`*[_type == "prayer"] | order(title asc)`,
+  singlePrayer: (slug) => groq`*[_type == "prayer" && slug.current == "${slug}"][0]`,
   
-  recentMasses: `*[_type == "mass"] | order(date desc) [0...6] {
-    _id,
-    title,
-    date,
-    celebrant->{name},
-    type,
-    videoUrl,
-    thumbnail,
-    slug
-  }`,
+  recentReadings: groq`*[_type == "dailyReading"] | order(date desc)[0...7]`,
+  allReadings: groq`*[_type == "dailyReading"] | order(date desc)`,
+  singleReading: (date) => groq`*[_type == "dailyReading" && date == "${date}"][0]`,
   
-  allMasses: `*[_type == "mass"] | order(date desc) {
-    _id,
-    title,
-    date,
-    celebrant->{name},
-    type,
-    videoUrl,
-    thumbnail,
-    description,
-    readings,
-    slug
-  }`,
+  churchDocuments: groq`*[_type == "document"] | order(publishedAt desc)`,
+  allDocuments: groq`*[_type == "document"] | order(publishedAt desc)`,
+  singleDocument: (slug) => groq`*[_type == "document" && slug.current == "${slug}"][0]`,
   
-  singleMass: (slug: string) => `*[_type == "mass" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    date,
-    celebrant->{
-      _id,
-      name,
-      role,
-      image
-    },
-    type,
-    videoUrl,
-    thumbnail,
-    description,
-    readings,
-    slug
-  }`,
+  // Liturgical content
+  liturgicalSeasons: groq`*[_type == "liturgicalSeason"] | order(startDate asc)`,
+  currentFeastDays: groq`*[_type == "feastDay"] | order(date asc)[0...5]`,
+  featuredSaints: groq`*[_type == "saint"][0...4]`,
+  allSaints: groq`*[_type == "saint"] | order(feastDay asc)`,
+  singleSaint: (slug) => groq`*[_type == "saint" && slug.current == "${slug}"][0]`,
   
-  recentBlogPosts: `*[_type == "post"] | order(publishedAt desc) [0...6] {
-    _id,
-    title,
-    author->{name, image},
-    publishedAt,
-    excerpt,
-    mainImage,
-    categories,
-    slug
-  }`,
+  // Common pages
+  aboutPage: groq`*[_type == "aboutPage"][0]`,
+  contactPage: groq`*[_type == "contactPage"][0]`,
+  massSchedule: groq`*[_type == "massSchedule"][0]`,
+  catholicTeachingPage: groq`*[_type == "catholicTeachingPage"][0]`,
   
-  allBlogPosts: `*[_type == "post"] | order(publishedAt desc) {
-    _id,
-    title,
-    author->{name, image},
-    publishedAt,
-    excerpt,
-    mainImage,
-    categories,
-    slug
-  }`,
+  // Sacraments
+  allSacraments: groq`*[_type == "sacrament"] | order(order asc)`,
+  singleSacrament: (slug) => groq`*[_type == "sacrament" && slug.current == "${slug}"][0]`,
   
-  singleBlogPost: (slug: string) => `*[_type == "post" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    author->{
-      name,
-      image,
-      bio
-    },
-    publishedAt,
-    body,
-    categories,
-    mainImage,
-    slug
-  }`,
-  
-  recentPhotoGalleries: `*[_type == "photoGallery"] | order(date desc) [0...6] {
-    _id,
-    title,
-    description,
-    date,
-    coverImage,
-    category,
-    slug
-  }`,
-  
-  allGalleries: `*[_type == "photoGallery"] | order(date desc) {
-    _id,
-    title,
-    description,
-    date,
-    coverImage,
-    category,
-    slug
-  }`,
-  
-  singleGallery: (slug: string) => `*[_type == "photoGallery" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    description,
-    date,
-    coverImage,
-    category,
-    images,
-    slug
-  }`,
-  
-  recentHomilies: `*[_type == "homily"] | order(date desc) [0...6] {
-    _id,
-    title,
-    preacher->{name, image},
-    date,
-    readings,
-    audioFile,
-    videoUrl,
-    liturgicalSeason,
-    slug
-  }`,
-  
-  allHomilies: `*[_type == "homily"] | order(date desc) {
-    _id,
-    title,
-    preacher->{name, image},
-    date,
-    readings,
-    audioFile,
-    videoUrl,
-    liturgicalSeason,
-    slug
-  }`,
-  
-  singleHomily: (slug: string) => `*[_type == "homily" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    preacher->{
-      _id,
-      name,
-      role,
-      image,
-      bio
-    },
-    date,
-    readings,
-    audioFile,
-    videoUrl,
-    liturgicalSeason,
-    transcript,
-    slug
-  }`,
-  
-  recentBulletins: `*[_type == "bulletin"] | order(date desc) [0...6] {
-    _id,
-    title,
-    date,
-    file,
-    description,
-    thumbnail
-  }`,
-  
-  allBulletins: `*[_type == "bulletin"] | order(date desc) {
-    _id,
-    title,
-    date,
-    file,
-    description,
-    thumbnail
-  }`,
-  
-  featuredPrayers: `*[_type == "prayer"] | order(_createdAt desc) [0...6] {
-    _id,
-    title,
-    category,
-    text,
-    origin,
-    isNovena,
-    audioFile,
-    image,
-    slug
-  }`,
-  
-  allPrayers: `*[_type == "prayer"] | order(title asc) {
-    _id,
-    title,
-    category,
-    text,
-    origin,
-    isNovena,
-    audioFile,
-    image,
-    slug
-  }`,
-  
-  singlePrayer: (slug: string) => `*[_type == "prayer" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    category,
-    text,
-    origin,
-    isNovena,
-    novenaStructure,
-    audioFile,
-    image,
-    slug
-  }`,
-  
-  recentReadings: `*[_type == "dailyReading" && date >= now()] | order(date asc) [0...1] {
-    _id,
-    date,
-    liturgicalSeason,
-    liturgicalColor,
-    readings,
-    reflection,
-    saint
-  }`,
-  
-  allReadings: `*[_type == "dailyReading"] | order(date desc) {
-    _id,
-    date,
-    liturgicalSeason,
-    liturgicalColor,
-    readings,
-    reflection,
-    saint
-  }`,
-  
-  singleReading: (date: string) => `*[_type == "dailyReading" && date == "${date}"][0] {
-    _id,
-    date,
-    liturgicalSeason,
-    liturgicalColor,
-    readings,
-    reflection,
-    saint
-  }`,
-  
-  allDocuments: `*[_type == "document"] | order(year desc) {
-    _id,
-    title,
-    category,
-    type,
-    year,
-    description,
-    file,
-    downloadUrl,
-    slug
-  }`,
-  
-  singleDocument: (slug: string) => `*[_type == "document" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    category,
-    type,
-    year,
-    description,
-    file,
-    downloadUrl,
-    summary,
-    slug
-  }`,
-  
-  liturgicalSeasons: `*[_type == "liturgicalSeason"] | order(start asc) {
-    _id,
-    name,
-    start,
-    end,
-    color,
-    image,
-    description,
-    significance,
-    readings,
-    traditions,
-    slug
-  }`,
-  
-  currentFeastDays: `*[_type == "feastDay" && date >= now() && date <= dateTime(now() + 60*60*24*30)] | order(date asc) [0...6] {
-    _id,
-    name,
-    date,
-    type,
-    color,
-    description,
-    slug
-  }`,
-  
-  featuredSaints: `*[_type == "saint"] | order(feastDay asc) [0...6] {
-    _id,
-    name,
-    feastDay,
-    lifeYears,
-    region,
-    patronageOf,
-    image,
-    description,
-    quote,
-    slug
-  }`,
-  
-  allSaints: `*[_type == "saint"] | order(feastDay asc) {
-    _id,
-    name,
-    feastDay,
-    lifeYears,
-    region,
-    patronageOf,
-    image,
-    description,
-    quote,
-    slug
-  }`,
-  
-  singleSaint: (slug: string) => `*[_type == "saint" && slug.current == "${slug}"][0] {
-    _id,
-    name,
-    feastDay,
-    lifeYears,
-    region,
-    patronageOf,
-    image,
-    description,
-    biography,
-    quote,
-    slug
-  }`,
-  
-  parishTeam: `*[_type == "parishTeam"] | order(orderRank asc) {
-    _id,
-    name,
-    role,
-    category,
-    orderRank,
-    image,
-    bio,
-    email,
-    phone,
-    officeHours,
-    slug
-  }`,
-  
-  allTeamMembers: `*[_type == "parishTeam"] | order(category asc, orderRank asc) {
-    _id,
-    name,
-    role,
-    category,
-    orderRank,
-    image,
-    bio,
-    email,
-    phone,
-    officeHours,
-    slug
-  }`,
-  
-  singleTeamMember: (slug: string) => `*[_type == "parishTeam" && slug.current == "${slug}"][0] {
-    _id,
-    name,
-    role,
-    category,
-    orderRank,
-    image,
-    bio,
-    email,
-    phone,
-    officeHours,
-    content,
-    slug
-  }`,
-  
-  ministries: `*[_type == "ministry"] | order(name asc) {
-    _id,
-    name,
-    description,
-    category,
-    image,
-    leaders,
-    meetingTime,
-    meetingLocation,
-    slug
-  }`,
-  
-  allMinistries: `*[_type == "ministry"] | order(category asc, name asc) {
-    _id,
-    name,
-    description,
-    category,
-    image,
-    leaders,
-    meetingTime,
-    meetingLocation,
-    slug
-  }`,
-  
-  singleMinistry: (slug: string) => `*[_type == "ministry" && slug.current == "${slug}"][0] {
-    _id,
-    name,
-    description,
-    category,
-    image,
-    leaders,
-    meetingTime,
-    meetingLocation,
-    requirements,
-    howtojoin,
-    content,
-    slug
-  }`,
-  
-  welcomeSection: `*[_type == "welcomeSection"][0] {
-    _id,
-    title,
-    subtitle,
-    description,
-    mission,
-    vision,
-    quote,
-    quoteAuthor,
-    quoteAuthorTitle,
-    image,
-    ctaText,
-    ctaLink
-  }`,
-  
-  coreFaithItems: `*[_type == "coreFaith"] | order(order asc) {
-    _id,
-    title,
-    description,
-    icon,
-    link,
-    order,
-    content
-  }`,
-  
-  quickLinks: `*[_type == "quickLink"] | order(order asc) {
-    _id,
-    title,
-    description,
-    href,
-    icon,
-    color,
-    order
-  }`,
-  
-  currentWeeklyScripture: `*[_type == "weeklyScripture" && active == true][0] {
-    _id,
-    verse,
-    text,
-    reflection,
-    week
-  }`,
-  
-  featuredBibleStudyResources: `*[_type == "bibleStudyResource" && featured == true] | order(_createdAt desc) [0...3] {
-    _id,
-    title,
-    description,
-    link,
-    resourceType,
-    featured,
-    thumbnail
-  }`,
-  
-  allBibleStudyResources: `*[_type == "bibleStudyResource"] | order(_createdAt desc) {
-    _id,
-    title,
-    description,
-    link,
-    resourceType,
-    featured,
-    thumbnail
-  }`,
-  
-  singleBibleStudyResource: (id: string) => `*[_type == "bibleStudyResource" && _id == "${id}"][0] {
-    _id,
-    title,
-    description,
-    link,
-    resourceType,
-    featured,
-    content,
-    thumbnail
-  }`,
-  
-  aboutPage: `*[_type == "aboutPage"][0] {
-    _id,
-    title,
-    subtitle,
-    heroImage,
-    historyTitle,
-    historySubtitle,
-    historyContent,
-    historyImage,
-    mission,
-    missionDescription,
-    vision,
-    visionDescription,
-    joinCommunityTitle,
-    joinCommunityText,
-    joinCommunityButtonText,
-    joinCommunityButtonLink
-  }`,
-  
-  contactPage: `*[_type == "contactPage"][0] {
-    _id,
-    title,
-    subtitle,
-    heroImage,
-    contactInfo,
-    mapLocation,
-    contactFormTitle,
-    contactFormIntro,
-    submitButtonText
-  }`,
-  
-  massSchedule: `*[_type == "massSchedule"][0] {
-    _id,
-    title,
-    subtitle,
-    heroImage,
-    introduction,
-    weekdayMasses,
-    weekendMasses,
-    holyDayMasses,
-    confessionSchedule,
-    additionalInfo
-  }`,
-  
-  youthMinistryPage: `*[_type == "youthMinistryPage"][0] {
-    _id,
-    title,
-    subtitle,
-    heroImage,
-    introduction,
-    bibleVerse,
-    missionStatement,
-    youthGroups,
-    parentalInvolvement,
-    contactInformation
-  }`,
-  
-  catholicTeachingPage: `*[_type == "catholicTeachingPage"][0] {
-    _id,
-    title,
-    subtitle,
-    heroImage,
-    introduction,
-    teachingCategories,
-    featuredTeachings,
-    ctaSection
-  }`,
-  
-  allSacraments: `*[_type == "sacrament"] | order(order asc) {
-    _id,
-    title,
-    subtitle,
-    slug,
-    heroImage,
-    order
-  }`,
-  
-  singleSacrament: (slug: string) => `*[_type == "sacrament" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    subtitle,
-    slug,
-    heroImage,
-    content,
-    scriptureQuote,
-    eligibility,
-    preparation,
-    contactInformation,
-    order
-  }`,
-  
-  pageBySlug: (slug: string) => `*[_type == "pageContent" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    slug,
-    subtitle,
-    heroImage,
-    content,
-    sections,
-    seo
-  }`,
-  
-  allPages: `*[_type == "pageContent"] {
-    _id,
-    title,
-    slug,
-    subtitle
-  }`,
+  // Generic page content
+  pageBySlug: (slug) => groq`*[_type == "pageContent" && slug.current == "${slug}"][0]`,
 };
 
-export default client;
+console.log(`Sanity client initialized with project ID: ${import.meta.env.VITE_SANITY_PROJECT_ID || 'cfnd6oxb'}`);
+
+// Test connection function - can be used to verify Sanity connection
+export const testSanityConnection = async () => {
+  try {
+    const result = await client.fetch(groq`*[_type == "sanity.imageAsset"][0...1]`);
+    console.log("Sanity connection test:", result ? "Successful" : "Failed (no data)");
+    return !!result;
+  } catch (error) {
+    console.error("Sanity connection test failed:", error);
+    return false;
+  }
+};

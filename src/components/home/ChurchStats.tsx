@@ -32,7 +32,7 @@ const Counter = ({ value, duration = 2 }) => {
 };
 
 const ChurchStats = () => {
-  const { churchStats, isLoading, error } = useSanity();
+  const { churchStats } = useSanity();
   
   // Fallback data in case Sanity data is not available
   const fallbackStats = [
@@ -78,18 +78,6 @@ const ChurchStats = () => {
   const statsToDisplay = (churchStats && churchStats.length > 0) ? churchStats : fallbackStats;
   
   console.log('Church stats component rendering with:', statsToDisplay);
-
-  if (isLoading) {
-    return (
-      <section className="section-padding bg-gradient-to-br from-gray-50 to-church-cream">
-        <div className="container-custom">
-          <div className="flex justify-center">
-            <div className="w-12 h-12 border-4 border-church-burgundy border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="section-padding bg-gradient-to-br from-gray-50 to-church-cream">

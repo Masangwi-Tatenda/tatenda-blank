@@ -58,25 +58,52 @@ const QuickLinkCard = ({ icon, title, description, href, color }) => {
 };
 
 const QuickLinks = () => {
-  const { quickLinks, isLoading } = useSanity();
+  const { quickLinks } = useSanity();
+  
+  // Fallback links in case Sanity data is not available
+  const fallbackLinks = [
+    {
+      _id: '1',
+      icon: 'Calendar',
+      title: 'Mass Schedule',
+      description: 'Join us for daily and weekend masses',
+      href: '/mass-times',
+      color: 'from-church-burgundy to-church-burgundy/80'
+    },
+    {
+      _id: '2',
+      icon: 'Users',
+      title: 'Parish Ministries',
+      description: 'Get involved in our community',
+      href: '/ministries',
+      color: 'from-church-gold to-church-gold/80'
+    },
+    {
+      _id: '3',
+      icon: 'BookOpen',
+      title: 'Faith Formation',
+      description: 'Grow in your spiritual journey',
+      href: '/education-formation',
+      color: 'from-church-navy to-church-navy/80'
+    },
+    {
+      _id: '4',
+      icon: 'Heart',
+      title: 'Giving',
+      description: 'Support our parish mission',
+      href: '/donate',
+      color: 'from-church-burgundy to-church-burgundy/80'
+    }
+  ];
 
-  if (isLoading) {
-    return (
-      <section className="py-16 bg-gray-50">
-        <div className="container-custom">
-          <div className="flex justify-center">
-            <div className="w-12 h-12 border-4 border-church-burgundy border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // Use Sanity data if available, otherwise use fallback
+  const linksToDisplay = (quickLinks && quickLinks.length > 0) ? quickLinks : fallbackLinks;
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {quickLinks.map((link, index) => (
+          {linksToDisplay.map((link, index) => (
             <QuickLinkCard 
               key={link._id || index} 
               icon={link.icon} 
