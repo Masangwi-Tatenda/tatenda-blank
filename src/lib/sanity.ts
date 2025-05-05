@@ -264,11 +264,31 @@ export interface ContactPage {
 
 export interface MassSchedule {
   _id: string;
+  title: string;
+  subtitle?: string;
+  heroImage?: any;
   weekdayMasses?: { day: string; time: string; language?: string; location?: string }[];
   weekendMasses?: { day: string; time: string; language?: string; location?: string }[];
   holyDays?: { title: string; date: string; time: string }[];
   confessionTimes?: { day: string; time: string }[];
   additionalInfo?: string;
+}
+
+export interface LiturgicalCalendar {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  introduction?: any[];
+  currentSeason?: LiturgicalSeason;
+  upcomingFeasts?: FeastDay[];
+  seasons?: {
+    name: string;
+    description: string;
+    color: string;
+    startDate: string;
+    endDate: string;
+    image?: any;
+  }[];
 }
 
 export interface YouthMinistryPage {
@@ -453,6 +473,30 @@ export const queries = {
   
   // Generic page content
   pageBySlug: (slug) => groq`*[_type == "pageContent" && slug.current == "${slug}"][0]`,
+  
+  // Mass Schedule
+  massSchedule: groq`*[_type == "massSchedule"][0]`,
+  
+  // Liturgical Calendar
+  liturgicalCalendar: groq`*[_type == "liturgicalCalendar"][0]{
+    ...,
+    "currentSeason": currentSeason->{
+      title,
+      slug,
+      startDate,
+      endDate,
+      color,
+      description,
+      mainImage
+    },
+    "upcomingFeasts": upcomingFeasts[]->{
+      title,
+      slug,
+      date,
+      description,
+      mainImage
+    }
+  }`,
 };
 
 console.log(`Sanity client initialized with project ID: ${import.meta.env.VITE_SANITY_PROJECT_ID || 'cfnd6oxb'}`);

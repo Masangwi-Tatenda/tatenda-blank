@@ -26,12 +26,6 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'introduction',
-      title: 'Introduction Text',
-      type: 'array',
-      of: [{ type: 'block' }],
-    }),
-    defineField({
       name: 'weekdayMasses',
       title: 'Weekday Masses',
       type: 'array',
@@ -41,8 +35,8 @@ export default defineType({
           fields: [
             { name: 'day', title: 'Day', type: 'string' },
             { name: 'time', title: 'Time', type: 'string' },
-            { name: 'language', title: 'Language', type: 'string' },
-            { name: 'notes', title: 'Notes', type: 'string' },
+            { name: 'language', title: 'Language (optional)', type: 'string' },
+            { name: 'location', title: 'Location (optional)', type: 'string' },
           ],
         },
       ],
@@ -57,31 +51,30 @@ export default defineType({
           fields: [
             { name: 'day', title: 'Day', type: 'string' },
             { name: 'time', title: 'Time', type: 'string' },
-            { name: 'language', title: 'Language', type: 'string' },
-            { name: 'notes', title: 'Notes', type: 'string' },
+            { name: 'language', title: 'Language (optional)', type: 'string' },
+            { name: 'location', title: 'Location (optional)', type: 'string' },
           ],
         },
       ],
     }),
     defineField({
-      name: 'holyDayMasses',
-      title: 'Holy Day Masses',
+      name: 'holyDays',
+      title: 'Holy Days of Obligation',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
             { name: 'title', title: 'Holy Day', type: 'string' },
-            { name: 'vigil', title: 'Vigil Mass', type: 'string' },
-            { name: 'day', title: 'Day Mass', type: 'string' },
-            { name: 'notes', title: 'Notes', type: 'string' },
+            { name: 'date', title: 'Date', type: 'string' },
+            { name: 'time', title: 'Mass Times', type: 'string' },
           ],
         },
       ],
     }),
     defineField({
-      name: 'confessionSchedule',
-      title: 'Confession Schedule',
+      name: 'confessionTimes',
+      title: 'Confession Times',
       type: 'array',
       of: [
         {
@@ -89,7 +82,6 @@ export default defineType({
           fields: [
             { name: 'day', title: 'Day', type: 'string' },
             { name: 'time', title: 'Time', type: 'string' },
-            { name: 'notes', title: 'Notes', type: 'string' },
           ],
         },
       ],
@@ -97,8 +89,7 @@ export default defineType({
     defineField({
       name: 'additionalInfo',
       title: 'Additional Information',
-      type: 'array',
-      of: [{ type: 'block' }],
+      type: 'text',
     }),
   ],
 })

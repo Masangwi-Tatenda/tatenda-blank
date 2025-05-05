@@ -33,6 +33,7 @@ import youthMinistryPage from './youthMinistryPage'
 import catholicTeachingPage from './catholicTeachingPage'
 import sacrament from './sacrament'
 import pageContent from './pageContent'
+import liturgicalCalendar from './liturgicalCalendar'
 
 export const schemaTypes = [
   // Document types
@@ -66,6 +67,7 @@ export const schemaTypes = [
   catholicTeachingPage,
   sacrament,
   pageContent,
+  liturgicalCalendar,
   
   // Object types
   categoryReference,
@@ -73,4 +75,3 @@ export const schemaTypes = [
   contactInfo,
   socialMedia,
 ];
-

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource, AboutPage, ContactPage, MassSchedule, YouthMinistryPage, CatholicTeachingPage, Sacrament, PageContent } from '@/lib/sanity';
+import { client, queries, HeroSlide, EventItem, BlogPost, DocumentItem, LiturgicalSeason, FeastDay, Ministry, ParishTeamMember, BulletinItem, HomilyItem, MassRecording, Prayer, Saint, PhotoGallery, YouthEvent, DailyReading, ChurchStat, WelcomeSection, CoreFaithItem, QuickLink, WeeklyScripture, BibleStudyResource, AboutPage, ContactPage, MassSchedule, YouthMinistryPage, CatholicTeachingPage, Sacrament, PageContent, LiturgicalCalendar } from '@/lib/sanity';
 
 interface SanityContextType {
   // Common data
@@ -80,6 +80,12 @@ interface SanityContextType {
   fetchSacrament: (slug: string) => Promise<Sacrament | null>;
   fetchAllSacraments: () => Promise<Sacrament[] | null>;
   fetchPageBySlug: (slug: string) => Promise<PageContent | null>;
+
+  // Add new properties
+  liturgicalCalendar: LiturgicalCalendar | null;
+  
+  // Add new fetch functions
+  fetchLiturgicalCalendar: () => Promise<LiturgicalCalendar | null>;
 }
 
 const SanityContext = createContext<SanityContextType | undefined>(undefined);
@@ -132,6 +138,8 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [liturgicalCalendar, setLiturgicalCalendar] = useState<LiturgicalCalendar | null>(null);
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -177,6 +185,7 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           youthMinistry,
           catholicTeaching,
           sacramentsList,
+          liturgicalCal,
         ] = await Promise.all([
           client.fetch(queries.heroSlides).catch(e => { console.error('Error fetching heroSlides:', e); return []; }),
           client.fetch(queries.featuredEvents).catch(e => { console.error('Error fetching featuredEvents:', e); return []; }),
@@ -206,6 +215,7 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           client.fetch(queries.youthMinistryPage).catch(e => { console.error('Error fetching youthMinistryPage:', e); return null; }),
           client.fetch(queries.catholicTeachingPage).catch(e => { console.error('Error fetching catholicTeachingPage:', e); return null; }),
           client.fetch(queries.allSacraments).catch(e => { console.error('Error fetching allSacraments:', e); return []; }),
+          client.fetch(queries.liturgicalCalendar).catch(e => { console.error('Error fetching liturgicalCalendar:', e); return null; }),
         ]);
 
         setHeroSlides(slides || []);
@@ -237,6 +247,7 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         setYouthMinistryPage(youthMinistry || null);
         setCatholicTeachingPage(catholicTeaching || null);
         setSacraments(sacramentsList || []);
+        setLiturgicalCalendar(liturgicalCal || null);
       } catch (err) {
         console.error('Error fetching Sanity data:', err);
         setError('Failed to load content. Please try again later.');
@@ -310,6 +321,7 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         fetchSacrament: async (slug: string) => client.fetch(queries.singleSacrament(slug)),
         fetchAllSacraments: async () => client.fetch(queries.allSacraments),
         fetchPageBySlug: async (slug: string) => client.fetch(queries.pageBySlug(slug)),
+        fetchLiturgicalCalendar: async () => client.fetch(queries.liturgicalCalendar),
       }}
     >
       {children}
