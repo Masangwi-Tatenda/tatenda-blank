@@ -156,13 +156,13 @@ const LiturgicalCalendarPage = () => {
               {/* Current Season Highlight */}
               {currentSeason && (
                 <div className="bg-church-burgundy/10 rounded-xl p-6 md:p-8 mb-12 shadow-sm">
-                  <h2 className="text-2xl font-bold text-church-burgundy mb-4">Current Season: {currentSeason.title || currentSeason.name}</h2>
+                  <h2 className="text-2xl font-bold text-church-burgundy mb-4">Current Season: {currentSeason.title || currentSeason.name || "Current Season"}</h2>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       {currentSeason.mainImage ? (
                         <SanityImage 
                           image={currentSeason.mainImage}
-                          alt={currentSeason.title || currentSeason.name}
+                          alt={currentSeason.title || currentSeason.name || "Current Season"}
                           className="w-full h-64 object-cover rounded-lg shadow-md"
                         />
                       ) : (
@@ -182,17 +182,17 @@ const LiturgicalCalendarPage = () => {
                     <div>
                       <p className="text-gray-700 mb-4">{currentSeason.description}</p>
                       <p className="text-sm text-gray-600 mb-3">
-                        <strong>Period:</strong> {currentSeason.startDate || currentSeason.start} - {currentSeason.endDate || currentSeason.end}
+                        <strong>Period:</strong> {currentSeason.startDate || currentSeason.start || "Season start"} - {currentSeason.endDate || currentSeason.end || "Season end"}
                       </p>
-                      {currentSeason.significance && (
-                        <p className="text-sm text-gray-600">{currentSeason.significance}</p>
+                      {(currentSeason.significance || currentSeason.description) && (
+                        <p className="text-sm text-gray-600">{currentSeason.significance || currentSeason.description}</p>
                       )}
                       <Button 
                         variant="outline" 
                         className="mt-4 text-church-burgundy border-church-burgundy hover:bg-church-burgundy/10"
                         onClick={() => {
                           setActiveTab("seasons");
-                          setSelectedSeason(currentSeason.title || currentSeason.name);
+                          setSelectedSeason(currentSeason.title || currentSeason.name || "");
                         }}
                       >
                         Learn more about this season
@@ -205,34 +205,37 @@ const LiturgicalCalendarPage = () => {
               {/* Upcoming Feast Days */}
               <h2 className="text-2xl font-bold text-church-burgundy mb-6">Upcoming Feast Days</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {upcomingFeasts.slice(0, 6).map((feast, index) => (
-                  <Card key={index} className="shadow-sm overflow-hidden border-t-4" style={{ 
-                    borderTopColor: feast.color ? 
-                      feast.color.startsWith('#') ? feast.color : 
-                      (['red', 'green', 'white', 'purple', 'gold', 'rose'].includes(feast.color.toLowerCase()) ? 
-                        `var(--${feast.color.toLowerCase()})` : 'var(--gold)') : 
-                      'var(--gold)' 
-                  }}>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        {feast.title}
-                        {feast.type && (
-                          <Badge variant="outline" className="ml-2 text-xs font-normal">
-                            {feast.type}
-                          </Badge>
-                        )}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-church-gold font-medium mb-2">
-                        {typeof feast.date === 'string' && 
-                          (feast.date.includes('-') ? format(parseISO(feast.date), 'MMMM d, yyyy') : feast.date)
-                        }
-                      </p>
-                      <p className="text-gray-700 line-clamp-3">{feast.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+                {upcomingFeasts.slice(0, 6).map((feast, index) => {
+                  const feastColor = feast.color || 'gold';
+                  return (
+                    <Card key={index} className="shadow-sm overflow-hidden border-t-4" style={{ 
+                      borderTopColor: feastColor ? 
+                        feastColor.startsWith('#') ? feastColor : 
+                        (['red', 'green', 'white', 'purple', 'gold', 'rose'].includes(feastColor.toLowerCase()) ? 
+                          `var(--${feastColor.toLowerCase()})` : 'var(--gold)') : 
+                        'var(--gold)' 
+                    }}>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          {feast.title}
+                          {feast.type && (
+                            <Badge variant="outline" className="ml-2 text-xs font-normal">
+                              {feast.type}
+                            </Badge>
+                          )}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-church-gold font-medium mb-2">
+                          {typeof feast.date === 'string' && 
+                            (feast.date.includes('-') ? format(parseISO(feast.date), 'MMMM d, yyyy') : feast.date)
+                          }
+                        </p>
+                        <p className="text-gray-700 line-clamp-3">{feast.description}</p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
 
               {/* Additional Information */}
@@ -388,7 +391,7 @@ const LiturgicalCalendarPage = () => {
                             <p className="text-gray-700 mb-3">{season.description}</p>
                             
                             <div className="mt-4 space-y-3 text-sm">
-                              <p><strong>Period:</strong> {season.startDate || season.start} to {season.endDate || season.end}</p>
+                              <p><strong>Period:</strong> {season.startDate || season.start || "Season start"} to {season.endDate || season.end || "Season end"}</p>
                               
                               {season.significance && (
                                 <div>
