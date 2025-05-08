@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,43 +6,60 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 350 44% 32%; /* Burgundy */
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 42 59% 52%; /* Gold */
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 42 59% 52%; /* Same as gold for consistency */
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --popover-foreground: 224 71.4% 4.1%;
+    --primary: 262.1 83.3% 57.8%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
+    --destructive-foreground: 210 20% 98%;
     --border: 220 13% 91%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
+    --input: 220 13% 91%;
+    --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
+    
+    /* Church colors */
+    --church-burgundy: #800020;
+    --church-gold: #D4AF37;
+    --church-cream: #FFFDD0;
+    
+    /* Liturgical colors */
+    --green: #2E8B57;
+    --purple: #660066;
+    --rose: #FF69B4;
+    --white: #FFFFFF;
+    --red: #B22222;
+    --gold: #D4AF37;
+  }
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 350 44% 32%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 263.4 70% 50.4%;
   }
 }
 
@@ -52,243 +67,43 @@
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground font-inter;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-playfair;
-  }
-
-  /* Responsive font sizes */
-  h1 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
-  
-  h2 {
-    @apply text-2xl md:text-3xl lg:text-4xl;
-  }
-  
-  h3 {
-    @apply text-xl md:text-2xl lg:text-3xl;
-  }
-  
-  h4 {
-    @apply text-lg md:text-xl;
-  }
-  
-  p {
-    @apply text-base leading-relaxed;
-  }
-  
-  /* Improved image handling */
-  img {
-    @apply max-w-full h-auto object-cover;
-    display: block;
-  }
-  
-  /* Prevent image stretching */
-  .img-container {
-    @apply overflow-hidden;
-  }
-  
-  .img-container img {
-    @apply w-full h-full object-cover;
-  }
-  
-  /* Improved form elements */
-  input, select, textarea {
-    @apply w-full p-2 text-base;
+    @apply bg-background text-foreground;
   }
 }
 
-/* Custom utility classes */
-@layer components {
-  .container-custom {
-    @apply container mx-auto px-4 md:px-8 max-w-7xl;
-  }
-  
-  .section-padding {
-    @apply py-8 md:py-12 lg:py-16 xl:py-24;
-  }
+/* Container custom */
+.container-custom {
+  @apply container mx-auto px-4 md:px-6 max-w-7xl;
+}
 
-  .link-hover {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:w-0 after:bg-church-gold after:transition-all after:duration-300 hover:after:w-full;
-  }
+/* Section padding */
+.section-padding {
+  @apply py-12 md:py-16 lg:py-20;
+}
 
-  .glass-morphism {
-    @apply bg-white/80 backdrop-blur-md shadow-lg border border-white/20;
+/* Animate */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
   }
   
-  .transition-custom {
-    @apply transition-all duration-300 ease-in-out;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
-  .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-1;
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
   }
   
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-  }
-  
-  /* Responsive grid classes */
-  .grid-auto-fit {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
-  }
-  
-  .grid-auto-fit-sm {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
-  }
-  
-  /* Mobile-first flexbox utilities */
-  .flex-stack {
-    @apply flex flex-col;
-  }
-  
-  .flex-stack-row-md {
-    @apply flex flex-col md:flex-row;
-  }
-  
-  .flex-stack-row-lg {
-    @apply flex flex-col lg:flex-row;
-  }
-  
-  /* Responsive spacing */
-  .space-y-responsive {
-    @apply space-y-4 md:space-y-6 lg:space-y-8;
-  }
-  
-  .space-x-responsive {
-    @apply space-x-2 md:space-x-4 lg:space-x-6;
-  }
-  
-  /* Responsive padding/margin */
-  .p-responsive {
-    @apply p-4 md:p-6 lg:p-8;
-  }
-  
-  .m-responsive {
-    @apply m-4 md:m-6 lg:m-8;
-  }
-  
-  /* Responsive text alignment */
-  .text-center-sm {
-    @apply text-center md:text-left;
-  }
-  
-  /* Aspect ratios for responsive images */
-  .aspect-video {
-    @apply aspect-[16/9] overflow-hidden;
-  }
-  
-  .aspect-square {
-    @apply aspect-[1/1] overflow-hidden;
-  }
-  
-  .aspect-portrait {
-    @apply aspect-[3/4] overflow-hidden;
-  }
-  
-  /* Responsive image utilities */
-  .img-cover {
-    @apply w-full h-full object-cover;
-  }
-  
-  .img-contain {
-    @apply w-full h-full object-contain;
-  }
-  
-  /* Lazy loading images */
-  .lazy-img {
-    @apply opacity-0 transition-opacity duration-500;
-  }
-  
-  .lazy-img.loaded {
-    @apply opacity-100;
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
-/* Simplified loading handling - removed complex animations */
-.loading-content {
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+/* Custom styling for liturgical elements */
+.liturgical-season-badge {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium;
 }
-
-.loaded {
-  opacity: 1;
-}
-
-/* Fade animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Page transition */
-.page-transition {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Typography styles */
-.text-gradient {
-  @apply bg-gradient-to-r from-church-burgundy via-church-gold to-church-navy bg-clip-text text-transparent;
-}
-
-/* Responsive media handling */
-@media (max-width: 640px) {
-  .hide-on-mobile {
-    display: none !important;
-  }
-  
-  .mobile-full-width {
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-  
-  .mobile-stack {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  
-  .mobile-text-center {
-    text-align: center !important;
-  }
-  
-  .mobile-p-4 {
-    padding: 1rem !important;
-  }
-}
-
-/* Responsive table styles */
-.table-responsive {
-  @apply overflow-x-auto;
-}
-
-.table-responsive table {
-  @apply w-full;
-}
-
-/* Enhanced accessibility */
-.sr-only {
-  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
-}
-
-.focus-visible:focus {
-  @apply outline-none ring-2 ring-offset-2 ring-church-burgundy;
-}
-
-/* Optimize rendering performance */
-.gpu-accelerated {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* Remove unused CSS */
