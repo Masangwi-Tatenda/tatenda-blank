@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -72,7 +71,7 @@ const getSampleReadings = (date: Date) => {
     {
       title: 'Second Reading',
       citation: 'Colossians 3:12-17',
-      text: 'Brothers and sisters: Put on, as God's chosen ones, holy and beloved, heartfelt compassion, kindness, humility, gentleness, and patience, bearing with one another and forgiving one another, if one has a grievance against another; as the Lord has forgiven you, so must you also do. And over all these put on love, that is, the bond of perfection. And let the peace of Christ control your hearts, the peace into which you were also called in one body. And be thankful.',
+      text: "Brothers and sisters: Put on, as God's chosen ones, holy and beloved, heartfelt compassion, kindness, humility, gentleness, and patience, bearing with one another and forgiving one another, if one has a grievance against another; as the Lord has forgiven you, so must you also do. And over all these put on love, that is, the bond of perfection. And let the peace of Christ control your hearts, the peace into which you were also called in one body. And be thankful.",
     },
   ];
   
@@ -85,12 +84,12 @@ const getSampleReadings = (date: Date) => {
     {
       title: 'Gospel',
       citation: 'John 20:19-23',
-      text: "On the evening of that first day of the week, when the doors were locked, where the disciples were, for fear of the Jews, Jesus came and stood in their midst and said to them, "Peace be with you." When he had said this, he showed them his hands and his side. The disciples rejoiced when they saw the Lord. Jesus said to them again, "Peace be with you. As the Father has sent me, so I send you." And when he had said this, he breathed on them and said to them, "Receive the Holy Spirit. Whose sins you forgive are forgiven them, and whose sins you retain are retained."",
+      text: "On the evening of that first day of the week, when the doors were locked, where the disciples were, for fear of the Jews, Jesus came and stood in their midst and said to them, \"Peace be with you.\" When he had said this, he showed them his hands and his side. The disciples rejoiced when they saw the Lord. Jesus said to them again, \"Peace be with you. As the Father has sent me, so I send you.\" And when he had said this, he breathed on them and said to them, \"Receive the Holy Spirit. Whose sins you forgive are forgiven them, and whose sins you retain are retained.\"",
     },
     {
       title: 'Gospel',
       citation: 'Matthew 5:13-16',
-      text: "Jesus said to his disciples: "You are the salt of the earth. But if salt loses its taste, with what can it be seasoned? It is no longer good for anything but to be thrown out and trampled underfoot. You are the light of the world. A city set on a mountain cannot be hidden. Nor do they light a lamp and then put it under a bushel basket; it is set on a lampstand, where it gives light to all in the house. Just so, your light must shine before others, that they may see your good deeds and glorify your heavenly Father."",
+      text: "Jesus said to his disciples: \"You are the salt of the earth. But if salt loses its taste, with what can it be seasoned? It is no longer good for anything but to be thrown out and trampled underfoot. You are the light of the world. A city set on a mountain cannot be hidden. Nor do they light a lamp and then put it under a bushel basket; it is set on a lampstand, where it gives light to all in the house. Just so, your light must shine before others, that they may see your good deeds and glorify your heavenly Father.\"",
     },
   ];
   
