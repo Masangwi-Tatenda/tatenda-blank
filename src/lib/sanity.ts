@@ -1,3 +1,4 @@
+
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
@@ -54,19 +55,19 @@ export interface DocumentItem {
 export interface LiturgicalSeason {
   _id: string;
   title?: string;
-  name?: string; // Add name property
+  name?: string;
   slug: { current: string };
   startDate?: string;
-  start?: string; // Add start property
+  start?: string;
   endDate?: string;
-  end?: string; // Add end property
+  end?: string;
   color: string;
   description?: string;
-  significance?: string; // Add significance property
-  readings?: string; // Add readings property
-  traditions?: string; // Add traditions property
+  significance?: string;
+  readings?: string;
+  traditions?: string;
   mainImage?: any;
-  image?: any; // Add image property
+  image?: any;
   body?: any[];
 }
 
@@ -76,10 +77,10 @@ export interface FeastDay {
   name?: string;
   slug: { current: string };
   date: string;
-  type?: string; // Add type property
-  color?: string; // Add color property
+  type?: string;
+  color?: string;
   description?: string;
-  readings?: any[]; // Add readings property
+  readings?: any[];
   mainImage?: any;
   body?: any[];
 }
@@ -104,14 +105,14 @@ export interface ParishTeamMember {
   name: string;
   slug: { current: string };
   role: string;
-  category?: string; // Add category property
-  orderRank?: number; // Add orderRank property
+  category?: string;
+  orderRank?: number;
   image?: any;
   bio?: string;
   contactEmail?: string;
-  email?: string; // Alternate property name
+  email?: string;
   contactPhone?: string;
-  phone?: string; // Alternate property name
+  phone?: string;
   officeHours?: string;
   order?: number;
 }

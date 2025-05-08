@@ -159,9 +159,9 @@ const LiturgicalCalendarPage = () => {
                   <h2 className="text-2xl font-bold text-church-burgundy mb-4">Current Season: {currentSeason.title || currentSeason.name || "Current Season"}</h2>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                      {currentSeason.mainImage ? (
+                      {currentSeason.mainImage || currentSeason.image ? (
                         <SanityImage 
-                          image={currentSeason.mainImage}
+                          image={currentSeason.mainImage || currentSeason.image}
                           alt={currentSeason.title || currentSeason.name || "Current Season"}
                           className="w-full h-64 object-cover rounded-lg shadow-md"
                         />
@@ -192,7 +192,7 @@ const LiturgicalCalendarPage = () => {
                         className="mt-4 text-church-burgundy border-church-burgundy hover:bg-church-burgundy/10"
                         onClick={() => {
                           setActiveTab("seasons");
-                          setSelectedSeason(currentSeason.title || currentSeason.name || "");
+                          setSelectedSeason(currentSeason.name || currentSeason.title || "");
                         }}
                       >
                         Learn more about this season
@@ -217,7 +217,7 @@ const LiturgicalCalendarPage = () => {
                     }}>
                       <CardHeader className="pb-2">
                         <CardTitle className="text-lg flex items-center gap-2">
-                          {feast.title}
+                          {feast.title || feast.name}
                           {feast.type && (
                             <Badge variant="outline" className="ml-2 text-xs font-normal">
                               {feast.type}
