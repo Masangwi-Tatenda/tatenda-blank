@@ -52,18 +52,7 @@ const Welcome = () => {
   // Default image if none provided
   const fallbackImageUrl = "https://images.unsplash.com/photo-1473177104440-ffee2f376098?auto=format&fit=crop&w=1200&q=80";
 
-  if (isLoading) {
-    return (
-      <section className="section-padding bg-church-cream">
-        <div className="container-custom">
-          <div className="flex justify-center">
-            <div className="w-12 h-12 border-4 border-church-burgundy border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+  // Remove loading screen and always render content
   return (
     <section className="section-padding bg-church-cream">
       <div className="container-custom">
