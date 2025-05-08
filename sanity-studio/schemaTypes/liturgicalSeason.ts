@@ -1,5 +1,5 @@
-import type { Rule } from 'sanity'
 
+import type { Rule } from 'sanity'
 
 export default {
     name: 'liturgicalSeason',
@@ -11,7 +11,11 @@ export default {
         title: 'Season Name',
         type: 'string',
         validation: (Rule: Rule) => Rule.required()
-
+      },
+      {
+        name: 'title', // Add title field
+        title: 'Display Title',
+        type: 'string',
       },
       {
         name: 'slug',
@@ -29,10 +33,22 @@ export default {
         description: 'Approximate start date for the current liturgical year',
       },
       {
+        name: 'startDate', // Add startDate field
+        title: 'Start Date Text',
+        type: 'string',
+        description: 'Descriptive start date (e.g., "First Sunday of Advent")',
+      },
+      {
         name: 'end',
         title: 'End Date',
         type: 'date',
         description: 'Approximate end date for the current liturgical year',
+      },
+      {
+        name: 'endDate', // Add endDate field
+        title: 'End Date Text',
+        type: 'string',
+        description: 'Descriptive end date (e.g., "Christmas Eve")',
       },
       {
         name: 'color',
@@ -96,4 +112,3 @@ export default {
       },
     },
   }
-  

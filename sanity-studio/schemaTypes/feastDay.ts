@@ -1,3 +1,4 @@
+
 import type { Rule } from 'sanity'
 
 export default {
@@ -9,8 +10,12 @@ export default {
         name: 'name',
         title: 'Feast Name',
         type: 'string',
-       validation: (Rule: Rule) => Rule.required()
-
+        validation: (Rule: Rule) => Rule.required()
+      },
+      {
+        name: 'title',
+        title: 'Display Title',
+        type: 'string',
       },
       {
         name: 'slug',
@@ -25,8 +30,7 @@ export default {
         name: 'date',
         title: 'Date',
         type: 'date',
-       validation: (Rule: Rule) => Rule.required()
-
+        validation: (Rule: Rule) => Rule.required()
       },
       {
         name: 'type',
@@ -103,15 +107,13 @@ export default {
         date: 'date',
         type: 'type',
       },
-      prepare(selection: { title?: string; date?: string; media?: any }) {
-        const { title, date, media } = selection;
+      prepare(selection: { title?: string; date?: string; type?: string; media?: any }) {
+        const { title, date, type, media } = selection;
         return {
           title: title || 'Untitled',
-          subtitle: date ? new Date(date).toLocaleDateString() : 'No date',
+          subtitle: `${type ? type + ' • ' : ''}${date ? new Date(date).toLocaleDateString() : 'No date'}`,
           media,
         };
       },
-      
     },
   }
-  

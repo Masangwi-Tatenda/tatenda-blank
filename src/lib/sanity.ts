@@ -53,22 +53,33 @@ export interface DocumentItem {
 
 export interface LiturgicalSeason {
   _id: string;
-  title: string;
+  title?: string;
+  name?: string; // Add name property
   slug: { current: string };
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  start?: string; // Add start property
+  endDate?: string;
+  end?: string; // Add end property
   color: string;
   description?: string;
+  significance?: string; // Add significance property
+  readings?: string; // Add readings property
+  traditions?: string; // Add traditions property
   mainImage?: any;
+  image?: any; // Add image property
   body?: any[];
 }
 
 export interface FeastDay {
   _id: string;
-  title: string;
+  title?: string;
+  name?: string;
   slug: { current: string };
   date: string;
+  type?: string; // Add type property
+  color?: string; // Add color property
   description?: string;
+  readings?: any[]; // Add readings property
   mainImage?: any;
   body?: any[];
 }
@@ -93,10 +104,15 @@ export interface ParishTeamMember {
   name: string;
   slug: { current: string };
   role: string;
+  category?: string; // Add category property
+  orderRank?: number; // Add orderRank property
   image?: any;
   bio?: string;
   contactEmail?: string;
+  email?: string; // Alternate property name
   contactPhone?: string;
+  phone?: string; // Alternate property name
+  officeHours?: string;
   order?: number;
 }
 
