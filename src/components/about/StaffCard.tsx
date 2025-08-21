@@ -8,12 +8,9 @@ interface StaffCardProps {
   title: string;
   bio: string;
   image?: SanityImageSource | string;
-  email?: string;
-  phone?: string;
-  officeHours?: string;
 }
 
-const StaffCard: React.FC<StaffCardProps> = ({ name, title, bio, image, email, phone, officeHours }) => {
+const StaffCard: React.FC<StaffCardProps> = ({ name, title, bio, image }) => {
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
       <div className="h-64 overflow-hidden">
@@ -38,9 +35,6 @@ const StaffCard: React.FC<StaffCardProps> = ({ name, title, bio, image, email, p
       <div className="p-6">
         <h3 className="text-xl font-bold text-church-burgundy mb-1">{name}</h3>
         <p className="text-gray-600 font-medium mb-3">{title}</p>
-        {email && <p className="text-sm text-gray-600 mb-1">📧 {email}</p>}
-        {phone && <p className="text-sm text-gray-600 mb-1">📞 {phone}</p>}
-        {officeHours && <p className="text-sm text-gray-600 mb-3">🕒 {officeHours}</p>}
         <p className="text-gray-700 text-sm">{bio}</p>
       </div>
     </div>

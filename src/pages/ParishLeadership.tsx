@@ -181,16 +181,13 @@ const ParishLeadership = () => {
                     {expandedSection === category && (
                       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {teamMembersByCategory[category].map((member) => (
-                          <StaffCard 
-                            key={member._id} 
-                            name={member.name} 
-                            title={member.role}
-                            image={member.image}
-                            email={member.email || member.contactEmail}
-                            phone={member.phone || member.contactPhone}
-                            officeHours={member.officeHours}
-                            bio={member.bio || ""}
-                          />
+                           <StaffCard 
+                             key={member._id} 
+                             name={member.name} 
+                             title={member.role}
+                             image={member.image}
+                             bio={member.bio || ""}
+                           />
                         ))}
                       </div>
                     )}
@@ -201,16 +198,13 @@ const ParishLeadership = () => {
               <TabsContent value="clergy" className="animate-fade-in">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {teamMembersByCategory['clergy']?.map((member) => (
-                    <StaffCard 
-                      key={member._id} 
-                      name={member.name} 
-                      title={member.role}
-                      image={member.image}
-                      email={member.email || member.contactEmail}
-                      phone={member.phone || member.contactPhone}
-                      officeHours={member.officeHours}
-                      bio={member.bio || ""}
-                    />
+                     <StaffCard 
+                       key={member._id} 
+                       name={member.name} 
+                       title={member.role}
+                       image={member.image}
+                       bio={member.bio || ""}
+                     />
                   ))}
                 </div>
               </TabsContent>
@@ -218,16 +212,13 @@ const ParishLeadership = () => {
               <TabsContent value="staff" className="animate-fade-in">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {teamMembersByCategory['staff']?.map((member) => (
-                    <StaffCard 
-                      key={member._id} 
-                      name={member.name} 
-                      title={member.role}
-                      image={member.image}
-                      email={member.email || member.contactEmail}
-                      phone={member.phone || member.contactPhone}
-                      officeHours={member.officeHours}
-                      bio={member.bio || ""}
-                    />
+                     <StaffCard 
+                       key={member._id} 
+                       name={member.name} 
+                       title={member.role}
+                       image={member.image}
+                       bio={member.bio || ""}
+                     />
                   ))}
                 </div>
               </TabsContent>
@@ -238,15 +229,13 @@ const ParishLeadership = () => {
                     <h3 className="text-xl font-semibold text-church-burgundy mb-4">Parish Council</h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {teamMembersByCategory['council']?.map((member) => (
-                        <StaffCard 
-                          key={member._id} 
-                          name={member.name} 
-                          title={member.role}
-                          image={member.image}
-                          email={member.email || member.contactEmail}
-                          phone={member.phone || member.contactPhone}
-                          bio={member.bio || ""}
-                        />
+                         <StaffCard 
+                           key={member._id} 
+                           name={member.name} 
+                           title={member.role}
+                           image={member.image}
+                           bio={member.bio || ""}
+                         />
                       ))}
                     </div>
                   </div>
@@ -255,15 +244,13 @@ const ParishLeadership = () => {
                     <h3 className="text-xl font-semibold text-church-burgundy mb-4">Finance Council</h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {teamMembersByCategory['finance']?.map((member) => (
-                        <StaffCard 
-                          key={member._id} 
-                          name={member.name} 
-                          title={member.role}
-                          image={member.image}
-                          email={member.email || member.contactEmail}
-                          phone={member.phone || member.contactPhone}
-                          bio={member.bio || ""}
-                        />
+                         <StaffCard 
+                           key={member._id} 
+                           name={member.name} 
+                           title={member.role}
+                           image={member.image}
+                           bio={member.bio || ""}
+                         />
                       ))}
                     </div>
                   </div>
