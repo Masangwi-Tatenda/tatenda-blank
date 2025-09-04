@@ -1,501 +1,329 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Menu, X, Search, ChevronDown } from 'lucide-react';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from '@/components/ui/dropdown-menu';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { ChevronDown, Church, Menu } from "lucide-react";
+import Button from "../common/Button";
+import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+interface NavLinkProps {
+  to?: string;
+  label: string;
+  children?: React.ReactNode;
+  isDropdown?: boolean;
+}
+
+const NavLink: React.FC<NavLinkProps> = ({
+  to = "#",
+  label,
+  children,
+  isDropdown = false,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const location = useLocation();
-  
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
+  const isActive = to && location.pathname === to;
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsOpen(true);
   };
 
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => setIsOpen(false), 200);
+  };
+
+  return isDropdown ? (
+    <div
+      className="relative group"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button
+        className={cn(
+          "flex items-center gap-1 px-3 py-2 text-white hover:text-church-gold transition-all duration-300",
+          isOpen && "text-church-gold"
+        )}
+      >
+        {label}
+        <ChevronDown
+          size={16}
+          className={cn("transition-transform duration-300", isOpen && "rotate-180")}
+        />
+      </button>
+
+      <div
+        className={cn(
+          "absolute left-0 mt-2 w-56 rounded-lg shadow-xl py-2 bg-white z-50 transition-all duration-300 overflow-hidden backdrop-blur-sm bg-white/95 border border-gray-100",
+          isOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-2 invisible scale-95"
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  ) : (
+    <Link
+      to={to}
+      className={cn(
+        "px-3 py-2 text-white hover:text-church-gold transition-all duration-300 relative after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-church-gold after:transition-all after:duration-300 hover:after:w-4/5",
+        isActive && "text-church-gold font-medium after:w-4/5"
+      )}
+    >
+      {label}
+    </Link>
+  );
+};
+
+interface DropdownItemProps {
+  to: string;
+  label: string;
+  external?: boolean;
+}
+
+const DropdownItem: React.FC<DropdownItemProps> = ({ to, label, external = false }) => {
+  return external ? (
+    <a
+      href={to}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block px-4 py-2 text-sm text-gray-700 hover:bg-church-burgundy hover:text-white transition-all duration-200"
+    >
+      {label}
+    </a>
+  ) : (
+    <Link
+      to={to}
+      className="block px-4 py-2 text-sm text-gray-700 hover:bg-church-burgundy hover:text-white transition-all duration-200"
+    >
+      {label}
+    </Link>
+  );
+};
+
+const MobileNavLink: React.FC<NavLinkProps> = ({
+  to = "#",
+  label,
+  children,
+  isDropdown = false,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isActive = to && location.pathname === to;
+
+  return isDropdown ? (
+    <div className="border-b border-white/10">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "flex items-center justify-between w-full px-4 py-3 text-white hover:text-church-gold transition-all duration-300",
+          isOpen && "text-church-gold"
+        )}
+      >
+        <span>{label}</span>
+        <ChevronDown
+          size={16}
+          className={cn("transition-transform duration-300", isOpen && "rotate-180")}
+        />
+      </button>
+
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300 bg-church-burgundy/50",
+          isOpen ? "max-h-96" : "max-h-0"
+        )}
+      >
+        <div className="py-1">
+          {children}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <Link
+      to={to}
+      className={cn(
+        "block px-4 py-3 text-white hover:text-church-gold transition-all duration-300 border-b border-white/10",
+        isActive && "text-church-gold font-medium"
+      )}
+    >
+      {label}
+    </Link>
+  );
+};
+
+const MobileDropdownItem: React.FC<DropdownItemProps> = ({ to, label, external = false }) => {
+  return external ? (
+    <a
+      href={to}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block px-6 py-2 text-sm text-white/80 hover:text-church-gold transition-all duration-200"
+    >
+      {label}
+    </a>
+  ) : (
+    <Link
+      to={to}
+      className="block px-6 py-2 text-sm text-white/80 hover:text-church-gold transition-all duration-200"
+    >
+      {label}
+    </Link>
+  );
+};
+
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const mainNavItems = [
+    { to: "/", label: "Home" },
+    { to: "/about", label: "About" },
+    { isDropdown: true, label: "Parish Life", children: [
+      { to: "/parish-calendar", label: "Parish Calendar" },
+      { to: "/events", label: "Upcoming Events" },
+      { to: "/bulletins", label: "Bulletins & Newsletters" },
+      { to: "/liturgical-calendar", label: "Liturgical Calendar" },
+      { to: "/saints-calendar", label: "Saints Calendar" },
+    ]},
+    { isDropdown: true, label: "Faith", children: [
+      { to: "/core-faith", label: "Core Faith & Doctrine" },
+      { to: "/education-formation", label: "Catechesis" },
+      { to: "/rcia", label: "RCIA" },
+      { to: "/bible-study", label: "Bible Studies" },
+      { to: "/spiritual-growth", label: "Spiritual Growth" },
+      { to: "/prayers-novenas", label: "Prayers & Novenas" },
+    ]},
+    { isDropdown: true, label: "Resources", children: [
+      { to: "/church-documents", label: "Church Documents" },
+      { to: "/apologetics", label: "Apologetics" },
+      { to: "/daily-readings", label: "Daily Readings" },
+      { to: "/previous-readings", label: "Reading Archives" },
+    ]},
+    { isDropdown: true, label: "Media", children: [
+      { to: "/mass-recordings", label: "Mass Recordings" },
+      { to: "/homilies", label: "Homilies" },
+      { to: "/community/gallery", label: "Photo Gallery" },
+      { to: "/blog", label: "Parish Blog" },
+    ]},
+    { isDropdown: true, label: "Community", children: [
+      { to: "/community/guilds", label: "Catholic Guilds" },
+      { to: "/community/sections", label: "Parish Sections" },
+      { to: "/parish-executive", label: "Parish Leadership" },
+      { to: "/ministries", label: "Ministries" },
+      { to: "/volunteer", label: "Volunteer" },
+      { to: "/community/youth", label: "Youth & Young Adults" },
+      { to: "/new-parishioner", label: "New Parishioner" },
+    ]},
+    { to: "/contact", label: "Contact" },
+  ];
+
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 z-50">
-      <div className="container-custom mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-semibold text-2xl text-church-burgundy">St. Michael's</span>
-          </Link>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            <Link 
-              to="/" 
-              className={`px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 ${
-                location.pathname === '/' ? 'text-church-burgundy' : 'text-gray-700'
-              }`}
-            >
-              Home
+    <>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          isScrolled ? "py-2 bg-church-burgundy/90 backdrop-blur-lg shadow-md" : 
+            isHomePage ? "py-4 bg-transparent" : "py-3 bg-church-burgundy/90"
+        )}
+      >
+        <div className="container-custom mx-auto">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-white/20">
+                <Church size={24} className="text-white group-hover:text-church-gold transition-colors duration-300" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Musha WeBetania</h1>
+                <p className="text-xs font-medium text-white/80">Roman Catholic Parish</p>
+              </div>
             </Link>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
-                  About <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link to="/about" className="w-full">Our Parish</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/history" className="w-full">History</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/parish-leadership" className="w-full">Parish Leadership</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/mass-schedule" className="w-full">Mass Schedule</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/contact" className="w-full">Contact Us</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
-                  Sacraments <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link to="/baptism" className="w-full">Baptism</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/eucharist" className="w-full">Eucharist</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/confirmation" className="w-full">Confirmation</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/reconciliation" className="w-full">Reconciliation</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/marriage" className="w-full">Marriage</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/holy-orders" className="w-full">Holy Orders</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/anointing" className="w-full">Anointing of the Sick</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
-                  Ministries <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link to="/ministries" className="w-full">All Ministries</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/liturgical-ministry" className="w-full">Liturgical</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/faith-formation" className="w-full">Faith Formation</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/youth-ministry" className="w-full">Youth Ministry</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/outreach" className="w-full">Outreach & Service</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/prayer-groups" className="w-full">Prayer Groups</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
-                  Events <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link to="/parish-calendar" className="w-full">Parish Calendar</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/upcoming-events" className="w-full">Upcoming Events</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/liturgical-calendar" className="w-full">Liturgical Calendar</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
-                  Spiritual Growth <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link to="/spiritual-growth/daily-readings" className="w-full">Daily Readings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/homilies" className="w-full">Homilies</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/prayers" className="w-full">Prayers</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/bible-study" className="w-full">Bible Study</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/retreats" className="w-full">Retreats</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
-                  News & Media <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem asChild>
-                  <Link to="/news" className="w-full">Parish News</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/bulletins" className="w-full">Weekly Bulletins</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/newsletters" className="w-full">Newsletters</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/photo-gallery" className="w-full">Photo Gallery</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <Link 
-              to="/donate" 
-              className={`px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 ${
-                location.pathname === '/donate' ? 'text-church-burgundy' : 'text-gray-700'
-              }`}
-            >
-              Donate
-            </Link>
-          </div>
-          
-          <div className="hidden lg:flex items-center">
-            <button className="text-gray-500 hover:text-gray-700">
-              <Search className="h-5 w-5" />
-            </button>
-          </div>
-          
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center">
-            <button 
-              onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-church-burgundy hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-church-burgundy"
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <nav className="hidden lg:flex items-center space-x-1">
+              {mainNavItems.map((item, index) => 
+                item.isDropdown ? (
+                  <NavLink key={item.label} isDropdown={true} label={item.label}>
+                    {item.children.map(child => (
+                      <DropdownItem key={child.to} to={child.to} label={child.label} />
+                    ))}
+                  </NavLink>
+                ) : (
+                  <NavLink key={item.label} to={item.to} label={item.label} />
+                )
+              )}
+            </nav>
+
+            <div className="hidden lg:block">
+              <Button
+                variant="glass"
+                href="/donate"
+                className="bg-white/10 text-white border-white/20 hover:bg-white/20"
+              >
+                Donate
+              </Button>
+            </div>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <button
+                  className="lg:hidden p-2 text-white rounded-full hover:bg-white/10 transition-colors duration-300"
+                >
+                  <Menu size={24} />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 bg-church-burgundy border-church-burgundy p-0">
+                <div className="flex flex-col h-full">
+                  <div className="p-4 border-b border-white/10">
+                    <Link to="/" className="flex items-center gap-2 group">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                        <Church size={20} className="text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-bold text-white">Musha WeBetania</h2>
+                        <p className="text-xs text-white/80">Roman Catholic Parish</p>
+                      </div>
+                    </Link>
+                  </div>
+                  
+                  <div className="flex-1 overflow-y-auto py-2">
+                    <nav className="flex flex-col">
+                      {mainNavItems.map((item, index) => 
+                        item.isDropdown ? (
+                          <MobileNavLink key={item.label} isDropdown={true} label={item.label}>
+                            {item.children.map(child => (
+                              <MobileDropdownItem key={child.to} to={child.to} label={child.label} />
+                            ))}
+                          </MobileNavLink>
+                        ) : (
+                          <MobileNavLink key={item.label} to={item.to} label={item.label} />
+                        )
+                      )}
+                    </nav>
+                  </div>
+                  
+                  <div className="p-4 border-t border-white/10">
+                    <Button
+                      variant="glass"
+                      href="/donate"
+                      className="w-full bg-white/10 text-white border-white/20 hover:bg-white/20"
+                    >
+                      Donate
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-      </div>
-      
-      {/* Mobile Menu */}
-      <div className={`lg:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
-          <Link 
-            to="/" 
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100"
-            onClick={toggleMobileMenu}
-          >
-            Home
-          </Link>
-          
-          <div className="block px-3 py-2 text-base font-medium">
-            <details className="cursor-pointer">
-              <summary>About</summary>
-              <div className="pl-4 mt-2 space-y-1">
-                <Link 
-                  to="/about" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Our Parish
-                </Link>
-                <Link 
-                  to="/history" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  History
-                </Link>
-                <Link 
-                  to="/parish-leadership" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Parish Leadership
-                </Link>
-                <Link 
-                  to="/mass-schedule" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Mass Schedule
-                </Link>
-                <Link 
-                  to="/contact" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Contact Us
-                </Link>
-              </div>
-            </details>
-          </div>
-          
-          <div className="block px-3 py-2 text-base font-medium">
-            <details className="cursor-pointer">
-              <summary>Sacraments</summary>
-              <div className="pl-4 mt-2 space-y-1">
-                <Link 
-                  to="/baptism" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Baptism
-                </Link>
-                <Link 
-                  to="/eucharist" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Eucharist
-                </Link>
-                <Link 
-                  to="/confirmation" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Confirmation
-                </Link>
-                <Link 
-                  to="/reconciliation" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Reconciliation
-                </Link>
-                <Link 
-                  to="/marriage" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Marriage
-                </Link>
-                <Link 
-                  to="/holy-orders" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Holy Orders
-                </Link>
-                <Link 
-                  to="/anointing" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Anointing of the Sick
-                </Link>
-              </div>
-            </details>
-          </div>
-          
-          <div className="block px-3 py-2 text-base font-medium">
-            <details className="cursor-pointer">
-              <summary>Ministries</summary>
-              <div className="pl-4 mt-2 space-y-1">
-                <Link 
-                  to="/ministries" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  All Ministries
-                </Link>
-                <Link 
-                  to="/liturgical-ministry" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Liturgical
-                </Link>
-                <Link 
-                  to="/faith-formation" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Faith Formation
-                </Link>
-                <Link 
-                  to="/youth-ministry" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Youth Ministry
-                </Link>
-                <Link 
-                  to="/outreach" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Outreach & Service
-                </Link>
-                <Link 
-                  to="/prayer-groups" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Prayer Groups
-                </Link>
-              </div>
-            </details>
-          </div>
-          
-          <div className="block px-3 py-2 text-base font-medium">
-            <details className="cursor-pointer">
-              <summary>Events</summary>
-              <div className="pl-4 mt-2 space-y-1">
-                <Link 
-                  to="/parish-calendar" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Parish Calendar
-                </Link>
-                <Link 
-                  to="/upcoming-events" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Upcoming Events
-                </Link>
-                <Link 
-                  to="/liturgical-calendar" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Liturgical Calendar
-                </Link>
-              </div>
-            </details>
-          </div>
-          
-          <div className="block px-3 py-2 text-base font-medium">
-            <details className="cursor-pointer">
-              <summary>Spiritual Growth</summary>
-              <div className="pl-4 mt-2 space-y-1">
-                <Link 
-                  to="/spiritual-growth/daily-readings" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Daily Readings
-                </Link>
-                <Link 
-                  to="/homilies" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Homilies
-                </Link>
-                <Link 
-                  to="/prayers" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Prayers
-                </Link>
-                <Link 
-                  to="/bible-study" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Bible Study
-                </Link>
-                <Link 
-                  to="/retreats" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Retreats
-                </Link>
-              </div>
-            </details>
-          </div>
-
-          <div className="block px-3 py-2 text-base font-medium">
-            <details className="cursor-pointer">
-              <summary>News & Media</summary>
-              <div className="pl-4 mt-2 space-y-1">
-                <Link 
-                  to="/news" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Parish News
-                </Link>
-                <Link 
-                  to="/bulletins" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Weekly Bulletins
-                </Link>
-                <Link 
-                  to="/newsletters" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Newsletters
-                </Link>
-                <Link 
-                  to="/photo-gallery" 
-                  className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={toggleMobileMenu}
-                >
-                  Photo Gallery
-                </Link>
-              </div>
-            </details>
-          </div>
-          
-          <Link 
-            to="/donate" 
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100"
-            onClick={toggleMobileMenu}
-          >
-            Donate
-          </Link>
-        </div>
-      </div>
-    </nav>
+      </header>
+    </>
   );
 };
 
