@@ -31,6 +31,20 @@ import Bulletins from './pages/Bulletins';
 import SaintsCalendar from './pages/SaintsCalendar';
 import Contact from './pages/Contact';
 import NewParishioner from './pages/NewParishioner';
+import Donate from './pages/Donate';
+import Vocations from './pages/Vocations';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import IntegratedCalendar from './pages/IntegratedCalendar';
+
+// Import sacrament pages
+import Baptism from './pages/sacraments/Baptism';
+import Communion from './pages/sacraments/Communion';
+import Confirmation from './pages/sacraments/Confirmation';
+import Reconciliation from './pages/sacraments/Reconciliation';
+import Anointing from './pages/sacraments/Anointing';
+import Marriage from './pages/sacraments/Marriage';
+import HolyOrders from './pages/sacraments/HolyOrders';
 
 // Import community pages
 import CatholicGuilds from './pages/community/CatholicGuilds';
@@ -90,8 +104,24 @@ function App() {
           <Route path="/community/youth/young-adults" element={<YoungAdults />} />
           <Route path="/new-parishioner" element={<NewParishioner />} />
           
+          {/* Sacraments section */}
+          <Route path="/sacraments/baptism" element={<Baptism />} />
+          <Route path="/sacraments/communion" element={<Communion />} />
+          <Route path="/sacraments/confirmation" element={<Confirmation />} />
+          <Route path="/sacraments/reconciliation" element={<Reconciliation />} />
+          <Route path="/sacraments/anointing" element={<Anointing />} />
+          <Route path="/sacraments/marriage" element={<Marriage />} />
+          <Route path="/sacraments/holy-orders" element={<HolyOrders />} />
+
           {/* Contact */}
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Other essential pages */}
+          <Route path="/donate" element={<Donate />} />
+          <Route path="/vocations" element={<Vocations />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/integrated-calendar" element={<IntegratedCalendar />} />
 
           {/* Fallback */}
           <Route path="*" element={<NotFound />} />
