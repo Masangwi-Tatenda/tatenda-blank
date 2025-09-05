@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 import SectionTitle from '@/components/common/SectionTitle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CreditCard, DollarSign, FileText, Gift, Mail, Phone, Heart, UserCircle, Repeat, Calendar, HelpCircle, Users } from 'lucide-react';
+import { CreditCard, DollarSign, FileText, Gift, Mail, Phone, Heart, UserCircle, Repeat, Calendar, HelpCircle, Users, MapPin, Shield, Smartphone, Building2, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -52,9 +52,23 @@ const formSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
   phone: z.string().optional(),
   address: z.string().optional(),
-  paymentMethod: z.enum(["credit-card", "bank-transfer", "paypal"], {
+  paymentMethod: z.enum(["credit-card", "bank-transfer", "paypal", "paynow"], {
     required_error: "Please select a payment method.",
   }),
+  // Credit Card fields
+  cardNumber: z.string().optional(),
+  expiryDate: z.string().optional(),
+  cvv: z.string().optional(),
+  cardholderName: z.string().optional(),
+  // Bank Transfer fields
+  accountNumber: z.string().optional(),
+  routingNumber: z.string().optional(),
+  bankName: z.string().optional(),
+  // PayPal fields
+  paypalEmail: z.string().optional(),
+  // Paynow fields
+  paynowPhone: z.string().optional(),
+  paynowPin: z.string().optional(),
   comments: z.string().optional(),
   anonymous: z.boolean().default(false),
 });
@@ -81,6 +95,59 @@ const Donate = () => {
   const [activeTab, setActiveTab] = useState("online");
   const [selectedAmount, setSelectedAmount] = useState("25");
   const [isCustomAmount, setIsCustomAmount] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Project data with more details
+  const projects = [
+    {
+      id: 'sanctuary',
+      title: 'Sanctuary Renovation',
+      description: 'Our sanctuary needs repairs and updates to continue serving our community. This project includes restoring pews, updating lighting, and improving the sound system.',
+      goal: 50000,
+      raised: 21000,
+      image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      urgency: 'High',
+      timeline: '6 months',
+      details: [
+        'Restore 20 wooden pews',
+        'Install LED lighting system',
+        'Upgrade sound and AV equipment',
+        'Refinish altar area'
+      ]
+    },
+    {
+      id: 'youth-center',
+      title: 'Youth Center Expansion',
+      description: 'We\'re expanding our youth center to better serve the growing number of young people in our parish. The expansion will include additional meeting spaces, a recreation area, and updated technology.',
+      goal: 30000,
+      raised: 20400,
+      image: 'https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      urgency: 'Medium',
+      timeline: '9 months',
+      details: [
+        'Add 2 new meeting rooms',
+        'Install recreation equipment',
+        'Update technology infrastructure',
+        'Create outdoor activity space'
+      ]
+    },
+    {
+      id: 'outreach',
+      title: 'Community Outreach Program',
+      description: 'Our outreach program provides food, clothing, and support to those in need in our community. Your donations help us purchase supplies and expand our services to reach more people.',
+      goal: 20000,
+      raised: 5000,
+      image: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      urgency: 'High',
+      timeline: 'Ongoing',
+      details: [
+        'Food pantry supplies',
+        'Clothing distribution',
+        'Emergency assistance fund',
+        'Educational programs'
+      ]
+    }
+  ];
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -97,10 +164,22 @@ const Donate = () => {
       paymentMethod: "credit-card",
       comments: "",
       anonymous: false,
+      // Payment method specific fields
+      cardNumber: "",
+      expiryDate: "",
+      cvv: "",
+      cardholderName: "",
+      accountNumber: "",
+      routingNumber: "",
+      bankName: "",
+      paypalEmail: "",
+      paynowPhone: "",
+      paynowPin: "",
     },
   });
 
   const watchAmount = form.watch("amount");
+  const watchPaymentMethod = form.watch("paymentMethod");
   
   useEffect(() => {
     if (watchAmount === "custom") {
@@ -424,23 +503,206 @@ const Donate = () => {
                                             Bank Transfer
                                           </FormLabel>
                                         </FormItem>
-                                        <FormItem className="flex items-center space-x-3 space-y-0 rounded-md border p-4">
-                                          <FormControl>
-                                            <RadioGroupItem value="paypal" />
-                                          </FormControl>
-                                          <FormLabel className="font-normal cursor-pointer flex-1">
-                                            PayPal
-                                          </FormLabel>
-                                        </FormItem>
+                                         <FormItem className="flex items-center space-x-3 space-y-0 rounded-md border p-4">
+                                           <FormControl>
+                                             <RadioGroupItem value="paypal" />
+                                           </FormControl>
+                                           <FormLabel className="font-normal cursor-pointer flex-1">
+                                             <div className="flex items-center">
+                                               <Wallet className="mr-2 h-4 w-4" />
+                                               PayPal
+                                             </div>
+                                           </FormLabel>
+                                         </FormItem>
+                                         <FormItem className="flex items-center space-x-3 space-y-0 rounded-md border p-4">
+                                           <FormControl>
+                                             <RadioGroupItem value="paynow" />
+                                           </FormControl>
+                                           <FormLabel className="font-normal cursor-pointer flex-1">
+                                             <div className="flex items-center">
+                                               <Smartphone className="mr-2 h-4 w-4" />
+                                               Paynow
+                                             </div>
+                                           </FormLabel>
+                                         </FormItem>
                                       </RadioGroup>
                                     </FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )}
-                              />
-                            </div>
-                            
-                            <Separator />
+                               />
+
+                               {/* Payment Method Details */}
+                               {watchPaymentMethod === "credit-card" && (
+                                 <div className="space-y-4 border-t pt-4">
+                                   <h4 className="font-medium text-church-burgundy">Credit Card Details</h4>
+                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                     <FormField
+                                       control={form.control}
+                                       name="cardholderName"
+                                       render={({ field }) => (
+                                         <FormItem className="md:col-span-2">
+                                           <FormLabel>Cardholder Name</FormLabel>
+                                           <FormControl>
+                                             <Input placeholder="John Doe" {...field} />
+                                           </FormControl>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                     <FormField
+                                       control={form.control}
+                                       name="cardNumber"
+                                       render={({ field }) => (
+                                         <FormItem className="md:col-span-2">
+                                           <FormLabel>Card Number</FormLabel>
+                                           <FormControl>
+                                             <Input placeholder="1234 5678 9012 3456" {...field} />
+                                           </FormControl>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                     <FormField
+                                       control={form.control}
+                                       name="expiryDate"
+                                       render={({ field }) => (
+                                         <FormItem>
+                                           <FormLabel>Expiry Date</FormLabel>
+                                           <FormControl>
+                                             <Input placeholder="MM/YY" {...field} />
+                                           </FormControl>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                     <FormField
+                                       control={form.control}
+                                       name="cvv"
+                                       render={({ field }) => (
+                                         <FormItem>
+                                           <FormLabel>CVV</FormLabel>
+                                           <FormControl>
+                                             <Input placeholder="123" {...field} />
+                                           </FormControl>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                   </div>
+                                 </div>
+                               )}
+
+                               {watchPaymentMethod === "bank-transfer" && (
+                                 <div className="space-y-4 border-t pt-4">
+                                   <h4 className="font-medium text-church-burgundy">Bank Transfer Details</h4>
+                                   <div className="space-y-4">
+                                     <FormField
+                                       control={form.control}
+                                       name="bankName"
+                                       render={({ field }) => (
+                                         <FormItem>
+                                           <FormLabel>Bank Name</FormLabel>
+                                           <FormControl>
+                                             <Input placeholder="First National Bank" {...field} />
+                                           </FormControl>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                       <FormField
+                                         control={form.control}
+                                         name="accountNumber"
+                                         render={({ field }) => (
+                                           <FormItem>
+                                             <FormLabel>Account Number</FormLabel>
+                                             <FormControl>
+                                               <Input placeholder="1234567890" {...field} />
+                                             </FormControl>
+                                             <FormMessage />
+                                           </FormItem>
+                                         )}
+                                       />
+                                       <FormField
+                                         control={form.control}
+                                         name="routingNumber"
+                                         render={({ field }) => (
+                                           <FormItem>
+                                             <FormLabel>Routing Number</FormLabel>
+                                             <FormControl>
+                                               <Input placeholder="021000021" {...field} />
+                                             </FormControl>
+                                             <FormMessage />
+                                           </FormItem>
+                                         )}
+                                       />
+                                     </div>
+                                   </div>
+                                 </div>
+                               )}
+
+                               {watchPaymentMethod === "paypal" && (
+                                 <div className="space-y-4 border-t pt-4">
+                                   <h4 className="font-medium text-church-burgundy">PayPal Details</h4>
+                                   <FormField
+                                     control={form.control}
+                                     name="paypalEmail"
+                                     render={({ field }) => (
+                                       <FormItem>
+                                         <FormLabel>PayPal Email</FormLabel>
+                                         <FormControl>
+                                           <Input type="email" placeholder="your-paypal@email.com" {...field} />
+                                         </FormControl>
+                                         <FormDescription>
+                                           Enter the email address associated with your PayPal account
+                                         </FormDescription>
+                                         <FormMessage />
+                                       </FormItem>
+                                     )}
+                                   />
+                                 </div>
+                               )}
+
+                               {watchPaymentMethod === "paynow" && (
+                                 <div className="space-y-4 border-t pt-4">
+                                   <h4 className="font-medium text-church-burgundy">Paynow Details</h4>
+                                   <div className="space-y-4">
+                                     <FormField
+                                       control={form.control}
+                                       name="paynowPhone"
+                                       render={({ field }) => (
+                                         <FormItem>
+                                           <FormLabel>Mobile Number</FormLabel>
+                                           <FormControl>
+                                             <Input placeholder="+263 77 123 4567" {...field} />
+                                           </FormControl>
+                                           <FormDescription>
+                                             Enter your mobile number registered with Paynow
+                                           </FormDescription>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                     <FormField
+                                       control={form.control}
+                                       name="paynowPin"
+                                       render={({ field }) => (
+                                         <FormItem>
+                                           <FormLabel>Paynow PIN</FormLabel>
+                                           <FormControl>
+                                             <Input type="password" placeholder="Enter your Paynow PIN" {...field} />
+                                           </FormControl>
+                                           <FormMessage />
+                                         </FormItem>
+                                       )}
+                                     />
+                                   </div>
+                                 </div>
+                               )}
+                             </div>
+                             
+                             <Separator />
                             
                             <div>
                               <FormField
@@ -546,29 +808,54 @@ const Donate = () => {
                         </CardContent>
                       </Card>
                       
-                      <Card className="shadow-md bg-church-gold/10">
-                        <CardHeader className="pb-3">
-                          <CardTitle className="text-xl text-church-burgundy flex items-center">
-                            <HelpCircle className="mr-2 h-5 w-5" />
-                            Need Assistance?
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="pb-6">
-                          <p className="text-gray-700 mb-4">
-                            If you have any questions or need help with your donation, please contact our parish office.
-                          </p>
-                          <div className="space-y-2">
-                            <div className="flex items-center">
-                              <Phone className="h-4 w-4 text-church-gold mr-2" />
-                              <span>+123 456 7890</span>
-                            </div>
-                            <div className="flex items-center">
-                              <Mail className="h-4 w-4 text-church-gold mr-2" />
-                              <span>donations@mushwebetania.org</span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                       <Card className="shadow-md bg-church-gold/10">
+                         <CardHeader className="pb-3">
+                           <CardTitle className="text-xl text-church-burgundy flex items-center">
+                             <MapPin className="mr-2 h-5 w-5" />
+                             Donation Destination
+                           </CardTitle>
+                         </CardHeader>
+                         <CardContent className="pb-6">
+                           <div className="space-y-3">
+                             <div className="flex items-center">
+                               <Building2 className="h-4 w-4 text-church-gold mr-2" />
+                               <span className="font-medium">Musha WeBetania Parish</span>
+                             </div>
+                             <div className="text-sm text-gray-600">
+                               <p>Tangwena Road, Opposite Jongwe Tarven</p>
+                               <p>Chikonohono, Zimbabwe</p>
+                             </div>
+                             <div className="flex items-center mt-3">
+                               <Shield className="h-4 w-4 text-church-gold mr-2" />
+                               <span className="text-sm">SSL Secured & Encrypted</span>
+                             </div>
+                           </div>
+                         </CardContent>
+                       </Card>
+                       
+                       <Card className="shadow-md">
+                         <CardHeader className="pb-3">
+                           <CardTitle className="text-xl text-church-burgundy flex items-center">
+                             <HelpCircle className="mr-2 h-5 w-5" />
+                             Need Assistance?
+                           </CardTitle>
+                         </CardHeader>
+                         <CardContent className="pb-6">
+                           <p className="text-gray-700 mb-4">
+                             If you have any questions or need help with your donation, please contact our parish office.
+                           </p>
+                           <div className="space-y-2">
+                             <div className="flex items-center">
+                               <Phone className="h-4 w-4 text-church-gold mr-2" />
+                               <span>+263 77 123 4567</span>
+                             </div>
+                             <div className="flex items-center">
+                               <Mail className="h-4 w-4 text-church-gold mr-2" />
+                               <span>donations@mushwebetania.org</span>
+                             </div>
+                           </div>
+                         </CardContent>
+                       </Card>
                     </div>
                   </div>
                 </div>
@@ -669,74 +956,103 @@ const Donate = () => {
                         These are our ongoing projects that need your support. Your targeted donations can help make these initiatives a reality.
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="pb-6">
-                      <div className="space-y-6">
-                        <div className="border rounded-lg overflow-hidden">
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            <div className="h-48 md:h-auto bg-cover bg-center" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")' }}></div>
-                            <div className="md:col-span-2 p-6">
-                              <h3 className="text-xl font-bold text-church-burgundy mb-2">Sanctuary Renovation</h3>
-                              <p className="text-gray-700 mb-4">
-                                Our sanctuary needs repairs and updates to continue serving our community. This project includes restoring pews, updating lighting, and improving the sound system.
-                              </p>
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Progress: 42%</span>
-                                <span className="text-sm font-medium">Goal: $50,000</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-                                <div className="bg-church-burgundy h-2.5 rounded-full" style={{ width: '42%' }}></div>
-                              </div>
-                              <Button className="bg-church-burgundy hover:bg-church-burgundy/90">
-                                Support This Project
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="border rounded-lg overflow-hidden">
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            <div className="h-48 md:h-auto bg-cover bg-center" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")' }}></div>
-                            <div className="md:col-span-2 p-6">
-                              <h3 className="text-xl font-bold text-church-burgundy mb-2">Youth Center Expansion</h3>
-                              <p className="text-gray-700 mb-4">
-                                We're expanding our youth center to better serve the growing number of young people in our parish. The expansion will include additional meeting spaces, a recreation area, and updated technology.
-                              </p>
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Progress: 68%</span>
-                                <span className="text-sm font-medium">Goal: $30,000</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-                                <div className="bg-church-burgundy h-2.5 rounded-full" style={{ width: '68%' }}></div>
-                              </div>
-                              <Button className="bg-church-burgundy hover:bg-church-burgundy/90">
-                                Support This Project
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="border rounded-lg overflow-hidden">
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            <div className="h-48 md:h-auto bg-cover bg-center" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")' }}></div>
-                            <div className="md:col-span-2 p-6">
-                              <h3 className="text-xl font-bold text-church-burgundy mb-2">Community Outreach Program</h3>
-                              <p className="text-gray-700 mb-4">
-                                Our outreach program provides food, clothing, and support to those in need in our community. Your donations help us purchase supplies and expand our services to reach more people.
-                              </p>
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Progress: 25%</span>
-                                <span className="text-sm font-medium">Goal: $20,000</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-                                <div className="bg-church-burgundy h-2.5 rounded-full" style={{ width: '25%' }}></div>
-                              </div>
-                              <Button className="bg-church-burgundy hover:bg-church-burgundy/90">
-                                Support This Project
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                     <CardContent className="pb-6">
+                       <div className="space-y-6">
+                         {projects.map((project) => {
+                           const progressPercentage = Math.round((project.raised / project.goal) * 100);
+                           return (
+                             <div key={project.id} className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                               <div className="grid grid-cols-1 lg:grid-cols-3">
+                                 <div className="h-64 lg:h-auto bg-cover bg-center" style={{ backgroundImage: `url("${project.image}")` }}></div>
+                                 <div className="lg:col-span-2 p-6">
+                                   <div className="flex items-start justify-between mb-3">
+                                     <h3 className="text-xl font-bold text-church-burgundy">{project.title}</h3>
+                                     <div className="flex gap-2">
+                                       <span className={`px-2 py-1 text-xs rounded-full ${
+                                         project.urgency === 'High' ? 'bg-red-100 text-red-800' :
+                                         project.urgency === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                                         'bg-green-100 text-green-800'
+                                       }`}>
+                                         {project.urgency} Priority
+                                       </span>
+                                       <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                                         {project.timeline}
+                                       </span>
+                                     </div>
+                                   </div>
+                                   
+                                   <p className="text-gray-700 mb-4">{project.description}</p>
+                                   
+                                   <div className="mb-4">
+                                     <h4 className="font-semibold text-sm text-church-burgundy mb-2">Project Details:</h4>
+                                     <ul className="text-sm text-gray-600 grid grid-cols-1 md:grid-cols-2 gap-1">
+                                       {project.details.map((detail, index) => (
+                                         <li key={index} className="flex items-center">
+                                           <div className="w-1.5 h-1.5 bg-church-gold rounded-full mr-2 flex-shrink-0"></div>
+                                           {detail}
+                                         </li>
+                                       ))}
+                                     </ul>
+                                   </div>
+                                   
+                                   <div className="flex items-center justify-between mb-2">
+                                     <span className="text-sm font-medium">Progress: {progressPercentage}%</span>
+                                     <span className="text-sm font-medium">
+                                       ${project.raised.toLocaleString()} / ${project.goal.toLocaleString()}
+                                     </span>
+                                   </div>
+                                   <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+                                     <div 
+                                       className="bg-gradient-to-r from-church-burgundy to-church-gold h-3 rounded-full transition-all duration-300" 
+                                       style={{ width: `${progressPercentage}%` }}
+                                     ></div>
+                                   </div>
+                                   
+                                   <div className="flex flex-wrap gap-2">
+                                     <Button 
+                                       className="bg-church-burgundy hover:bg-church-burgundy/90"
+                                       onClick={() => {
+                                         setSelectedProject(project);
+                                         setActiveTab("online");
+                                         form.setValue("purpose", `project-${project.id}`);
+                                       }}
+                                     >
+                                       Donate to This Project
+                                     </Button>
+                                     <div className="flex gap-1">
+                                       {[25, 50, 100].map((amount) => (
+                                         <Button
+                                           key={amount}
+                                           variant="outline"
+                                           size="sm"
+                                           className="border-church-burgundy text-church-burgundy hover:bg-church-burgundy hover:text-white"
+                                           onClick={() => {
+                                             setSelectedProject(project);
+                                             setActiveTab("online");
+                                             form.setValue("amount", amount.toString());
+                                             form.setValue("purpose", `project-${project.id}`);
+                                           }}
+                                         >
+                                           ${amount}
+                                         </Button>
+                                       ))}
+                                     </div>
+                                   </div>
+                                   
+                                   <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                                     <p className="text-sm text-gray-600">
+                                       <strong>Remaining needed:</strong> ${(project.goal - project.raised).toLocaleString()}
+                                     </p>
+                                     <p className="text-xs text-gray-500 mt-1">
+                                       Every donation, no matter the size, brings us closer to our goal.
+                                     </p>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                           );
+                         })}
+                       </div>
                     </CardContent>
                   </Card>
                   
