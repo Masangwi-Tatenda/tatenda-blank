@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SectionTitle from '../common/SectionTitle';
 import Button from '../common/Button';
 import { useSanity } from '@/contexts/SanityContext';
@@ -66,9 +67,12 @@ const CoreFaithSection = () => {
                   <h3 className="text-2xl font-bold text-church-gold">{item.title}</h3>
                 </div>
                 <p className="text-white/90 mb-4">{item.description}</p>
-                <a href={item.link || "/core-faith"} className="inline-flex items-center text-church-gold hover:text-white transition-colors">
+                <Link 
+                  to={item.link || "/core-faith"} 
+                  className="inline-flex items-center text-church-gold hover:text-white transition-colors"
+                >
                   Learn more <ArrowRight className="ml-2 w-4 h-4" />
-                </a>
+                </Link>
               </div>
             );
           })}
