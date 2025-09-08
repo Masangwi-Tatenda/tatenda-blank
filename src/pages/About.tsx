@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -6,7 +5,6 @@ import SectionTitle from '@/components/common/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Church, Users, Heart, Eye, Target, Award, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useSanity } from '@/contexts/SanityContext';
 import PortableText from '@/components/common/PortableText';
 import SanityImage from '@/components/common/SanityImage';
