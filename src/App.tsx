@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from "@/components/ui/sonner";
+import ErrorBoundary from './components/common/ErrorBoundary';
 import Index from './pages/Index';
 import About from './pages/About';
 import Events from './pages/Events';
@@ -58,9 +60,10 @@ import YoungAdults from './pages/community/youth/YoungAdults';
 
 function App() {
   return (
-    <SanityProvider>
-      <Router>
-        <Routes>
+    <ErrorBoundary>
+      <SanityProvider>
+        <Router>
+          <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />
@@ -125,9 +128,11 @@ function App() {
 
           {/* Fallback */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </SanityProvider>
+          </Routes>
+        </Router>
+        <Toaster />
+      </SanityProvider>
+    </ErrorBoundary>
   );
 }
 

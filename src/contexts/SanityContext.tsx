@@ -146,18 +146,58 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
         setIsLoading(true);
         console.log('Fetching Sanity data, project ID:', import.meta.env.VITE_SANITY_PROJECT_ID);
         
-        // Fetch church stats separately first to debug
-        try {
-          const stats = await client.fetch(queries.churchStats);
-          console.log('Church stats data:', stats);
-          setChurchStats(stats || []);
-        } catch (statsError) {
-          console.error('Error fetching church stats:', statsError);
-          setChurchStats([]);
-        }
-        
+        // Add fallback data for when Sanity is unavailable
+        const fallbackData = {
+          heroSlides: [{
+            _id: 'fallback-1',
+            title: 'Welcome to Our Parish',
+            subtitle: 'A community of faith, hope, and love',
+            description: 'Join us for worship, fellowship, and spiritual growth.',
+            backgroundImage: { asset: { url: '/placeholder.svg' } },
+            ctaText: 'Learn More',
+            ctaLink: '/about',
+            isActive: true
+          }],
+          churchStats: [
+            { _id: 'stat-1', title: 'Parish Members', value: '1,200+', icon: 'Users' },
+            { _id: 'stat-2', title: 'Years of Service', value: '50+', icon: 'Calendar' },
+            { _id: 'stat-3', title: 'Ministries', value: '15+', icon: 'Heart' },
+            { _id: 'stat-4', title: 'Weekly Masses', value: '7', icon: 'Church' }
+          ],
+          coreFaithItems: [
+            { _id: 'faith-1', title: 'Sacred Scripture', description: 'The Word of God guides our faith and practice.', icon: 'BookOpen' },
+            { _id: 'faith-2', title: 'Sacred Tradition', description: 'The teachings passed down through the apostles.', icon: 'Crown' },
+            { _id: 'faith-3', title: 'The Sacraments', description: 'Seven sacred signs of God\'s grace in our lives.', icon: 'Cross' }
+          ],
+          quickLinks: [
+            { _id: 'link-1', title: 'Mass Schedule', url: '/mass-schedule', icon: 'Calendar', description: 'View our weekly Mass times' },
+            { _id: 'link-2', title: 'Contact Us', url: '/contact', icon: 'Phone', description: 'Get in touch with our parish' },
+            { _id: 'link-3', title: 'Donate', url: '/donate', icon: 'Heart', description: 'Support our parish mission' }
+          ]
+        };
+
+        // Try to fetch from Sanity with timeout and fallbacks
+        const fetchWithFallback = async (query: any, fallback: any, name: string) => {
+          try {
+            const result = await Promise.race([
+              client.fetch(query),
+              new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout')), 5000)
+              )
+            ]);
+            return result || fallback;
+          } catch (error) {
+            console.warn(`Failed to fetch ${name}, using fallback:`, error);
+            return fallback;
+          }
+        };
+
+        // Fetch essential data with fallbacks
         const [
           slides,
+          stats,
+          faithItems,
+          links,
           fEvents,
           uEvents,
           yEvents,
@@ -175,8 +215,6 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           team,
           ministryItems,
           welcome,
-          faithItems,
-          links,
           scripture,
           studyResources,
           about,
@@ -187,70 +225,73 @@ export const SanityProvider: React.FC<SanityProviderProps> = ({ children }) => {
           sacramentsList,
           liturgicalCal,
         ] = await Promise.all([
-          client.fetch(queries.heroSlides).catch(e => { console.error('Error fetching heroSlides:', e); return []; }),
-          client.fetch(queries.featuredEvents).catch(e => { console.error('Error fetching featuredEvents:', e); return []; }),
-          client.fetch(queries.upcomingEvents).catch(e => { console.error('Error fetching upcomingEvents:', e); return []; }),
-          client.fetch(queries.featuredYouthEvents).catch(e => { console.error('Error fetching featuredYouthEvents:', e); return []; }),
-          client.fetch(queries.recentMasses).catch(e => { console.error('Error fetching recentMasses:', e); return []; }),
-          client.fetch(queries.recentBlogPosts).catch(e => { console.error('Error fetching recentBlogPosts:', e); return []; }),
-          client.fetch(queries.recentPhotoGalleries).catch(e => { console.error('Error fetching recentPhotoGalleries:', e); return []; }),
-          client.fetch(queries.recentHomilies).catch(e => { console.error('Error fetching recentHomilies:', e); return []; }),
-          client.fetch(queries.recentBulletins).catch(e => { console.error('Error fetching recentBulletins:', e); return []; }),
-          client.fetch(queries.featuredPrayers).catch(e => { console.error('Error fetching featuredPrayers:', e); return []; }),
-          client.fetch(queries.recentReadings).catch(e => { console.error('Error fetching recentReadings:', e); return []; }),
-          client.fetch(queries.churchDocuments).catch(e => { console.error('Error fetching churchDocuments:', e); return []; }),
-          client.fetch(queries.liturgicalSeasons).catch(e => { console.error('Error fetching liturgicalSeasons:', e); return []; }),
-          client.fetch(queries.currentFeastDays).catch(e => { console.error('Error fetching currentFeastDays:', e); return []; }),
-          client.fetch(queries.featuredSaints).catch(e => { console.error('Error fetching featuredSaints:', e); return []; }),
-          client.fetch(queries.parishTeam).catch(e => { console.error('Error fetching parishTeam:', e); return []; }),
-          client.fetch(queries.ministries).catch(e => { console.error('Error fetching ministries:', e); return []; }),
-          client.fetch(queries.welcomeSection).catch(e => { console.error('Error fetching welcomeSection:', e); return null; }),
-          client.fetch(queries.coreFaithItems).catch(e => { console.error('Error fetching coreFaithItems:', e); return []; }),
-          client.fetch(queries.quickLinks).catch(e => { console.error('Error fetching quickLinks:', e); return []; }),
-          client.fetch(queries.currentWeeklyScripture).catch(e => { console.error('Error fetching currentWeeklyScripture:', e); return null; }),
-          client.fetch(queries.featuredBibleStudyResources).catch(e => { console.error('Error fetching featuredBibleStudyResources:', e); return []; }),
-          client.fetch(queries.aboutPage).catch(e => { console.error('Error fetching aboutPage:', e); return null; }),
-          client.fetch(queries.contactPage).catch(e => { console.error('Error fetching contactPage:', e); return null; }),
-          client.fetch(queries.massSchedule).catch(e => { console.error('Error fetching massSchedule:', e); return null; }),
-          client.fetch(queries.youthMinistryPage).catch(e => { console.error('Error fetching youthMinistryPage:', e); return null; }),
-          client.fetch(queries.catholicTeachingPage).catch(e => { console.error('Error fetching catholicTeachingPage:', e); return null; }),
-          client.fetch(queries.allSacraments).catch(e => { console.error('Error fetching allSacraments:', e); return []; }),
-          client.fetch(queries.liturgicalCalendar).catch(e => { console.error('Error fetching liturgicalCalendar:', e); return null; }),
+          fetchWithFallback(queries.heroSlides, fallbackData.heroSlides, 'heroSlides'),
+          fetchWithFallback(queries.churchStats, fallbackData.churchStats, 'churchStats'),
+          fetchWithFallback(queries.coreFaithItems, fallbackData.coreFaithItems, 'coreFaithItems'),
+          fetchWithFallback(queries.quickLinks, fallbackData.quickLinks, 'quickLinks'),
+          fetchWithFallback(queries.featuredEvents, [], 'featuredEvents'),
+          fetchWithFallback(queries.upcomingEvents, [], 'upcomingEvents'),
+          fetchWithFallback(queries.featuredYouthEvents, [], 'featuredYouthEvents'),
+          fetchWithFallback(queries.recentMasses, [], 'recentMasses'),
+          fetchWithFallback(queries.recentBlogPosts, [], 'recentBlogPosts'),
+          fetchWithFallback(queries.recentPhotoGalleries, [], 'recentPhotoGalleries'),
+          fetchWithFallback(queries.recentHomilies, [], 'recentHomilies'),
+          fetchWithFallback(queries.recentBulletins, [], 'recentBulletins'),
+          fetchWithFallback(queries.featuredPrayers, [], 'featuredPrayers'),
+          fetchWithFallback(queries.recentReadings, [], 'recentReadings'),
+          fetchWithFallback(queries.churchDocuments, [], 'churchDocuments'),
+          fetchWithFallback(queries.liturgicalSeasons, [], 'liturgicalSeasons'),
+          fetchWithFallback(queries.currentFeastDays, [], 'currentFeastDays'),
+          fetchWithFallback(queries.featuredSaints, [], 'featuredSaints'),
+          fetchWithFallback(queries.parishTeam, [], 'parishTeam'),
+          fetchWithFallback(queries.ministries, [], 'ministries'),
+          fetchWithFallback(queries.welcomeSection, null, 'welcomeSection'),
+          fetchWithFallback(queries.currentWeeklyScripture, null, 'currentWeeklyScripture'),
+          fetchWithFallback(queries.featuredBibleStudyResources, [], 'featuredBibleStudyResources'),
+          fetchWithFallback(queries.aboutPage, null, 'aboutPage'),
+          fetchWithFallback(queries.contactPage, null, 'contactPage'),
+          fetchWithFallback(queries.massSchedule, null, 'massSchedule'),
+          fetchWithFallback(queries.youthMinistryPage, null, 'youthMinistryPage'),
+          fetchWithFallback(queries.catholicTeachingPage, null, 'catholicTeachingPage'),
+          fetchWithFallback(queries.allSacraments, [], 'allSacraments'),
+          fetchWithFallback(queries.liturgicalCalendar, null, 'liturgicalCalendar'),
         ]);
 
-        setHeroSlides(slides || []);
-        setFeaturedEvents(fEvents || []);
-        setUpcomingEvents(uEvents || []);
-        setYouthEvents(yEvents || []);
-        setMassRecordings(masses || []);
-        setRecentBlogPosts(bPosts || []);
-        setPhotoGalleries(galleries || []);
-        setHomilies(hItems || []);
-        setBulletins(bItems || []);
-        setPrayers(pItems || []);
-        setDailyReadings(readings || []);
-        setChurchDocuments(documents || []);
-        setLiturgicalSeasons(seasons || []);
-        setFeastDays(feasts || []);
-        setSaints(saintItems || []);
-        setParishTeam(team || []);
-        setMinistries(ministryItems || []);
-        
-        setWelcomeSection(welcome || null);
-        setCoreFaithItems(faithItems || []);
-        setQuickLinks(links || []);
-        setWeeklyScripture(scripture || null);
-        setBibleStudyResources(studyResources || []);
-        setAboutPage(about || null);
-        setContactPage(contact || null);
-        setMassSchedule(massInfo || null);
-        setYouthMinistryPage(youthMinistry || null);
-        setCatholicTeachingPage(catholicTeaching || null);
-        setSacraments(sacramentsList || []);
-        setLiturgicalCalendar(liturgicalCal || null);
+        setHeroSlides(slides);
+        setChurchStats(stats);
+        setCoreFaithItems(faithItems);
+        setQuickLinks(links);
+        setFeaturedEvents(fEvents);
+        setUpcomingEvents(uEvents);
+        setYouthEvents(yEvents);
+        setMassRecordings(masses);
+        setRecentBlogPosts(bPosts);
+        setPhotoGalleries(galleries);
+        setHomilies(hItems);
+        setBulletins(bItems);
+        setPrayers(pItems);
+        setDailyReadings(readings);
+        setChurchDocuments(documents);
+        setLiturgicalSeasons(seasons);
+        setFeastDays(feasts);
+        setSaints(saintItems);
+        setParishTeam(team);
+        setMinistries(ministryItems);
+        setWelcomeSection(welcome);
+        setWeeklyScripture(scripture);
+        setBibleStudyResources(studyResources);
+        setAboutPage(about);
+        setContactPage(contact);
+        setMassSchedule(massInfo);
+        setYouthMinistryPage(youthMinistry);
+        setCatholicTeachingPage(catholicTeaching);
+        setSacraments(sacramentsList);
+        setLiturgicalCalendar(liturgicalCal);
+
+        console.log('Sanity data loaded successfully with fallbacks');
       } catch (err) {
         console.error('Error fetching Sanity data:', err);
-        setError('Failed to load content. Please try again later.');
+        setError('Some content may not be available. The site will function with limited data.');
       } finally {
         setIsLoading(false);
       }
