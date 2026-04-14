@@ -1,3 +1,8 @@
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 import React, { useEffect, useRef } from 'react';
 
